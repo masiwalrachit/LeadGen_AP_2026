@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+:root {
+  --ink-950: #0a0b0d;
+  --ink-900: #111318;
+  --ink-800: #1b1e25;
+  --paper: #f4f2ec;
+  --paper-muted: #aaa69b;
+  --line: rgba(244, 242, 236, 0.14);
+  --signal: #e763a9;
+  --signal-strong: #ff8fca;
+  --verified: #c9f06b;
+  --danger: #ff897d;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--ink-950);
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  background: var(--ink-950);
+  color: var(--paper);
+  font-family: "Manrope Variable", "Avenir Next", sans-serif;
+  text-rendering: optimizeLegibility;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+::selection {
+  background: var(--signal);
+  color: var(--ink-950);
+}
+
+:focus-visible {
+  outline: 3px solid var(--signal-strong);
+  outline-offset: 3px;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--ink-950);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #383b43;
+  border: 2px solid var(--ink-950);
+  border-radius: 99px;
+}

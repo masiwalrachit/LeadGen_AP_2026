@@ -1,0 +1,32 @@
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# local environments and secrets
+.env
+.env.*
+!.env.example
+
+# testing
+/coverage
+/playwright-report
+/test-results
+
+# logs and local tools
+*.log
+.DS_Store
+.vercel
+.turbo
+*.tsbuildinfo
+
+# Impeccable local review artifacts
+.impeccable/review/
+.impeccable/config.local.json
