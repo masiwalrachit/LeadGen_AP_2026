@@ -4,7 +4,21 @@ LeadGen is an evidence-backed prospecting platform for small web-development age
 
 The product is not a generic contact scraper. Its output is a smaller list of qualified opportunities, each supported by public evidence, a confidence score, and a public business contact path.
 
-> **Project status:** foundation stage. Authentication and the signup experience are implemented. Campaigns, discovery, qualification, and the lead inbox described below are the agreed MVP flow and are not implemented yet.
+> **Project status:** authentication, workspace onboarding, CSV candidate import, deterministic website validation, and source-backed evidence persistence are implemented. Live discovery, LLM analysis, scoring, lead qualification, enrichment, and export remain planned.
+
+## Current playable vertical slice
+
+The `/campaigns/new` flow accepts a source-backed CSV, validates and deduplicates it, applies industry and location filters, runs deterministic public-website checks, and stores each observation with its source URL, timestamp, extracted value, and validator. Records remain candidates; this slice does not run LLM analysis or publish leads.
+
+The uploaded CSV may contain illustrative records, but validation and Supabase evidence persistence are real. The UI must never describe uploaded sample records as live internet discoveries.
+
+Required CSV columns:
+
+```text
+business_name,industry,location,description,source_url,observed_at
+```
+
+Optional columns are `website` and `contact_path`. The current run limit is 15 matching candidates and 1 MB per file.
 
 ## Read this before changing the project
 
@@ -93,6 +107,7 @@ flowchart LR
 
 The user provides:
 
+- Username shown in the application
 - Agency name
 - Website, if available
 - Services offered
@@ -239,7 +254,8 @@ flowchart LR
     JOBS --> CONNECTORS[Source adapters]
     CONNECTORS --> SOURCES[Places / Search / Websites / RSS]
     JOBS --> VALIDATORS[Deterministic validators]
-    VALIDATORS --> LLM[Gemini structured assessment]
+    VALIDATORS --> EVIDENCE[Source-backed evidence]
+    EVIDENCE -. planned .-> LLM[FreeLLMAPI assessment]
     JOBS --> DB
     DB --> UI
 ```
@@ -252,7 +268,7 @@ flowchart LR
 - **Trigger.dev:** asynchronous discovery, validation, retries, and progress events
 - **Source adapters:** one bounded module per external source
 - **Deterministic validators:** website existence, HTTP status, performance, metadata, contact paths, and playbook rules
-- **Gemini:** schema-constrained assessment after deterministic filtering
+- **FreeLLMAPI:** planned local OpenAI-compatible routing for later evidence interpretation
 
 Never call external discovery APIs or privileged Supabase operations directly from a client component.
 
@@ -291,10 +307,10 @@ Do not add empty folders merely to match this diagram. Create a boundary when it
 | Email/password signup | Implemented; requires project credentials |
 | OAuth callback and cookie refresh | Implemented |
 | Safe local redirect validation | Implemented and tested |
-| Protected application-route authorization | Not implemented |
-| Onboarding | Placeholder route only |
-| Workspace persistence | Not implemented |
-| Campaign creation | Not implemented |
+| Protected application-route authorization | Implemented |
+| Onboarding | Implemented for username and workspace setup |
+| Workspace persistence | Implemented in Supabase |
+| Campaign creation | Implemented for CSV candidate validation |
 | Source connectors | Not implemented |
 | Qualification and scoring | Not implemented |
 | Lead inbox and export | Not implemented |
@@ -310,7 +326,7 @@ Do not write documentation or UI copy that claims a planned feature already work
 - Trigger.dev for background jobs
 - Brave Search, Google Places, public websites, sitemaps, and RSS for discovery
 - PageSpeed Insights for website validation
-- Gemini structured outputs for later-stage assessment
+- FreeLLMAPI JSON output is planned for later-stage assessment
 - Vitest, ESLint, TypeScript, and GitHub Actions for verification
 
 ## Local development
@@ -330,6 +346,7 @@ Environment variables:
 ```bash
 NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=your-publishable-key
+PAGESPEED_API_KEY=your-optional-pagespeed-key
 ```
 
 Never commit `.env.local`, API keys, OAuth secrets, service-role keys, production data, or customer exports.

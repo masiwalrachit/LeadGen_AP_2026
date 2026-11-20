@@ -8,7 +8,7 @@ web
 
 ## Stack
 
-Delegated and confirmed through product discussion: TypeScript, Next.js, Tailwind CSS, Supabase PostgreSQL/Auth/Storage, Trigger.dev background jobs, Brave Search, Google Places API, PageSpeed Insights, and Gemini structured outputs.
+Delegated and confirmed through product discussion: TypeScript, Next.js, Tailwind CSS, Supabase PostgreSQL/Auth/Storage, Trigger.dev background jobs, Brave Search, Google Places API, PageSpeed Insights, and planned FreeLLMAPI-routed structured assessment.
 
 ## Users
 
@@ -33,7 +33,7 @@ An agency creates a campaign for a client or its own business, selects a service
 - Initial service playbooks: new website, website redesign, e-commerce development, and website maintenance/performance.
 - Initial discovery sources: Brave Search, Google Places, permitted public business websites, sitemaps, and RSS where available.
 - Website validation uses HTTP/HTML checks and PageSpeed Insights.
-- Gemini performs structured intent classification only after deterministic filtering.
+- A locally hosted FreeLLMAPI router is planned for structured intent classification only after deterministic filtering.
 - Every recommendation must retain source evidence and confidence.
 - The first release does not automate outreach, scrape authenticated social platforms, bypass access controls, or promise guaranteed buying intent.
 - Collection must respect source terms, robots.txt, rate limits, retention requirements, and public-business-data boundaries.
@@ -45,6 +45,8 @@ An agency creates a campaign for a client or its own business, selects a service
 ## Evidence on Hand
 
 No customer testimonials, conversion benchmarks, logos, brand assets, or production lead data exist yet. Demonstration data must be labeled as illustrative and commercial claims must not be invented.
+
+The first playable slice accepts an illustrative candidate CSV while executing real validation, deduplication, deterministic website checks, and evidence persistence. It deliberately stops before LLM assessment, scoring, lead qualification, and enrichment. CSV import is an interim candidate input, not a claim that live internet connectors are complete.
 
 ## Product Principles
 
