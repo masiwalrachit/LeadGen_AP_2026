@@ -5,6 +5,7 @@ import { useState, type FormEvent } from "react";
 import { ArrowLeft, CheckCircle2, ExternalLink, FileCheck2, FileSpreadsheet, LoaderCircle, ShieldCheck, Waypoints } from "lucide-react";
 import type { ValidatedCandidate } from "@/lib/qualification/types";
 import { RESULTS_STORAGE_KEY } from "@/lib/qualification/stored-result";
+import { SignOutButton } from "@/components/sign-out-button";
 import styles from "../../workspace.module.css";
 
 type QualificationResponse = {
@@ -25,6 +26,7 @@ function AppHeader() {
         <Link href="/dashboard">Overview</Link>
         <Link href="/campaigns/new" aria-current="page">Campaign</Link>
         <Link href="/leads">Leads</Link>
+        <SignOutButton />
       </nav>
     </header>
   );

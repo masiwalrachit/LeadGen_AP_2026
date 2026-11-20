@@ -20,6 +20,7 @@ import {
   Waypoints,
 } from "lucide-react";
 import { getWorkspaceContext } from "@/lib/auth/workspace";
+import { SignOutButton } from "@/components/sign-out-button";
 import styles from "./dashboard.module.css";
 
 const navigation = [
@@ -122,6 +123,7 @@ function UserSummary({ username, userInitial }: { username: string; userInitial:
         <strong>@{username}</strong>
         <span>Workspace member</span>
       </div>
+      <SignOutButton className={styles.signOutButton} />
     </div>
   );
 }

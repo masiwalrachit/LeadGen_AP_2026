@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   description: "Start finding evidence-backed opportunities for your agency.",
 };
 
-export default function SignupPage() {
-  return <SignupExperience />;
+export default async function SignupPage({ searchParams }: { searchParams: Promise<{ error?: string }> }) {
+  const { error } = await searchParams;
+  return <SignupExperience callbackFailed={error === "oauth_callback_failed"} />;
 }

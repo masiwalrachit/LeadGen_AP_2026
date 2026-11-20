@@ -14,3 +14,9 @@ export const usernameSchema = z
 export function usernameInitial(username: string) {
   return username.charAt(0).toUpperCase();
 }
+
+/**
+ * Same rule as usernameSchema, written for the HTML `pattern` attribute. Browsers compile it with the
+ * regexp "v" flag, where a bare "-" inside [...] is a syntax error and makes the browser ignore the pattern.
+ */
+export const USERNAME_INPUT_PATTERN = "[A-Za-z0-9](?:[A-Za-z0-9_\\-]*[A-Za-z0-9])?";

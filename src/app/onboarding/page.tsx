@@ -2,6 +2,7 @@
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
 import { AtSign, Building2, LoaderCircle, Users } from "lucide-react";
+import { USERNAME_INPUT_PATTERN } from "@/lib/auth/username";
 import styles from "../workspace.module.css";
 
 export default function OnboardingPage() {
@@ -59,7 +60,7 @@ export default function OnboardingPage() {
                 <label htmlFor="username">Username</label>
                 <div className={styles.inputWithIcon}>
                   <AtSign size={17} aria-hidden="true" />
-                  <input id="username" name="username" autoComplete="username" minLength={3} maxLength={30} pattern="[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?" placeholder="rachit_masiwal" aria-describedby="username-help" required />
+                  <input id="username" name="username" autoComplete="username" minLength={3} maxLength={30} pattern={USERNAME_INPUT_PATTERN} placeholder="rachit_masiwal" aria-describedby="username-help" required />
                 </div>
                 <span className={styles.fieldHint} id="username-help">Shown on your dashboard. Use 3–30 letters, numbers, underscores, or hyphens.</span>
               </div>

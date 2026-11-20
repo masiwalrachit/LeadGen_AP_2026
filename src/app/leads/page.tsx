@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { ArrowLeft, ExternalLink, Inbox, Link2, Waypoints } from "lucide-react";
 import type { QualifiedCandidate, ScoreDimension } from "@/lib/qualification/types";
 import { RESULTS_STORAGE_KEY, parseStoredResult, type StoredResult } from "@/lib/qualification/stored-result";
+import { SignOutButton } from "@/components/sign-out-button";
 import styles from "../workspace.module.css";
 
 const dimensions: Array<[ScoreDimension, string]> = [
@@ -43,7 +44,7 @@ export default function LeadsPage() {
     <div className={styles.page}>
       <header className={styles.topbar}>
         <Link className={styles.brand} href="/dashboard"><span className={styles.brandMark}><Waypoints size={19} /></span>LeadGen</Link>
-        <nav className={styles.topnav} aria-label="Workspace navigation"><Link href="/dashboard">Overview</Link><Link href="/campaigns/new">Campaign</Link><Link href="/leads" aria-current="page">Leads</Link></nav>
+        <nav className={styles.topnav} aria-label="Workspace navigation"><Link href="/dashboard">Overview</Link><Link href="/campaigns/new">Campaign</Link><Link href="/leads" aria-current="page">Leads</Link><SignOutButton /></nav>
       </header>
       <main className={styles.main}>
         <Link className={styles.backLink} href="/campaigns/new"><ArrowLeft size={16} />Back to campaign</Link>
