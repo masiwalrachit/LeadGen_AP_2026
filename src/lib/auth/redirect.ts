@@ -1,4 +1,4 @@
-const FALLBACK_PATH = "/onboarding";
+const FALLBACK_PATH = "/app";
 
 export function safeNextPath(value: string | null): string {
   if (!value?.startsWith("/") || value.startsWith("//")) {
