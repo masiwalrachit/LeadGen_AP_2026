@@ -39,6 +39,7 @@ export async function POST(request: Request) {
       .from("workspace_members")
       .select("workspace_id")
       .eq("user_id", data.claims.sub)
+      .order("joined_at", { ascending: true })
       .limit(1)
       .maybeSingle();
     if (membershipError) {

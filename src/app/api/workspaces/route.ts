@@ -11,7 +11,18 @@ export async function POST(request: Request) {
   const supabase = await createClient();
   const { data: claims } = await supabase.auth.getClaims();
   if (!claims?.claims?.sub) return NextResponse.json({ error: "Sign in before setting up a workspace." }, { status: 401 });
-  const parsed = requestSchema.safeParse(await request.json());
+  // The app treats a user as belonging to one workspace; creating or joining a second one would
+  // make which workspace they land in ambiguous.
+  const { data: existing, error: existingError } = await supabase
+    .from("workspace_members")
+    .select("workspace_id")
+    .eq("user_id", claims.claims.sub)
+    .limit(1)
+    .maybeSingle();
+  if (existingError) return NextResponse.json({ error: "Could not check your workspace. Try again." }, { status: 500 });
+  if (existing) return NextResponse.json({ error: "You already belong to a workspace." }, { status: 409 });
+  const body = await request.json().catch(() => null);
+  const parsed = requestSchema.safeParse(body);
   if (!parsed.success) return NextResponse.json({ error: "Check the workspace details and try again." }, { status: 400 });
   const { data, error } = parsed.data.action === "create"
     ? await supabase.rpc("create_workspace", { profile_username: parsed.data.username, workspace_name: parsed.data.name, workspace_website: parsed.data.website, workspace_location: parsed.data.location, workspace_services: parsed.data.services })

@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
-import { AtSign, Building2, LoaderCircle, Users } from "lucide-react";
+import { AtSign, Building2, Check, Copy, LoaderCircle, Users } from "lucide-react";
 import { USERNAME_INPUT_PATTERN } from "@/lib/auth/username";
 import styles from "../workspace.module.css";
 
@@ -10,6 +10,23 @@ export default function OnboardingPage() {
   const [mode, setMode] = useState<"create" | "join">("create");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const [created, setCreated] = useState<{ name: string; joinCode: string } | null>(null);
+  const [copied, setCopied] = useState(false);
+
+  function goToDashboard() {
+    router.replace("/dashboard");
+    router.refresh();
+  }
+
+  async function copyCode() {
+    if (!created) return;
+    try {
+      await navigator.clipboard.writeText(created.joinCode);
+      setCopied(true);
+    } catch {
+      setCopied(false);
+    }
+  }
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -23,15 +40,39 @@ export default function OnboardingPage() {
 
     try {
       const response = await fetch("/api/workspaces", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
-      const payload = await response.json() as { error?: string };
+      const payload = await response.json().catch(() => ({})) as { error?: string; workspace?: { workspaceName?: string; joinCode?: string } };
       if (!response.ok) throw new Error(payload.error ?? "Workspace setup failed.");
-      router.replace("/dashboard");
-      router.refresh();
+      if (mode === "create" && payload.workspace?.joinCode) {
+        // Show the join code once so the owner can invite teammates, then continue on their click.
+        setCreated({ name: payload.workspace.workspaceName ?? "Your workspace", joinCode: payload.workspace.joinCode });
+        return;
+      }
+      goToDashboard();
     } catch (caught) {
       setError(caught instanceof Error ? caught.message : "Workspace setup failed.");
     } finally {
       setBusy(false);
     }
+  }
+
+  if (created) {
+    return (
+      <div className={styles.page}>
+        <main className={styles.main}>
+          <section className={styles.surface} style={{ maxWidth: 760 }}>
+            <h1>{created.name} is ready.</h1>
+            <p>Share this join code with teammates so they can join your workspace. Keep it private: anyone who has it can join.</p>
+            <p><strong aria-label="Workspace join code" style={{ fontSize: 28, letterSpacing: "0.04em" }}>{created.joinCode}</strong></p>
+            <div className={styles.formFooter}>
+              <button className={styles.statusButton} type="button" onClick={copyCode}>
+                {copied ? <Check size={14} /> : <Copy size={14} />} {copied ? "Copied" : "Copy code"}
+              </button>
+              <button className={styles.primaryButton} type="button" onClick={goToDashboard}>Continue to dashboard</button>
+            </div>
+          </section>
+        </main>
+      </div>
+    );
   }
 
   return (
