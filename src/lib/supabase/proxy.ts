@@ -25,6 +25,31 @@ export async function updateSession(request: NextRequest) {
     },
   });
 
-  await supabase.auth.getClaims();
+  const { data } = await supabase.auth.getClaims();
+  const signedIn = Boolean(data?.claims?.sub);
+  const pathname = request.nextUrl.pathname;
+  const privateRoute = ["/app", "/onboarding", "/dashboard", "/campaigns", "/leads", "/setup"].some(
+    (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),
+  );
+
+  if (privateRoute && !signedIn) {
+    const signupUrl = request.nextUrl.clone();
+    signupUrl.pathname = "/signup";
+    signupUrl.search = "";
+    signupUrl.searchParams.set("next", `${pathname}${request.nextUrl.search}`);
+    const redirectResponse = NextResponse.redirect(signupUrl);
+    response.cookies.getAll().forEach((cookie) => redirectResponse.cookies.set(cookie));
+    return redirectResponse;
+  }
+
+  if (pathname === "/signup" && signedIn) {
+    const appUrl = request.nextUrl.clone();
+    appUrl.pathname = "/app";
+    appUrl.search = "";
+    const redirectResponse = NextResponse.redirect(appUrl);
+    response.cookies.getAll().forEach((cookie) => redirectResponse.cookies.set(cookie));
+    return redirectResponse;
+  }
+
   return response;
 }

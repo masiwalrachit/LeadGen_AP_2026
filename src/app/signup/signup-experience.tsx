@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState, type FormEvent } from "react";
+import { useRouter } from "next/navigation";
 import {
   ArrowRight,
   Check,
@@ -43,6 +44,7 @@ function GoogleMark() {
 }
 
 export function SignupExperience() {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [status, setStatus] = useState<FormStatus>({ kind: "idle" });
   const configured = useMemo(() => isSupabaseConfigured(), []);
@@ -106,7 +108,7 @@ export function SignupExperience() {
 
     try {
       const supabase = createClient();
-      const { error } = await supabase.auth.signUp({
+      const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
@@ -116,6 +118,12 @@ export function SignupExperience() {
       });
 
       if (error) throw error;
+
+      if (data.session) {
+        router.replace("/onboarding");
+        router.refresh();
+        return;
+      }
 
       setStatus({
         kind: "success",
@@ -192,10 +200,10 @@ export function SignupExperience() {
           </div>
 
           <header className={styles.header}>
-            <h2>Create your workspace</h2>
+            <h2>Create your account</h2>
             <p>
-              Start with one campaign. We’ll help you find the evidence behind
-              every opportunity.
+              Next, you’ll set up your agency workspace and choose the username
+              shown to your team.
             </p>
           </header>
 
@@ -283,11 +291,11 @@ export function SignupExperience() {
               {loading ? (
                 <>
                   <LoaderCircle className={styles.spinner} size={19} />
-                  Creating workspace
+                  Creating account
                 </>
               ) : (
                 <>
-                  Create workspace
+                  Create account
                   <ArrowRight size={19} aria-hidden="true" />
                 </>
               )}
