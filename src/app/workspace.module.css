@@ -324,7 +324,7 @@
 .statusButton[data-tone="danger"] { background: var(--red-soft); color: var(--red); }
 
 .emptyState { padding: 60px 30px; text-align: center; }
-.emptyState svg { color: var(--blue); }
+.emptyState > svg { display: block; margin: 0 auto; color: var(--blue); }
 .emptyState h2 { margin: 18px 0 8px; }
 .emptyState p { max-width: 520px; margin: 0 auto 22px; color: var(--muted); line-height: 1.6; }
 
