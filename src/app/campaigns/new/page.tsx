@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState, type FormEvent } from "react";
 import { ArrowLeft, CheckCircle2, ExternalLink, FileCheck2, FileSpreadsheet, LoaderCircle, ShieldCheck, Waypoints } from "lucide-react";
 import type { ValidatedCandidate } from "@/lib/qualification/types";
+import { RESULTS_STORAGE_KEY } from "@/lib/qualification/stored-result";
 import styles from "../../workspace.module.css";
 
 type QualificationResponse = {
@@ -15,7 +16,6 @@ type QualificationResponse = {
   issues: Array<{ row: number; message: string }>;
 };
 
-const RESULTS_STORAGE_KEY = "leadgen.csvQualification.v1";
 
 function AppHeader() {
   return (

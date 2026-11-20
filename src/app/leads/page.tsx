@@ -4,9 +4,9 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { ArrowLeft, ExternalLink, Inbox, Link2, Waypoints } from "lucide-react";
 import type { QualifiedCandidate, ScoreDimension } from "@/lib/qualification/types";
+import { RESULTS_STORAGE_KEY, parseStoredResult, type StoredResult } from "@/lib/qualification/stored-result";
 import styles from "../workspace.module.css";
 
-const STORAGE_KEY = "leadgen.csvQualification.v1";
 const dimensions: Array<[ScoreDimension, string]> = [
   ["fit", "Fit"],
   ["need", "Need"],
@@ -15,23 +15,16 @@ const dimensions: Array<[ScoreDimension, string]> = [
   ["evidenceQuality", "Evidence"],
 ];
 
-type StoredResult = {
-  campaign: { name: string; serviceName: string; industry: string; location: string };
-  leads: QualifiedCandidate[];
-  stats: { rowsAccepted: number; duplicatesRemoved: number; assessed: number; qualified: number; evidenceCollected?: number };
-  model: { name: string; scoringVersion: string; threshold: number };
-};
-
 export default function LeadsPage() {
   const [result, setResult] = useState<StoredResult | null>(null);
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
     const timer = window.setTimeout(() => {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        try { setResult(JSON.parse(saved) as StoredResult); } catch { localStorage.removeItem(STORAGE_KEY); }
-      }
+      const saved = localStorage.getItem(RESULTS_STORAGE_KEY);
+      const parsed = parseStoredResult(saved);
+      if (parsed) setResult(parsed);
+      else if (saved) localStorage.removeItem(RESULTS_STORAGE_KEY);
       setReady(true);
     }, 0);
     return () => window.clearTimeout(timer);
@@ -41,7 +34,7 @@ export default function LeadsPage() {
     setResult((current) => {
       if (!current) return current;
       const next = { ...current, leads: current.leads.map((lead) => lead.id === candidateId ? { ...lead, reviewStatus } : lead) };
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+      localStorage.setItem(RESULTS_STORAGE_KEY, JSON.stringify(next));
       return next;
     });
   }
@@ -56,17 +49,24 @@ export default function LeadsPage() {
         <Link className={styles.backLink} href="/campaigns/new"><ArrowLeft size={16} />Back to campaign</Link>
         <header className={styles.pageHeader}>
           <div><h1>{result?.campaign.name ?? "Qualified lead inbox"}</h1><p>{result ? `${result.campaign.serviceName} · ${result.campaign.industry} · ${result.campaign.location}` : "Run a campaign to create an evidence-backed lead list."}</p></div>
-          {result ? <div className={styles.trustNote}><Waypoints size={18} /><span>Assessed by {result.model.name}; final score calculated by application model {result.model.scoringVersion}.</span></div> : null}
+          {result?.model ? <div className={styles.trustNote}><Waypoints size={18} /><span>Assessed by {result.model.name}; final score calculated by application model {result.model.scoringVersion}.</span></div> : null}
         </header>
 
         {!ready ? null : !result ? (
           <section className={styles.emptyState}><Inbox size={34} /><h2>No qualification run yet</h2><p>Upload candidate records and run the real scoring pipeline. Only candidates that meet the evidence threshold appear here.</p><Link className={styles.primaryButton} href="/campaigns/new">Create campaign</Link></section>
+        ) : !result.model ? (
+          <section className={styles.emptyState}>
+            <Inbox size={34} />
+            <h2>Validation finished, no leads yet</h2>
+            <p>{result.stats.validated ?? 0} candidates were validated and {result.stats.evidenceCollected ?? 0} evidence observations were stored. Lead analysis and scoring are not available yet, so these records stay candidates.</p>
+            <Link className={styles.primaryButton} href="/campaigns/new">Back to campaign</Link>
+          </section>
         ) : (
           <>
             <div className={styles.stats} aria-label="Qualification summary">
               <div className={styles.stat}><strong>{result.stats.rowsAccepted}</strong><span>Valid CSV records</span></div>
               <div className={styles.stat}><strong>{result.stats.duplicatesRemoved}</strong><span>Duplicates removed</span></div>
-              <div className={styles.stat}><strong>{result.stats.assessed}</strong><span>AI assessed</span></div>
+              <div className={styles.stat}><strong>{result.stats.assessed ?? 0}</strong><span>AI assessed</span></div>
               <div className={styles.stat}><strong>{result.stats.evidenceCollected ?? "—"}</strong><span>Evidence observations</span></div>
             </div>
             <section className={styles.leadList}>
