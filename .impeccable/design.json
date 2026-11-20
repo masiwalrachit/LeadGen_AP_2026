@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-18T10:19:59Z",
+  "title": "Design System: LeadGen",
+  "extensions": {
+    "colorMeta": {
+      "auth-ink": { "role": "neutral", "displayName": "Authentication Ink", "canonical": "#0a0b0d" },
+      "auth-paper": { "role": "neutral", "displayName": "Authentication Paper", "canonical": "#f4f2ec" },
+      "auth-signal": { "role": "primary", "displayName": "Authentication Signal", "canonical": "#e763a9" },
+      "app-canvas": { "role": "neutral", "displayName": "Ice Canvas", "canonical": "oklch(0.973 0.012 247)" },
+      "app-surface": { "role": "neutral", "displayName": "Working White", "canonical": "oklch(1 0 0)" },
+      "app-navy": { "role": "secondary", "displayName": "Workspace Navy", "canonical": "oklch(0.235 0.058 257)" },
+      "app-blue": { "role": "primary", "displayName": "Control-Room Cobalt", "canonical": "oklch(0.58 0.2 258)" },
+      "app-green": { "role": "tertiary", "displayName": "Qualified Green", "canonical": "oklch(0.57 0.15 155)" },
+      "app-red": { "role": "tertiary", "displayName": "Retry Red", "canonical": "oklch(0.58 0.19 25)" }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Page Display", "purpose": "Authenticated page titles only." },
+      "headline": { "displayName": "Campaign Headline", "purpose": "The selected campaign or other dominant operational subject." },
+      "body": { "displayName": "Operational Body", "purpose": "Explanations and supporting guidance." },
+      "label": { "displayName": "Data Label", "purpose": "Stages, statuses, table headings, and compact metadata." }
+    },
+    "shadows": [
+      { "name": "operational-surface", "value": "0 18px 50px rgba(28, 55, 96, 0.065)", "purpose": "Separates white application surfaces from the ice canvas." },
+      { "name": "active-navigation", "value": "0 9px 26px rgba(4, 18, 43, 0.24)", "purpose": "Lifts the selected destination against the navy workspace rail." },
+      { "name": "planned-action", "value": "0 9px 25px rgba(24, 88, 211, 0.23)", "purpose": "Supports the disclosed, disabled Create campaign control in the dashboard preview." }
+    ],
+    "motion": [
+      { "name": "state-change", "value": "150ms ease-out", "purpose": "Navigation and enabled action state changes; removed under reduced motion." }
+    ],
+    "breakpoints": [
+      { "name": "supporting-rail-stack", "value": "1120px" },
+      { "name": "mobile-shell", "value": "780px" },
+      { "name": "compact-mobile", "value": "470px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Active Workspace Navigation",
+      "kind": "nav",
+      "description": "Selected workspace destination inside the deep navy rail.",
+      "html": "<a class=\"ds-nav-active\" href=\"#\" aria-current=\"page\"><span aria-hidden=\"true\">●</span><span>Overview</span></a>",
+      "css": ".ds-nav-active { min-height: 46px; display: grid; grid-template-columns: 22px minmax(0, 1fr); align-items: center; gap: 11px; padding: 0 13px; border-radius: 12px; background: white; color: oklch(0.235 0.058 257); box-shadow: 0 9px 26px rgba(4, 18, 43, 0.24); font: 590 14px 'Manrope Variable', 'Avenir Next', sans-serif; text-decoration: none; } .ds-nav-active:focus-visible { outline: 3px solid oklch(0.72 0.16 250); outline-offset: 3px; }"
+    },
+    {
+      "name": "Planned Primary Action",
+      "kind": "button",
+      "refersTo": "app-planned-action",
+      "description": "Honest disabled treatment for campaign creation while the behavior remains planned.",
+      "html": "<button class=\"ds-planned-action\" type=\"button\" disabled><span aria-hidden=\"true\">＋</span>Create campaign<span class=\"ds-planned-label\">Next</span></button>",
+      "css": ".ds-planned-action { min-height: 43px; display: inline-flex; align-items: center; gap: 8px; padding: 0 17px; border: 0; border-radius: 12px; background: oklch(0.58 0.2 258); color: white; box-shadow: 0 9px 25px rgba(24, 88, 211, 0.23); font: 720 13px 'Manrope Variable', 'Avenir Next', sans-serif; opacity: .84; cursor: not-allowed; } .ds-planned-label { padding: 3px 6px; border-radius: 999px; background: rgba(255,255,255,.18); font-size: 9px; letter-spacing: .04em; text-transform: uppercase; } .ds-planned-action:focus-visible { outline: 3px solid oklch(0.72 0.16 250); outline-offset: 3px; }"
+    },
+    {
+      "name": "Operational Surface",
+      "kind": "card",
+      "refersTo": "app-surface",
+      "description": "White bordered work surface used for the observatory, monitor rail, and campaign ledger.",
+      "html": "<section class=\"ds-operational-surface\"><h2>Delhi dental practices</h2><p>Website redesign · Delhi, India</p></section>",
+      "css": ".ds-operational-surface { padding: 28px; border: 1px solid oklch(0.89 0.018 250); border-radius: 16px; background: oklch(1 0 0); color: oklch(0.25 0.045 257); box-shadow: 0 18px 50px rgba(28,55,96,.065); font-family: 'Manrope Variable', 'Avenir Next', sans-serif; } .ds-operational-surface h2 { margin: 0; font-size: 24px; font-weight: 675; letter-spacing: -.025em; } .ds-operational-surface p { margin: 7px 0 0; color: oklch(0.53 0.035 257); font-size: 13px; }"
+    },
+    {
+      "name": "Active Status Chip",
+      "kind": "chip",
+      "refersTo": "status-active",
+      "description": "Cobalt-family chip for active discovery or validation states.",
+      "html": "<span class=\"ds-status-active\"><span class=\"ds-status-dot\" aria-hidden=\"true\"></span>Running now</span>",
+      "css": ".ds-status-active { display: inline-flex; align-items: center; gap: 7px; padding: 5px 8px; border-radius: 999px; background: oklch(0.95 0.035 250); color: oklch(0.48 0.19 258); font: 750 12px 'Manrope Variable', 'Avenir Next', sans-serif; } .ds-status-dot { width: 8px; height: 8px; border: 2px solid white; border-radius: 50%; background: oklch(0.58 0.2 258); box-shadow: 0 0 0 3px oklch(0.95 0.035 250); }"
+    },
+    {
+      "name": "Qualified Status Chip",
+      "kind": "chip",
+      "refersTo": "status-qualified",
+      "description": "Green status reserved for genuinely completed or qualified outcomes.",
+      "html": "<span class=\"ds-status-qualified\">Completed</span>",
+      "css": ".ds-status-qualified { display: inline-flex; align-items: center; min-height: 24px; padding: 0 9px; border-radius: 999px; background: oklch(0.95 0.045 150); color: oklch(0.43 0.12 155); font: 750 11px 'Manrope Variable', 'Avenir Next', sans-serif; }"
+    },
+    {
+      "name": "Evidence Progress",
+      "kind": "custom",
+      "description": "Native progress semantics for evidence coverage and campaign movement.",
+      "html": "<label class=\"ds-progress-label\">Source coverage <strong>84%</strong><progress class=\"ds-progress\" value=\"84\" max=\"100\">84%</progress></label>",
+      "css": ".ds-progress-label { display: grid; grid-template-columns: 1fr auto; gap: 8px 12px; color: oklch(0.53 0.035 257); font: 400 12px 'Manrope Variable', 'Avenir Next', sans-serif; } .ds-progress-label strong { color: oklch(0.25 0.045 257); font-variant-numeric: tabular-nums; } .ds-progress { grid-column: 1 / -1; width: 100%; height: 5px; appearance: none; overflow: hidden; border: 0; border-radius: 999px; background: oklch(0.95 0.035 250); } .ds-progress::-webkit-progress-bar { background: oklch(0.95 0.035 250); } .ds-progress::-webkit-progress-value { border-radius: inherit; background: oklch(0.58 0.2 258); } .ds-progress::-moz-progress-bar { border-radius: inherit; background: oklch(0.58 0.2 258); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Daylight Control Room",
+    "overview": "LeadGen's authenticated application is a bright, evidence-led workspace for sustained campaign monitoring. Ice-white canvas, deep navy navigation, white operational surfaces, and precise blue-gray rules make campaign movement legible without turning the product into a generic grid of equal-weight metrics. The design should feel like an observatory: one active process dominates, while validation, evidence quality, and the campaign ledger support it.\n\nAuthentication is a separate, scoped visual world. It retains the dark, atmospheric evidence-desk treatment and its pink signal color; those choices must not leak into the authenticated application. Across both worlds, the voice remains direct, analytical, and honest about confidence.",
+    "keyCharacteristics": [
+      "Campaign movement is the dominant object in authenticated views.",
+      "White operational planes sit on an ice-blue field beside a deep navy workspace rail.",
+      "Cobalt communicates selection, active discovery, and progress; green appears only after qualification or completion.",
+      "Fine rules, restrained ambient shadow, and tabular numerals support scanning without decorative noise.",
+      "Illustrative data and planned behavior are disclosed in place rather than presented as live product capability."
+    ],
+    "rules": [
+      { "name": "The Semantic Signal Rule", "body": "Blue means active or progressing, green means genuinely qualified or completed, and red means failure or retry. Purple is excluded from the application status system.", "section": "colors" },
+      { "name": "The Scoped Worlds Rule", "body": "Dark ink, warm paper, and pink signal belong to authentication; the authenticated shell uses the daylight palette.", "section": "colors" },
+      { "name": "The Numeric Scan Rule", "body": "Counts, percentages, and campaign measures use tabular numerals so columns and changing values remain stable.", "section": "typography" },
+      { "name": "The Observatory Rule", "body": "The current campaign's movement owns the first working viewport; validation and evidence remain visibly secondary.", "section": "layout" },
+      { "name": "The Quiet Depth Rule", "body": "Resting operational surfaces read through tone and rules first; shadow supports the hierarchy but never replaces it.", "section": "elevation" },
+      { "name": "The Pill Restraint Rule", "body": "Use full pills only for compact status, badge, and progress information—not for ordinary containers or primary layout.", "section": "shapes" }
+    ],
+    "dos": [
+      "Do make campaign movement the dominant object and keep validation or evidence health in a supporting rail.",
+      "Do label illustrative campaign data clearly and disclose planned controls in the interface.",
+      "Do preserve public-evidence language and use direct terms such as ‘candidate,’ ‘qualified lead,’ ‘signal,’ and ‘evidence.’",
+      "Do use semantic markup for current navigation, current stages, tables, and progress values.",
+      "Do preserve the vertical mobile pipeline and complete stacked campaign records."
+    ],
+    "donts": [
+      "Don't build a generic dashboard from equal-weight metric cards.",
+      "Don't use green for discovery, selection, or partial progress.",
+      "Don't introduce purple into application status or progress states.",
+      "Don't carry authentication's pink signal or near-black canvas into the authenticated workspace.",
+      "Don't make planned creation, search, archive, or campaign-detail behavior appear available before it is implemented."
+    ]
+  }
+}
