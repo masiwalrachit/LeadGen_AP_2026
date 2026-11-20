@@ -27,8 +27,8 @@ const navigation = [
   { label: "Overview", href: "/dashboard", icon: LayoutDashboard, active: true },
   { label: "Campaigns", href: "/campaigns/new", icon: Radar },
   { label: "Leads", href: "/leads", icon: Target },
-  { label: "Team", href: "#team", icon: Users },
-  { label: "Settings", href: "#settings", icon: Settings },
+  { label: "Team", icon: Users, planned: true },
+  { label: "Settings", icon: Settings, planned: true },
 ];
 
 const stages = [
@@ -83,18 +83,31 @@ function Brand() {
 function Navigation() {
   return (
     <nav className={styles.navigation} aria-label="Workspace navigation">
-      {navigation.map(({ label, href, icon: Icon, active }) => (
-        <Link
-          className={active ? styles.navItemActive : styles.navItem}
-          href={href}
-          key={label}
-          aria-current={active ? "page" : undefined}
-          title={label}
-        >
-          <Icon size={19} strokeWidth={1.9} aria-hidden="true" />
-          <span>{label}</span>
-        </Link>
-      ))}
+      {navigation.map((item) => {
+        const { label, icon: Icon } = item;
+        if ("planned" in item) {
+          return (
+            <span className={styles.navItemPlanned} key={label} aria-disabled="true" title={`${label} is planned`}>
+              <Icon size={19} strokeWidth={1.9} aria-hidden="true" />
+              <span>{label}</span>
+              <span className={styles.navBadge}>Soon</span>
+            </span>
+          );
+        }
+        const active = "active" in item && item.active;
+        return (
+          <Link
+            className={active ? styles.navItemActive : styles.navItem}
+            href={item.href}
+            key={label}
+            aria-current={active ? "page" : undefined}
+            title={label}
+          >
+            <Icon size={19} strokeWidth={1.9} aria-hidden="true" />
+            <span>{label}</span>
+          </Link>
+        );
+      })}
     </nav>
   );
 }
