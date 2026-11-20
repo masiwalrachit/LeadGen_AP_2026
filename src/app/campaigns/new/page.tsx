@@ -43,8 +43,9 @@ export default function NewCampaignPage() {
     setResult(null);
     try {
       const response = await fetch("/api/qualify", { method: "POST", body: new FormData(event.currentTarget) });
-      const payload = (await response.json()) as QualificationResponse & { error?: string };
-      if (!response.ok) throw new Error(payload.error ?? "Website validation failed.");
+      // A proxy or crash page can return HTML instead of JSON; do not let that surface as a parse error.
+      const payload = (await response.json().catch(() => ({}))) as QualificationResponse & { error?: string };
+      if (!response.ok) throw new Error(payload.error ?? `Website validation failed (HTTP ${response.status}).`);
       localStorage.setItem(RESULTS_STORAGE_KEY, JSON.stringify(payload));
       setResult(payload);
     } catch (caught) {
