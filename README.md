@@ -4,7 +4,7 @@ LeadGen is an evidence-backed prospecting platform for small web-development age
 
 The product is not a generic contact scraper. Its output is a smaller list of qualified opportunities, each supported by public evidence, a confidence score, and a public business contact path.
 
-> **Project status:** authentication, workspace onboarding, CSV candidate import, deterministic website validation, and source-backed evidence persistence are implemented. Live discovery, LLM analysis, scoring, lead qualification, enrichment, and export remain planned.
+> **Project status:** authentication, code-based workspace onboarding, workspace team visibility, CSV candidate import, deterministic website validation, and source-backed evidence persistence are implemented. Live discovery, LLM analysis, scoring, lead qualification, enrichment, and export remain planned.
 
 ## Current playable vertical slice
 
@@ -115,6 +115,8 @@ The user provides:
 - Optional team information
 
 Onboarding describes the agency. It does not launch a campaign automatically.
+
+The first member may create a workspace and becomes its owner. LeadGen generates a unique join code that the owner can copy from the Team page. A new authenticated user can choose **Join with code** during onboarding; successful joins create a real workspace membership with the member role. Join codes are private workspace credentials and must not be displayed to non-owners.
 
 ### 3. Campaign creation
 
@@ -312,6 +314,7 @@ Do not add empty folders merely to match this diagram. Create a boundary when it
 | Protected application-route authorization | Implemented |
 | Onboarding | Implemented for username and workspace setup |
 | Workspace persistence | Implemented in Supabase |
+| Workspace create/join and Team page | Implemented with owner-only join-code visibility |
 | Campaign creation | Implemented for CSV candidate validation |
 | Sign out | Implemented (`POST /auth/signout`) |
 | Email/password sign-in for returning users | Not implemented; use Google sign-in until it is added |
