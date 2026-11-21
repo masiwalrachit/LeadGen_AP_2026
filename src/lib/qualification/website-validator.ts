@@ -5,16 +5,24 @@ import type { CandidateInput, Evidence, ValidatedCandidate } from "./types";
 const MAX_BODY_BYTES = 1_000_000;
 const IMPORTANT_LINK = /\b(contact|about|services?|appointments?|booking)\b/i;
 
-function isPrivateAddress(address: string): boolean {
-  if (address === "::1" || address === "0.0.0.0") return true;
-  if (address.startsWith("fc") || address.startsWith("fd") || /^fe[89ab]/i.test(address)) return true;
-  const mapped = address.match(/::ffff:(\d+\.\d+\.\d+\.\d+)$/i)?.[1];
+export function isPrivateAddress(rawAddress: string): boolean {
+  const address = rawAddress.toLowerCase();
+  if (address === "::" || address === "::1") return true;
+  if (address.startsWith("fc") || address.startsWith("fd") || /^fe[89ab]/.test(address) || address.startsWith("ff")) return true;
+  const mapped = address.match(/::ffff:(\d+\.\d+\.\d+\.\d+)$/)?.[1];
   const value = mapped ?? address;
   if (isIP(value) !== 4) return false;
-  const [a, b] = value.split(".").map(Number);
-  return a === 10 || a === 127 || a === 0 || (a === 169 && b === 254) ||
-    (a === 172 && b >= 16 && b <= 31) || (a === 192 && b === 168) ||
-    (a === 100 && b >= 64 && b <= 127);
+  const [a, b, c] = value.split(".").map(Number);
+  return (
+    a === 0 || a === 10 || a === 127 ||
+    (a === 100 && b >= 64 && b <= 127) || // carrier-grade NAT
+    (a === 169 && b === 254) ||
+    (a === 172 && b >= 16 && b <= 31) ||
+    (a === 192 && b === 0 && c === 0) || // IETF protocol assignments
+    (a === 192 && b === 168) ||
+    (a === 198 && (b === 18 || b === 19)) || // benchmarking
+    a >= 224 // multicast, reserved and broadcast
+  );
 }
 
 async function assertPublicUrl(rawUrl: string): Promise<URL> {
@@ -72,6 +80,30 @@ function extractImportantLinks(html: string, pageUrl: URL): string[] {
   return [...new Set(urls)].slice(0, 3);
 }
 
+const CONTACT_LINK = /\b(contact|enquir(?:y|ies|e)|appointments?|book(?:ing)?)\b/i;
+
+/** True only when an actual <a> link points to, or is labelled as, a contact/booking page. */
+export function hasContactLink(html: string): boolean {
+  return [...html.matchAll(/<a\b[^>]*href=["']([^"']+)["'][^>]*>([\s\S]*?)<\/a>/gi)].some((match) =>
+    CONTACT_LINK.test(`${match[1]} ${match[2].replace(/<[^>]+>/g, " ")}`),
+  );
+}
+
+/** Newest year found in a copyright notice, including the &copy; entity and ranges like 2019-2024. */
+export function newestCopyrightYear(html: string): number | null {
+  const years = [
+    ...html.matchAll(/(?:©|&copy;|&#0*169;|&#x0*a9;|copyright)[^\d]{0,30}(20\d{2})(?:\s*(?:-|–|—|&ndash;|&mdash;|to)\s*(20\d{2}))?/gi),
+  ].flatMap((match) => [Number(match[1]), match[2] ? Number(match[2]) : 0]);
+  return years.length > 0 ? Math.max(...years) : null;
+}
+
+/** HEAD is not supported by every server; fall back to GET before calling a page broken. */
+async function fetchPageStatus(link: string): Promise<number> {
+  const head = await fetchPublicPage(link, "HEAD");
+  if (![403, 405, 501].includes(head.response.status)) return head.response.status;
+  return (await fetchPublicPage(link, "GET")).response.status;
+}
+
 async function robotsBlocksValidation(website: string): Promise<{ blocked: boolean; url: string }> {
   const robotsUrl = new URL("/robots.txt", website).toString();
   try {
@@ -93,7 +125,9 @@ async function pageSpeedEvidence(candidate: CandidateInput, website: string, api
     const response = await fetch(endpoint, { signal: AbortSignal.timeout(30_000) });
     if (!response.ok) throw new Error(`PageSpeed returned ${response.status}`);
     const payload = await response.json() as { lighthouseResult?: { categories?: { performance?: { score?: number } } } };
-    const score = Math.round((payload.lighthouseResult?.categories?.performance?.score ?? 0) * 100);
+    const rawScore = payload.lighthouseResult?.categories?.performance?.score;
+    if (typeof rawScore !== "number") throw new Error("PageSpeed returned no performance score.");
+    const score = Math.round(rawScore * 100);
     return [{ id: `${candidate.id}-pagespeed`, sourceType: "pagespeed", sourceUrl: endpoint.toString().replace(apiKey, "[redacted]"), observedAt: new Date().toISOString(), validator: "pagespeed-mobile", signalCode: "mobile_performance_score", observation: `Mobile performance score: ${score}/100`, extractedValue: score }];
   } catch (error) {
     return [{ id: `${candidate.id}-pagespeed-error`, sourceType: "pagespeed", sourceUrl: website, observedAt: new Date().toISOString(), validator: "pagespeed-mobile", signalCode: "pagespeed_unavailable", observation: error instanceof Error ? error.message : "PageSpeed check failed.", extractedValue: null }];
@@ -119,18 +153,17 @@ export async function validateWebsite(candidate: CandidateInput, pageSpeedApiKey
     if (response.ok && /text\/html/i.test(response.headers.get("content-type") ?? "text/html")) {
       const mobile = /<meta\b[^>]*name=["']viewport["']/i.test(body);
       const contactForm = /<form\b/i.test(body) && /(contact|enquiry|appointment|booking)/i.test(body);
-      const contactLink = IMPORTANT_LINK.test(body);
+      const contactLink = hasContactLink(body);
       collected.push(evidence(candidate, 2, { sourceType: "website", sourceUrl, validator: "mobile-viewport", signalCode: mobile ? "mobile_viewport_present" : "mobile_viewport_missing", observation: mobile ? "A mobile viewport declaration is present." : "No mobile viewport declaration was found.", extractedValue: mobile }));
       collected.push(evidence(candidate, 3, { sourceType: "website", sourceUrl, validator: "contact-path", signalCode: contactForm ? "contact_form_present" : contactLink ? "contact_link_present" : "contact_path_missing", observation: contactForm ? "A public contact or booking form was detected." : contactLink ? "A public contact-related link was detected." : "No contact form or contact-related link was detected.", extractedValue: contactForm || contactLink }));
-      const years = [...body.matchAll(/(?:©|copyright)[^\d]{0,20}(20\d{2})/gi)].map((match) => Number(match[1]));
-      if (years.length > 0) {
-        const newestYear = Math.max(...years);
+      const newestYear = newestCopyrightYear(body);
+      if (newestYear !== null) {
         collected.push(evidence(candidate, 4, { sourceType: "website", sourceUrl, validator: "content-freshness", signalCode: newestYear < new Date().getUTCFullYear() - 2 ? "copyright_stale" : "copyright_current", observation: `Newest detected copyright year: ${newestYear}.`, extractedValue: newestYear }));
       }
       const links = extractImportantLinks(body, url);
-      const results = await Promise.allSettled(links.map((link) => fetchPublicPage(link, "HEAD")));
+      const results = await Promise.allSettled(links.map((link) => fetchPageStatus(link)));
       results.forEach((result, index) => {
-        const status = result.status === "fulfilled" ? result.value.response.status : 0;
+        const status = result.status === "fulfilled" ? result.value : 0;
         collected.push(evidence(candidate, 5 + index, { sourceType: "website", sourceUrl: links[index], validator: "important-page-status", signalCode: status >= 400 || status === 0 ? "important_page_broken" : "important_page_healthy", observation: status ? `Important page returned HTTP ${status}.` : "Important page could not be reached.", extractedValue: status }));
       });
     }

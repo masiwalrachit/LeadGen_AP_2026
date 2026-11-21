@@ -43,10 +43,14 @@ function GoogleMark() {
   );
 }
 
-export function SignupExperience() {
+export function SignupExperience({ callbackFailed = false }: { callbackFailed?: boolean }) {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
-  const [status, setStatus] = useState<FormStatus>({ kind: "idle" });
+  const [status, setStatus] = useState<FormStatus>(
+    callbackFailed
+      ? { kind: "error", message: "Sign-in could not be completed. Please try again." }
+      : { kind: "idle" },
+  );
   const configured = useMemo(() => isSupabaseConfigured(), []);
 
   async function signUpWithGoogle() {
@@ -91,7 +95,9 @@ export function SignupExperience() {
       return;
     }
 
-    const form = new FormData(event.currentTarget);
+    // React clears event.currentTarget once the handler yields at an await, so keep our own reference.
+    const formElement = event.currentTarget;
+    const form = new FormData(formElement);
     const name = String(form.get("name") ?? "").trim();
     const email = String(form.get("email") ?? "").trim();
     const password = String(form.get("password") ?? "");
@@ -129,7 +135,7 @@ export function SignupExperience() {
         kind: "success",
         message: "Check your inbox to confirm your email and finish setup.",
       });
-      event.currentTarget.reset();
+      formElement.reset();
     } catch (error) {
       setStatus({
         kind: "error",

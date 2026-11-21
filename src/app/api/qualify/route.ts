@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { parseCandidateCsv } from "@/lib/qualification/csv";
+import { CsvFormatError, parseCandidateCsv } from "@/lib/qualification/csv";
 import { validateCandidateWebsites } from "@/lib/qualification/website-validator";
 import { persistValidationRun } from "@/lib/qualification/persist";
 import { createClient } from "@/lib/supabase/server";
@@ -39,6 +39,7 @@ export async function POST(request: Request) {
       .from("workspace_members")
       .select("workspace_id")
       .eq("user_id", data.claims.sub)
+      .order("joined_at", { ascending: true })
       .limit(1)
       .maybeSingle();
     if (membershipError) {
@@ -70,7 +71,15 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "CSV files must be 1 MB or smaller." }, { status: 413 });
     }
 
-    const parsed = parseCandidateCsv(await file.text());
+    let parsed: ReturnType<typeof parseCandidateCsv>;
+    try {
+      parsed = parseCandidateCsv(await file.text());
+    } catch (error) {
+      if (error instanceof CsvFormatError) {
+        return NextResponse.json({ error: error.message }, { status: 400 });
+      }
+      throw error;
+    }
     const relevant = parsed.candidates.filter(
       (candidate) =>
         overlaps(campaignResult.data.industry, candidate.industry) &&

@@ -1133,3 +1133,18 @@
     transition: none;
   }
 }
+
+.signOutButton {
+  min-height: 34px;
+  padding: 0 12px;
+  border: 1px solid rgba(255,255,255,.22);
+  border-radius: 10px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 650;
+  cursor: pointer;
+}
+.signOutButton:hover { background: rgba(255,255,255,.1); }
+.signOutButton:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }

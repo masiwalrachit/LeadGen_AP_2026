@@ -241,6 +241,8 @@ type Evidence = {
 };
 ```
 
+The implemented shape lives in `src/lib/qualification/types.ts`: `id`, `sourceType` (`csv-source`, `website` or `pagespeed`), `sourceUrl`, `observedAt`, `validator`, `signalCode`, `observation` and `extractedValue`. It stores the validator and signal code instead of `title`, `excerpt` and `sourceRecordId` for now.
+
 Do not save only an AI summary. The original public source reference and collection time are required for traceability and revalidation.
 
 ## System architecture
@@ -288,7 +290,7 @@ src/
     auth/              Authentication helpers
     supabase/          Browser/server Supabase clients
     scoring/           Deterministic qualification logic
-    validation/        Website and evidence validators
+    qualification/     CSV import, website validators and evidence persistence (current home of validation code)
   server/
     connectors/        External source adapters
     jobs/              Background job definitions
@@ -311,9 +313,14 @@ Do not add empty folders merely to match this diagram. Create a boundary when it
 | Onboarding | Implemented for username and workspace setup |
 | Workspace persistence | Implemented in Supabase |
 | Campaign creation | Implemented for CSV candidate validation |
+| Sign out | Implemented (`POST /auth/signout`) |
+| Email/password sign-in for returning users | Not implemented; use Google sign-in until it is added |
+| Evidence storage | Implemented (source URL, timestamp, validator, signal code, observation, extracted value) |
+| Campaign states | The database currently allows only `validating`, `scoring`, `completed` and `failed`; the full state list above needs a migration before background jobs exist |
 | Source connectors | Not implemented |
 | Qualification and scoring | Not implemented |
-| Lead inbox and export | Not implemented |
+| Lead inbox page (`/leads`) | Page exists; it shows "no leads yet" because no scoring step exists |
+| Export | Not implemented |
 | Automated outreach | Intentionally out of scope |
 
 Do not write documentation or UI copy that claims a planned feature already works.

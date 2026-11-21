@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { parseCandidateCsv } from "./csv";
+import { CsvFormatError, parseCandidateCsv } from "./csv";
 
 const headers = "business_name,industry,location,website,description,source_url,observed_at,contact_path";
 
@@ -20,5 +20,35 @@ describe("parseCandidateCsv", () => {
 
     expect(result.candidates).toHaveLength(0);
     expect(result.issues[0].row).toBe(2);
+  });
+
+  it("rejects non-http(s) URLs that could become script links", () => {
+    const row = (website: string, source: string, contact: string) =>
+      `${headers}\nUnsafe Dental,Dentist,Delhi,${website},A clinic description that is long enough.,${source},2026-11-20T10:00:00+05:30,${contact}`;
+    for (const csv of [
+      row("javascript:alert(1)", "https://directory.example/a", ""),
+      row("", "javascript:alert(1)", ""),
+      row("", "data:text/html,hi", ""),
+      row("", "https://directory.example/a", "javascript:alert(1)"),
+      row("ftp://files.example", "https://directory.example/a", ""),
+    ]) {
+      const result = parseCandidateCsv(csv);
+      expect(result.candidates).toHaveLength(0);
+      expect(result.issues).toHaveLength(1);
+    }
+  });
+
+  it("still accepts http(s) URLs and an email contact path", () => {
+    const csv = `${headers}\nSafe Dental,Dentist,Delhi,http://safe.example,A clinic description that is long enough.,https://directory.example/safe,2026-11-20T10:00:00+05:30,hello@safe.example`;
+    expect(parseCandidateCsv(csv).candidates).toHaveLength(1);
+  });
+
+  it.each([
+    ["", "The CSV file is empty."],
+    ["business_name,industry\nA,B", "Missing required columns"],
+    [`${headers}\n"Unclosed,Dentist`, "unclosed quoted value"],
+  ])("throws a CsvFormatError for a broken file", (csv, message) => {
+    expect(() => parseCandidateCsv(csv)).toThrow(CsvFormatError);
+    expect(() => parseCandidateCsv(csv)).toThrow(message);
   });
 });

@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useState, type FormEvent } from "react";
 import { ArrowLeft, CheckCircle2, ExternalLink, FileCheck2, FileSpreadsheet, LoaderCircle, ShieldCheck, Waypoints } from "lucide-react";
 import type { ValidatedCandidate } from "@/lib/qualification/types";
+import { RESULTS_STORAGE_KEY } from "@/lib/qualification/stored-result";
+import { SignOutButton } from "@/components/sign-out-button";
 import styles from "../../workspace.module.css";
 
 type QualificationResponse = {
@@ -15,7 +17,6 @@ type QualificationResponse = {
   issues: Array<{ row: number; message: string }>;
 };
 
-const RESULTS_STORAGE_KEY = "leadgen.csvQualification.v1";
 
 function AppHeader() {
   return (
@@ -25,6 +26,7 @@ function AppHeader() {
         <Link href="/dashboard">Overview</Link>
         <Link href="/campaigns/new" aria-current="page">Campaign</Link>
         <Link href="/leads">Leads</Link>
+        <SignOutButton />
       </nav>
     </header>
   );
@@ -43,8 +45,9 @@ export default function NewCampaignPage() {
     setResult(null);
     try {
       const response = await fetch("/api/qualify", { method: "POST", body: new FormData(event.currentTarget) });
-      const payload = (await response.json()) as QualificationResponse & { error?: string };
-      if (!response.ok) throw new Error(payload.error ?? "Website validation failed.");
+      // A proxy or crash page can return HTML instead of JSON; do not let that surface as a parse error.
+      const payload = (await response.json().catch(() => ({}))) as QualificationResponse & { error?: string };
+      if (!response.ok) throw new Error(payload.error ?? `Website validation failed (HTTP ${response.status}).`);
       localStorage.setItem(RESULTS_STORAGE_KEY, JSON.stringify(payload));
       setResult(payload);
     } catch (caught) {

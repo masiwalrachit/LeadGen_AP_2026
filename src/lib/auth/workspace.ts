@@ -15,6 +15,7 @@ export async function getWorkspaceAccess(): Promise<WorkspaceAccess> {
     .from("workspace_members")
     .select("workspace_id")
     .eq("user_id", claimData.claims.sub)
+    .order("joined_at", { ascending: true })
     .limit(1)
     .maybeSingle();
 
