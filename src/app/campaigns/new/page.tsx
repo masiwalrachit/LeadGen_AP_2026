@@ -26,6 +26,7 @@ function AppHeader() {
         <Link href="/dashboard">Overview</Link>
         <Link href="/campaigns/new" aria-current="page">Campaign</Link>
         <Link href="/leads">Leads</Link>
+        <Link href="/team">Team</Link>
         <SignOutButton />
       </nav>
     </header>

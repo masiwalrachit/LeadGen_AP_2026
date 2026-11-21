@@ -27,7 +27,7 @@ const navigation = [
   { label: "Overview", href: "/dashboard", icon: LayoutDashboard, active: true },
   { label: "Campaigns", href: "/campaigns/new", icon: Radar },
   { label: "Leads", href: "/leads", icon: Target },
-  { label: "Team", href: "#team", icon: Users },
+  { label: "Team", href: "/team", icon: Users },
   { label: "Settings", href: "#settings", icon: Settings },
 ];
 

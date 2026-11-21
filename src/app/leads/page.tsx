@@ -44,7 +44,7 @@ export default function LeadsPage() {
     <div className={styles.page}>
       <header className={styles.topbar}>
         <Link className={styles.brand} href="/dashboard"><span className={styles.brandMark}><Waypoints size={19} /></span>LeadGen</Link>
-        <nav className={styles.topnav} aria-label="Workspace navigation"><Link href="/dashboard">Overview</Link><Link href="/campaigns/new">Campaign</Link><Link href="/leads" aria-current="page">Leads</Link><SignOutButton /></nav>
+        <nav className={styles.topnav} aria-label="Workspace navigation"><Link href="/dashboard">Overview</Link><Link href="/campaigns/new">Campaign</Link><Link href="/leads" aria-current="page">Leads</Link><Link href="/team">Team</Link><SignOutButton /></nav>
       </header>
       <main className={styles.main}>
         <Link className={styles.backLink} href="/campaigns/new"><ArrowLeft size={16} />Back to campaign</Link>

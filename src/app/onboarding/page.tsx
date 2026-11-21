@@ -81,7 +81,7 @@ export default function OnboardingPage() {
         <header className={styles.pageHeader}>
           <div>
             <h1>Finish setting up your workspace.</h1>
-            <p>Add the name people will see, then create your agency workspace or join your team.</p>
+            <p>Add the name people will see, then create a workspace or join your team.</p>
           </div>
         </header>
 
@@ -108,9 +108,9 @@ export default function OnboardingPage() {
 
               {mode === "create" ? (
                 <>
-                  <div className={styles.field}><label htmlFor="name">Agency workspace name</label><input id="name" name="name" autoComplete="organization" required /></div>
+                  <div className={styles.field}><label htmlFor="name">Workspace name</label><input id="name" name="name" autoComplete="organization" required /></div>
                   <div className={styles.field}><label htmlFor="location">Default location</label><input id="location" name="location" autoComplete="address-level2" required /></div>
-                  <div className={`${styles.field} ${styles.fieldFull}`}><label htmlFor="website">Agency website (optional)</label><input id="website" name="website" type="url" autoComplete="url" placeholder="https://agency.com" /></div>
+                  <div className={`${styles.field} ${styles.fieldFull}`}><label htmlFor="website">Workspace website (optional)</label><input id="website" name="website" type="url" autoComplete="url" placeholder="https://yourstudio.com" /></div>
                   <fieldset className={`${styles.field} ${styles.fieldFull}`}><legend className={styles.fileLabel}>Services offered</legend>{[["redesign", "Website redesign"], ["new-website", "New websites"], ["ecommerce", "E-commerce"], ["maintenance", "Maintenance"]].map(([value, label]) => <label key={value}><input name="services" type="checkbox" value={value} defaultChecked={value === "redesign"} /> {label}</label>)}</fieldset>
                 </>
               ) : (

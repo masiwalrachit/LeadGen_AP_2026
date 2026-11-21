@@ -1,0 +1,269 @@
+.teamGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 22px;
+  align-items: start;
+}
+
+.directory,
+.invitePanel {
+  border-radius: 16px;
+  background: white;
+  box-shadow: 0 18px 50px rgba(28, 55, 96, 0.065);
+}
+
+.directory {
+  overflow: hidden;
+}
+
+.sectionHeader {
+  min-height: 98px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 24px 28px;
+  border-bottom: 1px solid oklch(0.89 0.018 250);
+}
+
+.sectionHeader h2,
+.invitePanel h2 {
+  margin: 0;
+  color: oklch(0.25 0.045 257);
+  font-size: 21px;
+  letter-spacing: -0.025em;
+}
+
+.sectionHeader p,
+.invitePanel > p {
+  margin: 6px 0 0;
+  color: oklch(0.53 0.035 257);
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.memberCount {
+  min-width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  padding-inline: 10px;
+  border-radius: 999px;
+  background: oklch(0.95 0.035 250);
+  color: oklch(0.48 0.19 258);
+  font-size: 12px;
+  font-weight: 750;
+  font-variant-numeric: tabular-nums;
+}
+
+.memberList {
+  display: grid;
+}
+
+.memberRow {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 28px;
+  border-bottom: 1px solid oklch(0.89 0.018 250);
+}
+
+.memberRow:last-child {
+  border-bottom: 0;
+}
+
+.memberAvatar {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: oklch(0.95 0.035 250);
+  color: oklch(0.48 0.19 258);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.memberIdentity {
+  min-width: 0;
+  display: grid;
+  gap: 3px;
+}
+
+.memberIdentity strong,
+.memberIdentity span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.memberIdentity strong {
+  color: oklch(0.25 0.045 257);
+  font-size: 14px;
+}
+
+.memberIdentity span,
+.joinedAt {
+  color: oklch(0.53 0.035 257);
+  font-size: 12px;
+}
+
+.joinedAt,
+.roleBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.roleBadge {
+  justify-content: center;
+  padding: 6px 9px;
+  border-radius: 999px;
+  background: oklch(0.95 0.035 250);
+  color: oklch(0.48 0.19 258);
+  font-size: 12px;
+  font-weight: 750;
+}
+
+.roleBadge[data-role="owner"] {
+  background: oklch(0.95 0.045 150);
+  color: var(--green);
+}
+
+.invitePanel {
+  padding: 28px;
+}
+
+.inviteIcon {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 20px;
+  border-radius: 12px;
+  background: oklch(0.95 0.035 250);
+  color: oklch(0.48 0.19 258);
+}
+
+.inviteControl {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.inviteControl code {
+  min-width: 0;
+  min-height: 46px;
+  display: flex;
+  align-items: center;
+  padding: 0 13px;
+  overflow: auto hidden;
+  border: 1px solid oklch(0.89 0.018 250);
+  border-radius: 12px;
+  background: oklch(0.973 0.012 247);
+  color: oklch(0.235 0.058 257);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 750;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.inviteControl button {
+  min-height: 46px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 12px;
+  background: oklch(0.58 0.2 258);
+  color: white;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 750;
+  cursor: pointer;
+  box-shadow: 0 9px 25px rgba(24, 88, 211, 0.23);
+}
+
+.copyStatus {
+  grid-column: 1 / -1;
+  min-height: 17px;
+  color: oklch(0.58 0.19 25);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.securityNote,
+.memberNotice {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: 17px;
+  color: oklch(0.53 0.035 257);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.securityNote svg,
+.memberNotice svg {
+  flex: 0 0 auto;
+  margin-top: 1px;
+}
+
+.memberNotice {
+  padding: 14px;
+  border-radius: 12px;
+  background: oklch(0.95 0.035 250);
+  color: oklch(0.48 0.19 258);
+}
+
+.memberNotice p {
+  margin: 0;
+}
+
+@media (max-width: 900px) {
+  .teamGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .invitePanel {
+    order: -1;
+  }
+}
+
+@media (max-width: 640px) {
+  .sectionHeader,
+  .memberRow {
+    padding-inline: 20px;
+  }
+
+  .memberRow {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+
+  .joinedAt {
+    grid-column: 2 / -1;
+    grid-row: 2;
+  }
+
+  .invitePanel {
+    padding: 22px 20px;
+  }
+
+  .inviteControl {
+    grid-template-columns: 1fr;
+  }
+
+  .inviteControl button {
+    width: 100%;
+  }
+
+  .copyStatus {
+    grid-column: 1;
+  }
+}
