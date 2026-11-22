@@ -1,6 +1,6 @@
 ---
 name: LeadGen
-description: An evidence-led campaign control room for web-development agencies.
+description: An evidence-led lead workspace for web-development agencies.
 colors:
   auth-ink: "#0a0b0d"
   auth-paper: "#f4f2ec"
@@ -85,7 +85,7 @@ Authentication is a separate, scoped visual world. It retains the dark, atmosphe
 
 **Key Characteristics:**
 
-- Campaign movement is the dominant object in authenticated views.
+- Find Leads and Analyze Leads are distinct primary destinations; active processing remains the dominant dashboard object below those actions.
 - White operational planes sit on an ice-blue field beside a deep navy workspace rail.
 - Cobalt communicates selection, active discovery, and progress; green appears only after qualification or completion.
 - Fine rules, restrained ambient shadow, and tabular numerals support scanning without decorative noise.
@@ -193,6 +193,7 @@ Application controls use gently curved 11–13px corners, while major operationa
 ### Navigation
 
 - The desktop workspace rail is deep navy with muted light labels, 46px rows, and 12px corners. The active destination becomes a white inset surface with navy text and `aria-current="page"`.
+- Order the rail as brand, current user with sign out, workspace, then navigation. Keep Find Leads and Analyze Leads as separate sibling destinations; Team and Settings remain available.
 - On mobile, navigation moves into a compact navy masthead and disclosure menu; it does not become a second content card.
 
 ### Campaign Pipeline

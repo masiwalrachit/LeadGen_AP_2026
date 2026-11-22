@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { usernameInitial, usernameSchema } from "@/lib/auth/username";
 import { isDemoMode } from "@/lib/demo/mode";
@@ -53,6 +54,20 @@ export type WorkspaceContext = {
   userInitial: string;
 };
 
+const workspaceTeamSchema = z.object({
+  currentRole: z.enum(["owner", "member"]),
+  joinCode: z.string().nullable(),
+  members: z.array(z.object({
+    userId: z.uuid(),
+    username: usernameSchema,
+    fullName: z.string().min(1),
+    role: z.enum(["owner", "member"]),
+    joinedAt: z.string().min(1),
+  })),
+});
+
+export type WorkspaceTeam = z.infer<typeof workspaceTeamSchema>;
+
 export async function getWorkspaceContext(): Promise<WorkspaceContext> {
   const workspaceId = await requireWorkspace();
 
@@ -89,4 +104,44 @@ export async function getWorkspaceContext(): Promise<WorkspaceContext> {
     username,
     userInitial: usernameInitial(username),
   };
+}
+
+export async function getWorkspaceTeam(workspaceId: string): Promise<WorkspaceTeam> {
+  if (isDemoMode()) {
+    // Demo mode: the signed-in demo user is the only member and the owner.
+    const { user, workspace } = await readDemoSession();
+    if (!workspace) redirect("/onboarding");
+    return {
+      currentRole: "owner",
+      joinCode: workspace.joinCode || null,
+      members: [
+        {
+          userId: "00000000-0000-4000-8000-000000000001",
+          username: usernameSchema.safeParse(workspace.username).data ?? "member",
+          fullName: user?.name ?? workspace.username,
+          role: "owner",
+          joinedAt: new Date().toISOString(),
+        },
+      ],
+    };
+  }
+
+  const supabase = await createClient();
+  const { data, error } = await supabase.rpc("get_workspace_team", {
+    target_workspace: workspaceId,
+  });
+
+  if (error) {
+    if (error.code === "PGRST202" || error.message.includes("get_workspace_team")) {
+      redirect("/setup/database");
+    }
+    throw new Error(`Workspace team failed to load: ${error.message}`);
+  }
+
+  const parsed = workspaceTeamSchema.safeParse(data);
+  if (!parsed.success) {
+    throw new Error("Workspace team returned an invalid response.");
+  }
+
+  return parsed.data;
 }

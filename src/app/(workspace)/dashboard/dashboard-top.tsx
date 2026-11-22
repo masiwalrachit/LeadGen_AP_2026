@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useMemo } from "react";
-import { ArrowRight, CheckCheck, CircleDashed, FilePlus2, Inbox, X } from "lucide-react";
+import { ArrowRight, CheckCheck, CircleDashed, FileSearch, Inbox, ScanSearch, X } from "lucide-react";
 import { scoreBand } from "@/features/leads/scoring";
 import { useAllReviewStatuses, type ReviewStatus } from "@/features/leads/review-store";
 import { LinkButton } from "@/components/ui/button";
@@ -79,7 +79,12 @@ export function DashboardTop({ leads, recordsChecked, campaignsRunning, campaign
       <PageHeader
         title={toReview.length > 0 ? `${toReview.length} ${toReview.length === 1 ? "lead is" : "leads are"} waiting for your review` : "You're all caught up"}
         badge={<DemoStrip />}
-        actions={<LinkButton href="/campaigns/new" variant="primary" icon={<FilePlus2 size={18} aria-hidden="true" />}>New campaign</LinkButton>}
+        actions={
+          <>
+            <LinkButton href="/analyze-leads" variant="secondary" icon={<FileSearch size={18} aria-hidden="true" />}>Analyze leads</LinkButton>
+            <LinkButton href="/find-leads" variant="primary" icon={<ScanSearch size={18} aria-hidden="true" />}>Find leads</LinkButton>
+          </>
+        }
       />
 
       <ul className={styles.kpis} aria-label="Summary">

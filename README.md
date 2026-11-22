@@ -4,11 +4,11 @@ LeadGen is an evidence-backed prospecting platform for small web-development age
 
 The product is not a generic contact scraper. Its output is a smaller list of qualified opportunities, each supported by public evidence, a confidence score, and a public business contact path.
 
-> **Project status:** authentication, workspace onboarding, CSV candidate import, deterministic website validation, and source-backed evidence persistence are implemented. Live discovery, LLM analysis, scoring, lead qualification, enrichment, and export remain planned.
+> **Project status:** authentication, code-based workspace onboarding, workspace team visibility, the separate Find Leads and Analyze Leads surfaces, CSV candidate import, deterministic website validation, and source-backed evidence persistence are implemented. Live discovery, LLM analysis, scoring, lead qualification, enrichment, and export remain planned.
 
 ## Current playable vertical slice
 
-The `/campaigns/new` flow accepts a source-backed CSV, validates and deduplicates it, applies industry and location filters, runs deterministic public-website checks, and stores each observation with its source URL, timestamp, extracted value, and validator. Records remain candidates; this slice does not run LLM analysis or publish leads.
+The `/analyze-leads` flow accepts a source-backed CSV, validates and deduplicates it, applies industry and location filters, runs deterministic public-website checks, and stores each observation with its source URL, timestamp, extracted value, and validator. Records remain candidates; this slice does not run LLM analysis or publish leads. `/find-leads` defines the separate discovery workflow, but live source connectors are still planned.
 
 The uploaded CSV may contain illustrative records, but validation and Supabase evidence persistence are real. The UI must never describe uploaded sample records as live internet discoveries.
 
@@ -68,7 +68,9 @@ Use these names consistently in code, UI copy, database tables, and discussions.
 | **User** | A person using LeadGen on behalf of a web-development agency. |
 | **Workspace** | The agency's account, settings, members, and campaigns. |
 | **Client** | Optional: a customer for whom the agency is finding opportunities. The agency may also run campaigns for itself. |
-| **Campaign** | A saved search definition: service, target industry, location, and filters. |
+| **Lead search** | A Find Leads definition: service, target industry, location, and filters. |
+| **Lead analysis** | An Analyze Leads run over an uploaded candidate CSV. |
+| **Campaign** | The current internal persisted run record. It is not a primary user-facing navigation area. |
 | **Service playbook** | The rules and signals used to evaluate need for one service, such as redesign or e-commerce. |
 | **Candidate** | A discovered business that has not yet passed qualification. |
 | **Signal** | A machine-observed fact, such as no official site, slow mobile performance, or a recent opening. |
@@ -83,10 +85,11 @@ Do not use “lead” for every scraped record. A record is a candidate until it
 ```mermaid
 flowchart LR
     A[Create account] --> B[Set up agency workspace]
-    B --> C[Create campaign]
-    C --> D[Select service playbook]
-    D --> E[Choose industry and location]
-    E --> F[Run discovery]
+    B --> C{Choose workflow}
+    C -->|Find Leads| D[Select service, industry, and location]
+    C -->|Analyze Leads| E[Upload candidate CSV]
+    D --> F[Run discovery]
+    E --> F
     F --> G[Review progressive results]
     G --> H{Human decision}
     H -->|Save| I[Saved lead]
@@ -116,17 +119,18 @@ The user provides:
 
 Onboarding describes the agency. It does not launch a campaign automatically.
 
-### 3. Campaign creation
+The first member may create a workspace and becomes its owner. LeadGen generates a unique join code that the owner can copy from the Team page. A new authenticated user can choose **Join with code** during onboarding; successful joins create a real workspace membership with the member role. Join codes are private workspace credentials and must not be displayed to non-owners.
 
-The user chooses:
+### 3. Find Leads and Analyze Leads
 
-- Who the campaign is for: the agency or an optional client
+Find Leads starts from:
+
 - One service playbook
 - Target business type or industry
 - City, region, or country
 - Optional constraints such as business size or required evidence strength
 
-One campaign should represent one clear targeting hypothesis. Do not combine unrelated services or locations into one campaign.
+Analyze Leads starts from an existing candidate CSV plus the service, industry, and location used to evaluate it. One run should represent one clear targeting hypothesis. Do not combine unrelated services or locations into one run.
 
 ### 4. Discovery and qualification
 
@@ -146,7 +150,7 @@ flowchart TD
     J --> K[Calculate explainable score]
     K --> L{Qualification threshold met?}
     L -->|No| M[Candidate remains unqualified]
-    L -->|Yes| N[Publish to lead inbox]
+    L -->|Yes| N[Show qualified result in the active workflow]
 ```
 
 Processing order matters:
@@ -257,7 +261,7 @@ flowchart LR
     CONNECTORS --> SOURCES[Places / Search / Websites / RSS]
     JOBS --> VALIDATORS[Deterministic validators]
     VALIDATORS --> EVIDENCE[Source-backed evidence]
-    EVIDENCE -. planned .-> LLM[FreeLLMAPI assessment]
+    EVIDENCE -. planned .-> LLM[Grok assessment via xAI API]
     JOBS --> DB
     DB --> UI
 ```
@@ -270,7 +274,7 @@ flowchart LR
 - **Trigger.dev:** asynchronous discovery, validation, retries, and progress events
 - **Source adapters:** one bounded module per external source
 - **Deterministic validators:** website existence, HTTP status, performance, metadata, contact paths, and playbook rules
-- **FreeLLMAPI:** planned local OpenAI-compatible routing for later evidence interpretation
+- **Grok/xAI:** direct, server-only structured assessment for later evidence interpretation
 
 Never call external discovery APIs or privileged Supabase operations directly from a client component.
 
@@ -284,7 +288,7 @@ src/
   components/          Reusable UI components
   features/
     campaigns/         Campaign domain and UI
-    leads/             Lead inbox, details, and review actions
+    leads/             Qualification result details and review actions
     onboarding/        Workspace setup
   lib/
     auth/              Authentication helpers
@@ -312,14 +316,17 @@ Do not add empty folders merely to match this diagram. Create a boundary when it
 | Protected application-route authorization | Implemented |
 | Onboarding | Implemented for username and workspace setup |
 | Workspace persistence | Implemented in Supabase |
-| Campaign creation | Implemented for CSV candidate validation |
+| Workspace create/join and Team page | Implemented with owner-only join-code visibility |
+| Find Leads | Surface implemented; live discovery connectors remain planned |
+| Analyze Leads | Implemented for CSV candidate validation |
 | Sign out | Implemented (`POST /auth/signout`) |
 | Email/password sign-in for returning users | Not implemented; use Google sign-in until it is added |
 | Evidence storage | Implemented (source URL, timestamp, validator, signal code, observation, extracted value) |
 | Campaign states | The database currently allows only `validating`, `scoring`, `completed` and `failed`; the full state list above needs a migration before background jobs exist |
 | Source connectors | Not implemented |
+| Grok structured-assessment adapter | Implemented and tested; not yet invoked by the qualification flow |
 | Qualification and scoring | Not implemented |
-| Lead inbox page (`/leads`) | Page exists; it shows "no leads yet" because no scoring step exists |
+| Separate qualified-leads page | Removed from navigation; legacy `/leads` redirects to Analyze Leads |
 | Export | Not implemented |
 | Automated outreach | Intentionally out of scope |
 
@@ -333,7 +340,7 @@ Do not write documentation or UI copy that claims a planned feature already work
 - Trigger.dev for background jobs
 - Brave Search, Google Places, public websites, sitemaps, and RSS for discovery
 - PageSpeed Insights for website validation
-- FreeLLMAPI JSON output is planned for later-stage assessment
+- Direct Grok JSON-schema output through the xAI API is planned for later-stage assessment
 - Vitest, ESLint, TypeScript, and GitHub Actions for verification
 
 ## Local development
@@ -354,7 +361,11 @@ Environment variables:
 NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=your-publishable-key
 PAGESPEED_API_KEY=your-optional-pagespeed-key
+XAI_API_KEY=your-server-only-xai-key
+XAI_MODEL=grok-4.7
 ```
+
+`XAI_API_KEY` must remain server-only. The application uses the configured Grok model for structured evidence interpretation; Grok cannot create evidence or own the final lead score.
 
 Never commit `.env.local`, API keys, OAuth secrets, service-role keys, production data, or customer exports.
 

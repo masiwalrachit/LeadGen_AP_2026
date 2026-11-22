@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { FilePlus2 } from "lucide-react";
+import { FileSearch } from "lucide-react";
 import { DEMO_CAMPAIGNS, DEMO_RECORDS } from "@/features/demo/data";
 import { buildBrief } from "@/features/leads/brief";
 import { LinkButton } from "@/components/ui/button";
@@ -31,7 +31,7 @@ export default function LeadsPage() {
       <PageHeader
         title="Leads"
         badge={<DemoStrip />}
-        actions={<LinkButton href="/campaigns/new" variant="primary" icon={<FilePlus2 size={18} aria-hidden="true" />}>New campaign</LinkButton>}
+        actions={<LinkButton href="/analyze-leads" variant="primary" icon={<FileSearch size={18} aria-hidden="true" />}>Analyze leads</LinkButton>}
       />
       <LeadInbox rows={rows} campaigns={DEMO_CAMPAIGNS.map(({ id, name }) => ({ id, name }))} />
     </>

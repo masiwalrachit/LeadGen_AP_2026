@@ -23,7 +23,7 @@ function validate(mode: Mode, form: FormData): Errors {
     if (String(form.get("name") ?? "").trim().length < 2) errors.name = "Name your workspace (at least 2 characters).";
     if (String(form.get("location") ?? "").trim().length < 2) errors.location = "Add the city or region you usually target.";
     const website = String(form.get("website") ?? "").trim();
-    if (website && !/^https?:\/\/[^\s.]+\.[^\s]+$/i.test(website)) errors.website = "Use a full address like https://agency.com, or leave it empty.";
+    if (website && !/^https?:\/\/[^\s.]+\.[^\s]+$/i.test(website)) errors.website = "Use a full address like https://yourstudio.com, or leave it empty.";
     if (form.getAll("services").length === 0) errors.services = "Pick at least one service you sell.";
   } else if (String(form.get("code") ?? "").trim().length < 5) {
     errors.code = "Paste the join code your teammate shared (like LG-AB12CD34).";
@@ -158,7 +158,7 @@ export default function OnboardingPage() {
                 <>
                   <div className={styles.row}>
                     <div className={styles.field}>
-                      <label htmlFor="name">Agency name</label>
+                      <label htmlFor="name">Workspace name</label>
                       <input id="name" name="name" autoComplete="organization" placeholder="Northwind Studio" aria-invalid={Boolean(errors.name)} aria-describedby={errors.name ? "name-error" : undefined} />
                       {fieldError("name")}
                     </div>
@@ -170,7 +170,7 @@ export default function OnboardingPage() {
                   </div>
                   <div className={styles.field}>
                     <label htmlFor="website">Website <span className={styles.optional}>(optional)</span></label>
-                    <input id="website" name="website" type="url" autoComplete="url" placeholder="https://agency.com" aria-invalid={Boolean(errors.website)} aria-describedby={errors.website ? "website-error" : undefined} />
+                    <input id="website" name="website" type="url" autoComplete="url" placeholder="https://yourstudio.com" aria-invalid={Boolean(errors.website)} aria-describedby={errors.website ? "website-error" : undefined} />
                     {fieldError("website")}
                   </div>
                   <fieldset className={styles.services} aria-describedby={errors.services ? "services-error" : undefined}>

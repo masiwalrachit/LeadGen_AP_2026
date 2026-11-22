@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { FilePlus2, Inbox, LayoutDashboard, Menu, Settings, Users, X } from "lucide-react";
+import { FileSearch, Inbox, LayoutDashboard, Menu, ScanSearch, Settings, Users, X } from "lucide-react";
 import styles from "./shell.module.css";
 
 type NavItem = { label: string; href?: string; icon: typeof Inbox; match?: string; count?: number };
@@ -11,9 +11,10 @@ type NavItem = { label: string; href?: string; icon: typeof Inbox; match?: strin
 function navItems(leadCount: number): NavItem[] {
   return [
     { label: "Overview", href: "/dashboard", icon: LayoutDashboard },
-    { label: "New campaign", href: "/campaigns/new", icon: FilePlus2, match: "/campaigns" },
+    { label: "Find leads", href: "/find-leads", icon: ScanSearch },
+    { label: "Analyze leads", href: "/analyze-leads", icon: FileSearch },
     { label: "Leads", href: "/leads", icon: Inbox, count: leadCount },
-    { label: "Team", icon: Users },
+    { label: "Team", href: "/team", icon: Users },
     { label: "Settings", icon: Settings },
   ];
 }

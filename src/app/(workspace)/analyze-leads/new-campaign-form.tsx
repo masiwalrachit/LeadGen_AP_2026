@@ -82,7 +82,7 @@ export function NewCampaignForm({ demo }: { demo: boolean }) {
     if (!file.name.toLowerCase().endsWith(".csv")) return setError("Upload a CSV file.");
     if (file.size > MAX_FILE_BYTES) return setError("CSV files must be 1 MB or smaller.");
     if (campaign.name.length < 3 || campaign.industry.length < 2 || campaign.location.length < 2) {
-      return setError("Complete every campaign field before running validation.");
+      return setError("Complete every analysis field before running validation.");
     }
 
     const pause = (ms: number) => wait(calm() ? 0 : ms);
@@ -230,7 +230,7 @@ export function NewCampaignForm({ demo }: { demo: boolean }) {
 
       <div className={styles.fields}>
         <div className={`${styles.field} ${styles.wide}`}>
-          <label htmlFor="name">Campaign name</label>
+          <label htmlFor="name">Analysis name</label>
           <input id="name" name="name" defaultValue="Delhi dental opportunities" disabled={running} />
         </div>
         <div className={styles.field}>
