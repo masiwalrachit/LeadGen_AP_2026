@@ -6,12 +6,12 @@ import {
   CircleDot,
   Clock3,
   Database,
+  FileSearch,
   LayoutDashboard,
   Menu,
   PanelLeftClose,
   PanelLeftOpen,
-  Plus,
-  Radar,
+  ScanSearch,
   Search,
   Settings,
   Sparkles,
@@ -25,8 +25,8 @@ import styles from "./dashboard.module.css";
 
 const navigation = [
   { label: "Overview", href: "/dashboard", icon: LayoutDashboard, active: true },
-  { label: "Campaigns", href: "/campaigns/new", icon: Radar },
-  { label: "Leads", href: "/leads", icon: Target },
+  { label: "Find leads", href: "/find-leads", icon: ScanSearch },
+  { label: "Analyze leads", href: "/analyze-leads", icon: FileSearch },
   { label: "Team", href: "/team", icon: Users },
   { label: "Settings", href: "#settings", icon: Settings },
 ];
@@ -36,7 +36,7 @@ const stages = [
   { label: "Discovering", detail: "Candidates", value: "284", state: "done" },
   { label: "Validating", detail: "Checked", value: "146", state: "active" },
   { label: "Scoring", detail: "Ready", value: "31", state: "next" },
-  { label: "Completed", detail: "Qualified leads", value: "12", state: "next" },
+  { label: "Completed", detail: "Analyzed records", value: "12", state: "next" },
 ];
 
 const campaigns = [
@@ -46,7 +46,6 @@ const campaigns = [
     stage: "Validating",
     progress: 48,
     candidates: 284,
-    leads: 12,
     tone: "active",
   },
   {
@@ -55,7 +54,6 @@ const campaigns = [
     stage: "Scoring",
     progress: 72,
     candidates: 163,
-    leads: 8,
     tone: "scoring",
   },
   {
@@ -64,7 +62,6 @@ const campaigns = [
     stage: "Completed",
     progress: 100,
     candidates: 208,
-    leads: 19,
     tone: "complete",
   },
 ];
@@ -117,7 +114,7 @@ function WorkspaceSelector({ workspaceName }: { workspaceName: string }) {
 
 function UserSummary({ username, userInitial }: { username: string; userInitial: string }) {
   return (
-    <div className={styles.sidebarFoot}>
+    <div className={styles.userSummary}>
       <span className={styles.userAvatar} aria-hidden="true">{userInitial}</span>
       <div>
         <strong>@{username}</strong>
@@ -146,9 +143,9 @@ function Sidebar({ username, userInitial, workspaceName }: { username: string; u
         <PanelLeftOpen className={styles.expandIcon} size={17} aria-hidden="true" />
       </label>
       <Brand />
+      <UserSummary username={username} userInitial={userInitial} />
       <WorkspaceSelector workspaceName={workspaceName} />
       <Navigation />
-      <UserSummary username={username} userInitial={userInitial} />
     </aside>
   );
 }
@@ -162,9 +159,9 @@ function MobileNavigation({ username, userInitial, workspaceName }: { username: 
           <Menu size={22} aria-hidden="true" />
         </summary>
         <div className={styles.mobileMenuPanel}>
+          <UserSummary username={username} userInitial={userInitial} />
           <WorkspaceSelector workspaceName={workspaceName} />
           <Navigation />
-          <UserSummary username={username} userInitial={userInitial} />
         </div>
       </details>
     </div>
@@ -185,10 +182,10 @@ function CampaignStageMap() {
           </div>
           <p>Website redesign · Delhi, India</p>
         </div>
-        <span className={styles.plannedText}>Campaign details planned</span>
+        <span className={styles.plannedText}>Search details planned</span>
       </header>
 
-      <div className={styles.stageMap} role="list" aria-label="Campaign processing stages">
+      <div className={styles.stageMap} role="list" aria-label="Lead search processing stages">
         <div className={styles.stageTrack} aria-hidden="true">
           <span />
         </div>
@@ -230,7 +227,7 @@ function CampaignStageMap() {
 
 function MonitorRail() {
   return (
-    <aside className={styles.monitorRail} aria-label="Campaign monitoring">
+    <aside className={styles.monitorRail} aria-label="Lead search monitoring">
       <section className={styles.monitorSection}>
         <div className={styles.sectionHeading}>
           <div>
@@ -301,8 +298,8 @@ function CampaignTable() {
     <section className={styles.campaigns} id="campaigns" aria-labelledby="campaigns-title">
       <header className={styles.campaignsHeader}>
         <div>
-          <h2 id="campaigns-title">All campaigns</h2>
-          <p>Monitor progress and open work that needs attention.</p>
+          <h2 id="campaigns-title">Recent lead searches</h2>
+          <p>Monitor discovery and analysis work that needs attention.</p>
         </div>
         <span className={styles.plannedText}>Archive planned</span>
       </header>
@@ -311,17 +308,16 @@ function CampaignTable() {
         <table>
           <thead>
             <tr>
-              <th scope="col">Campaign</th>
+              <th scope="col">Lead search</th>
               <th scope="col">Stage</th>
               <th scope="col">Progress</th>
               <th scope="col">Candidates</th>
-              <th scope="col">Qualified leads</th>
             </tr>
           </thead>
           <tbody>
             {campaigns.map((campaign) => (
               <tr key={campaign.name}>
-                <td data-label="Campaign">
+                <td data-label="Lead search">
                   <strong>{campaign.name}</strong>
                   <span>{campaign.service}</span>
                 </td>
@@ -333,7 +329,6 @@ function CampaignTable() {
                   </div>
                 </td>
                 <td data-label="Candidates">{campaign.candidates}</td>
-                <td data-label="Qualified leads">{campaign.leads}</td>
               </tr>
             ))}
           </tbody>
@@ -354,20 +349,21 @@ export default async function DashboardPage() {
       <main className={styles.main}>
         <div className={styles.previewBanner} role="note">
           <Sparkles size={16} aria-hidden="true" />
-          <span><strong>Preview mode.</strong> This dashboard uses illustrative campaign data.</span>
+          <span><strong>Preview mode.</strong> Processing data shown below is illustrative.</span>
         </div>
         <header className={styles.pageHeader}>
           <div>
-            <h1>Campaign observatory</h1>
-            <p>Track discovery and qualification across your workspace.</p>
+            <h1>Lead workspace</h1>
+            <p>Find new prospects or analyze a lead list you already have.</p>
           </div>
           <div className={styles.headerActions}>
-            <button className={styles.searchButton} type="button" aria-label="Search campaigns (planned)" title="Search is planned" disabled>
-              <Search size={19} aria-hidden="true" />
-            </button>
-            <Link className={styles.primaryAction} href="/campaigns/new">
-              <Plus size={18} strokeWidth={2.4} aria-hidden="true" />
-              Create campaign
+            <Link className={styles.secondaryAction} href="/analyze-leads">
+              <FileSearch size={18} strokeWidth={2.2} aria-hidden="true" />
+              Analyze leads
+            </Link>
+            <Link className={styles.primaryAction} href="/find-leads">
+              <ScanSearch size={18} strokeWidth={2.2} aria-hidden="true" />
+              Find leads
             </Link>
           </div>
         </header>

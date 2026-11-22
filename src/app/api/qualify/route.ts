@@ -60,7 +60,7 @@ export async function POST(request: Request) {
       location: formData.get("location"),
     });
     if (!campaignResult.success) {
-      return NextResponse.json({ error: "Complete every campaign field before running qualification." }, { status: 400 });
+      return NextResponse.json({ error: "Complete every analysis field before running validation." }, { status: 400 });
     }
 
     const file = formData.get("file");
@@ -89,7 +89,7 @@ export async function POST(request: Request) {
     if (relevant.length === 0) {
       return NextResponse.json(
         {
-          error: "No valid candidates matched the campaign industry and location.",
+          error: "No valid candidates matched the selected industry and location.",
           stats: {
             rowsAccepted: parsed.candidates.length,
             duplicatesRemoved: parsed.duplicateCount,

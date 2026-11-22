@@ -100,7 +100,7 @@
 .sidebar:has(.sidebarToggleInput:checked) .workspaceControl > strong,
 .sidebar:has(.sidebarToggleInput:checked) .navItem > span,
 .sidebar:has(.sidebarToggleInput:checked) .navItemActive > span,
-.sidebar:has(.sidebarToggleInput:checked) .sidebarFoot {
+.sidebar:has(.sidebarToggleInput:checked) .userSummary {
   display: none;
 }
 
@@ -233,14 +233,16 @@
   text-align: center;
 }
 
-.sidebarFoot {
+.userSummary {
   display: grid;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
   gap: 11px;
-  margin-top: auto;
-  padding: 18px 3px 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  margin-top: 24px;
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 13px;
+  background: rgba(255, 255, 255, 0.075);
 }
 
 .userAvatar {
@@ -255,17 +257,17 @@
   font-weight: 800;
 }
 
-.sidebarFoot > div:nth-child(2) {
+.userSummary > div:nth-child(2) {
   display: grid;
   gap: 2px;
 }
 
-.sidebarFoot strong {
+.userSummary strong {
   font-size: 12px;
   font-weight: 700;
 }
 
-.sidebarFoot div > span:last-child {
+.userSummary div > span:last-child {
   color: oklch(0.7 0.025 250);
   font-size: 10px;
 }
@@ -326,13 +328,15 @@
 }
 
 .searchButton,
-.primaryAction {
+.primaryAction,
+.secondaryAction {
   border: 0;
   cursor: pointer;
 }
 
 .searchButton:disabled,
-.primaryAction:disabled {
+.primaryAction:disabled,
+.secondaryAction:disabled {
   cursor: not-allowed;
 }
 
@@ -347,25 +351,41 @@
   color: var(--ink);
 }
 
-.primaryAction {
+.primaryAction,
+.secondaryAction {
   min-height: 43px;
   display: inline-flex;
   align-items: center;
   gap: 8px;
   padding: 0 17px;
   border-radius: 12px;
-  background: var(--blue);
-  color: white;
   font-size: 13px;
   font-weight: 720;
   text-decoration: none;
+}
+
+.primaryAction {
+  background: var(--blue);
+  color: white;
   box-shadow: 0 9px 25px rgba(24, 88, 211, 0.23);
   transition: background-color 150ms ease-out, transform 150ms ease-out;
+}
+
+.secondaryAction {
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--navy);
+  transition: border-color 150ms ease-out, background-color 150ms ease-out;
 }
 
 .primaryAction:hover {
   background: var(--blue-deep);
   transform: translateY(-1px);
+}
+
+.secondaryAction:hover {
+  border-color: oklch(0.75 0.065 250);
+  background: var(--blue-soft);
 }
 
 .primaryAction:disabled {
@@ -936,8 +956,12 @@
     box-shadow: 0 22px 50px rgba(4, 18, 43, 0.35);
   }
 
-  .mobileMenuPanel .workspaceSelector {
+  .mobileMenuPanel .userSummary {
     margin-top: 0;
+  }
+
+  .mobileMenuPanel .workspaceSelector {
+    margin-top: 18px;
   }
 
   .main {
@@ -961,7 +985,8 @@
     display: none;
   }
 
-  .primaryAction {
+  .primaryAction,
+  .secondaryAction {
     width: 43px;
     justify-content: center;
     padding: 0;
@@ -1129,20 +1154,21 @@
 
 @media (prefers-reduced-motion: reduce) {
   .navItem,
-  .primaryAction {
+  .primaryAction,
+  .secondaryAction {
     transition: none;
   }
 }
 
 .signOutButton {
-  min-height: 34px;
-  padding: 0 12px;
-  border: 1px solid rgba(255,255,255,.22);
-  border-radius: 10px;
+  min-height: 32px;
+  padding: 0 9px;
+  border: 0;
+  border-radius: 9px;
   background: transparent;
-  color: inherit;
+  color: oklch(0.82 0.022 250);
   font: inherit;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 650;
   cursor: pointer;
 }

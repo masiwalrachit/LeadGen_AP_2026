@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowLeft, CalendarDays, Crown, LockKeyhole, ShieldCheck, UserRound, Users, Waypoints } from "lucide-react";
 import { getWorkspaceContext, getWorkspaceTeam } from "@/lib/auth/workspace";
+import { SignOutButton } from "@/components/sign-out-button";
 import workspaceStyles from "../workspace.module.css";
 import InviteCode from "./invite-code";
 import styles from "./team.module.css";
@@ -38,9 +39,10 @@ export default async function TeamPage() {
         </Link>
         <nav className={workspaceStyles.topnav} aria-label="Workspace navigation">
           <Link href="/dashboard">Overview</Link>
-          <Link href="/campaigns/new">Campaign</Link>
-          <Link href="/leads">Leads</Link>
+          <Link href="/find-leads">Find leads</Link>
+          <Link href="/analyze-leads">Analyze leads</Link>
           <Link href="/team" aria-current="page">Team</Link>
+          <SignOutButton />
         </nav>
       </header>
 
@@ -50,7 +52,7 @@ export default async function TeamPage() {
         <header className={workspaceStyles.pageHeader}>
           <div>
             <h1>Work together in {workspace.workspaceName}.</h1>
-            <p>Share one workspace, run campaigns together, and keep every candidate and evidence record inside the same team boundary.</p>
+            <p>Share one workspace, find and analyze leads together, and keep every candidate and evidence record inside the same team boundary.</p>
           </div>
           <div className={workspaceStyles.trustNote}>
             <ShieldCheck size={18} aria-hidden="true" />
@@ -63,7 +65,7 @@ export default async function TeamPage() {
             <header className={styles.sectionHeader}>
               <div>
                 <h2 id="members-title">Workspace members</h2>
-                <p>People who can access this workspace&apos;s campaigns and evidence.</p>
+                <p>People who can access this workspace&apos;s lead searches, analyses, and evidence.</p>
               </div>
               <span className={styles.memberCount}>{team.members.length}</span>
             </header>

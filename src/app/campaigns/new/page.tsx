@@ -24,8 +24,8 @@ function AppHeader() {
       <Link className={styles.brand} href="/dashboard"><span className={styles.brandMark}><Waypoints size={19} /></span>LeadGen</Link>
       <nav className={styles.topnav} aria-label="Workspace navigation">
         <Link href="/dashboard">Overview</Link>
-        <Link href="/campaigns/new" aria-current="page">Campaign</Link>
-        <Link href="/leads">Leads</Link>
+        <Link href="/find-leads">Find leads</Link>
+        <Link href="/analyze-leads" aria-current="page">Analyze leads</Link>
         <Link href="/team">Team</Link>
         <SignOutButton />
       </nav>
@@ -65,19 +65,19 @@ export default function NewCampaignPage() {
         <Link className={styles.backLink} href="/dashboard"><ArrowLeft size={16} />Back to overview</Link>
         <header className={styles.pageHeader}>
           <div>
-            <h1>Turn a candidate file into inspectable evidence.</h1>
-            <p>Define one targeting hypothesis, upload source-backed candidate records, and run deterministic website checks before any future lead analysis.</p>
+            <h1>Analyze the lead list you already have.</h1>
+            <p>Upload a source-backed CSV, remove unusable records, and turn public website checks into inspectable evidence.</p>
           </div>
           <div className={styles.trustNote}><ShieldCheck size={18} /><span>Lead analysis is paused. This flow validates candidate websites and stores evidence without creating leads or scores.</span></div>
         </header>
 
         <div className={styles.campaignGrid}>
           <section className={styles.surface}>
-            <h2>Create campaign</h2>
-            <p>One service, one industry, and one location keeps the recommendation explainable.</p>
+            <h2>Analyze leads</h2>
+            <p>Give this analysis a name and define the service, industry, and location it should evaluate.</p>
             <form className={styles.form} onSubmit={handleSubmit}>
               <div className={styles.fieldGrid}>
-                <div className={`${styles.field} ${styles.fieldFull}`}><label htmlFor="name">Campaign name</label><input id="name" name="name" defaultValue="Delhi dental website opportunities" required /></div>
+                <div className={`${styles.field} ${styles.fieldFull}`}><label htmlFor="name">Analysis name</label><input id="name" name="name" defaultValue="Delhi dental website opportunities" required /></div>
                 <div className={styles.field}><label htmlFor="service">Service playbook</label><select id="service" name="service" defaultValue="redesign"><option value="new-website">New website development</option><option value="redesign">Website redesign</option><option value="ecommerce">E-commerce development</option><option value="maintenance">Maintenance and performance</option></select></div>
                 <div className={styles.field}><label htmlFor="industry">Target industry</label><input id="industry" name="industry" defaultValue="Dentist" required /></div>
                 <div className={`${styles.field} ${styles.fieldFull}`}><label htmlFor="location">Target location</label><input id="location" name="location" defaultValue="Delhi" required /></div>
@@ -105,7 +105,7 @@ export default function NewCampaignPage() {
             <p>No row becomes a lead merely because it exists in the file.</p>
             <ol className={styles.processList}>
               <li><span className={styles.processIcon}><FileCheck2 size={15} /></span><div><strong>Validate and deduplicate</strong><span>Malformed evidence and repeated domains are removed before website requests.</span></div></li>
-              <li><span className={styles.processIcon}><ShieldCheck size={15} /></span><div><strong>Apply deterministic filters</strong><span>Industry and location must match the campaign.</span></div></li>
+              <li><span className={styles.processIcon}><ShieldCheck size={15} /></span><div><strong>Apply deterministic filters</strong><span>Industry and location must match this analysis.</span></div></li>
               <li><span className={styles.processIcon}><ShieldCheck size={15} /></span><div><strong>Validate public websites</strong><span>HTTP, mobile viewport, contact paths, freshness, and important pages become inspectable evidence.</span></div></li>
               <li><span className={styles.processIcon}><Waypoints size={15} /></span><div><strong>Store evidence</strong><span>Every observation retains its source URL, timestamp, extracted value, and validator.</span></div></li>
             </ol>
