@@ -1,12 +1,22 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { usernameInitial, usernameSchema } from "@/lib/auth/username";
+import { isDemoMode } from "@/lib/demo/mode";
+import { readDemoSession } from "@/lib/demo/session";
+import { DEMO_WORKSPACE_ID } from "@/lib/demo/session-shared";
 
 export type WorkspaceAccess =
   | { kind: "authenticated"; workspaceId: string | null }
   | { kind: "database-missing" };
 
 export async function getWorkspaceAccess(): Promise<WorkspaceAccess> {
+  if (isDemoMode()) {
+    // Demo mode (no Supabase configured): the demo session cookie stands in for sign-in.
+    const session = await readDemoSession();
+    if (!session.user) redirect("/signup");
+    return { kind: "authenticated", workspaceId: session.workspace ? DEMO_WORKSPACE_ID : null };
+  }
+
   const supabase = await createClient();
   const { data: claimData } = await supabase.auth.getClaims();
   if (!claimData?.claims?.sub) redirect("/signup");
@@ -45,6 +55,14 @@ export type WorkspaceContext = {
 
 export async function getWorkspaceContext(): Promise<WorkspaceContext> {
   const workspaceId = await requireWorkspace();
+
+  if (isDemoMode()) {
+    const { workspace } = await readDemoSession();
+    if (!workspace) redirect("/onboarding");
+    const username = usernameSchema.safeParse(workspace.username).data ?? "member";
+    return { workspaceId, workspaceName: workspace.name, username, userInitial: usernameInitial(username) };
+  }
+
   const supabase = await createClient();
   const { data: claimData } = await supabase.auth.getClaims();
   const userId = claimData?.claims?.sub;
