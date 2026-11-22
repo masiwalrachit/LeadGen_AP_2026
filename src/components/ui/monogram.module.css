@@ -1,0 +1,32 @@
+.tile {
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  border: 1px solid color-mix(in srgb, var(--tint) 35%, transparent);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--tint) 16%, var(--surface));
+  color: var(--ink);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+
+.blue {
+  --tint: #3a5bd9;
+}
+
+.sand {
+  --tint: #a8791c;
+}
+
+.teal {
+  --tint: #1f8a7a;
+}
+
+.plum {
+  --tint: #8b4a9c;
+}
+
+.rust {
+  --tint: #c05a2c;
+}

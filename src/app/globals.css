@@ -1,65 +1,161 @@
 @import "tailwindcss";
+@import "./tokens.css";
 
-:root {
-  --ink-950: #0a0b0d;
-  --ink-900: #111318;
-  --ink-800: #1b1e25;
-  --paper: #f4f2ec;
-  --paper-muted: #aaa69b;
-  --line: rgba(244, 242, 236, 0.14);
-  --signal: #e763a9;
-  --signal-strong: #ff8fca;
-  --verified: #c9f06b;
-  --danger: #ff897d;
+/* Expose the tokens to Tailwind utilities (bg-canvas, text-ink-2, font-serif, ...). */
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-sunken: var(--sunken);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-line: var(--line);
+  --color-primary: var(--primary);
+  --color-success: var(--success);
+  --color-danger: var(--danger);
+  --font-serif: var(--font-serif);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
 }
 
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
 html {
-  background: var(--ink-950);
+  background: var(--canvas);
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  min-height: 100vh;
+  min-height: 100dvh;
   margin: 0;
-  background: var(--ink-950);
-  color: var(--paper);
-  font-family: "Manrope Variable", "Avenir Next", sans-serif;
+  background:
+    radial-gradient(60rem 28rem at 100% -8%, color-mix(in srgb, var(--primary-soft) 70%, transparent), transparent 70%),
+    var(--canvas);
+  background-attachment: fixed;
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: var(--leading-body);
+  -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
-button,
-input {
-  font: inherit;
+h1,
+h2,
+h3,
+h4,
+p {
+  margin: 0;
 }
 
 button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
 a {
-  -webkit-tap-highlight-color: transparent;
+  color: inherit;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
 }
 
 ::selection {
-  background: var(--signal);
-  color: var(--ink-950);
+  background: var(--primary-soft);
+  color: var(--ink);
 }
 
 :focus-visible {
-  outline: 3px solid var(--signal-strong);
-  outline-offset: 3px;
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
 }
 
-::-webkit-scrollbar {
-  width: 10px;
+/* Tabular numbers everywhere numbers are compared. */
+.tabular {
+  font-variant-numeric: tabular-nums;
 }
 
-::-webkit-scrollbar-track {
-  background: var(--ink-950);
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
 }
 
-::-webkit-scrollbar-thumb {
-  background: #383b43;
-  border: 2px solid var(--ink-950);
-  border-radius: 99px;
+.skip-link {
+  position: absolute;
+  left: var(--space-4);
+  top: -100px;
+  z-index: 100;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--primary);
+  color: var(--on-primary);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.skip-link:focus-visible {
+  top: var(--space-4);
+}
+
+/* Page entrance: content rises in gently. Removed entirely for reduced motion. */
+@keyframes enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.enter {
+  animation: enter var(--duration-slow) var(--ease-out) both;
+}
+
+.enter-delay-1 {
+  animation-delay: 60ms;
+}
+
+.enter-delay-2 {
+  animation-delay: 120ms;
+}
+
+.enter-delay-3 {
+  animation-delay: 180ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+  }
 }
