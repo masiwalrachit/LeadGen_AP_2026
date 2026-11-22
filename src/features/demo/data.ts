@@ -5,10 +5,11 @@
  * src/lib/qualification/website-validator.ts, so the demo shows exactly what real evidence looks like.
  * Final scores are computed from the five dimensions by computeFinalScore (demo weights), never typed in.
  */
-import type { Evidence, QualifiedCandidate, ScoreDimension } from "@/lib/qualification/types";
 import type { ServiceCode } from "@/features/campaigns/services";
-import { buildBrief } from "@/features/leads/brief";
-import { DEMO_SCORING, computeFinalScore } from "@/features/leads/scoring";
+import { DISCOVERY_CAMPAIGN, DISCOVERY_RECORDS } from "@/features/discovery/records";
+import { makeRecord, type DemoRecord } from "./record";
+
+export type { DemoRecord } from "./record";
 
 export type CampaignStatus = "validating" | "scoring" | "completed" | "failed";
 
@@ -30,11 +31,8 @@ export type DemoCampaign = {
   problem?: string;
 };
 
-export type DemoRecord = QualifiedCandidate & { campaignId: string };
-
-const CHECKED_AT = "2026-11-21T04:12:00+05:30";
-
 export const DEMO_CAMPAIGNS: DemoCampaign[] = [
+  DISCOVERY_CAMPAIGN,
   {
     id: "delhi-dental",
     name: "Delhi dental practices",
@@ -97,84 +95,6 @@ export const DEMO_CAMPAIGNS: DemoCampaign[] = [
     problem: "4 of 6 rows had no observed_at timestamp, and the 2 remaining sites timed out. Fix the file and run it again.",
   },
 ];
-
-type EvidenceInput = [
-  signalCode: string,
-  validator: string,
-  sourceUrl: string,
-  observation: string,
-  extractedValue: Evidence["extractedValue"],
-  observedAt?: string,
-];
-
-type RecordInput = {
-  id: string;
-  campaignId: string;
-  businessName: string;
-  industry: string;
-  location: string;
-  website: string | null;
-  contactPath: string | null;
-  sourceUrl: string;
-  observedAt: string;
-  description: string;
-  recommendedService: ServiceCode;
-  scores: Record<ScoreDimension, number>;
-  explanations: Record<ScoreDimension, string>;
-  reviewStatus?: QualifiedCandidate["reviewStatus"];
-  checks: EvidenceInput[];
-};
-
-function makeRecord(input: RecordInput): DemoRecord {
-  const evidence: Evidence[] = [
-    {
-      id: `${input.id}-csv`,
-      sourceType: "csv-source",
-      sourceUrl: input.sourceUrl,
-      observedAt: input.observedAt,
-      validator: "csv-import",
-      signalCode: "source_description",
-      observation: input.description,
-      extractedValue: input.description,
-    },
-    ...input.checks.map(([signalCode, validator, sourceUrl, observation, extractedValue, observedAt], index) => ({
-      id: `${input.id}-web-${index + 1}`,
-      sourceType: validator.startsWith("pagespeed") ? ("pagespeed" as const) : ("website" as const),
-      sourceUrl,
-      observedAt: observedAt ?? CHECKED_AT,
-      validator,
-      signalCode,
-      observation,
-      extractedValue,
-    })),
-  ];
-  const brief = buildBrief({ ...input, evidence });
-  const finalScore = computeFinalScore(input.scores);
-  const qualified = finalScore >= DEMO_SCORING.threshold && brief.needCount > 0;
-  const need = input.scores.need;
-  return {
-    id: input.id,
-    campaignId: input.campaignId,
-    businessName: input.businessName,
-    industry: input.industry,
-    location: input.location,
-    website: input.website,
-    description: input.description,
-    sourceUrl: input.sourceUrl,
-    observedAt: input.observedAt,
-    contactPath: input.contactPath,
-    evidence,
-    intentLabel: need >= 75 ? "strong" : need >= 50 ? "possible" : "weak",
-    recommendedService: input.recommendedService,
-    summary: brief.plain,
-    supportingEvidenceIds: brief.sources.filter((source) => source.kind === "need").map((source) => source.evidence.id),
-    scores: input.scores,
-    explanations: input.explanations,
-    finalScore,
-    qualified,
-    reviewStatus: input.reviewStatus ?? "new",
-  };
-}
 
 export const DEMO_RECORDS: DemoRecord[] = [
   makeRecord({
@@ -467,6 +387,7 @@ export const DEMO_RECORDS: DemoRecord[] = [
       ["official_website_missing", "website-presence", "https://directory.example/jaipur/johari-weaves", "No official website URL was supplied by the source record.", true],
     ],
   }),
+  ...DISCOVERY_RECORDS,
 ];
 
 export function getCampaign(id: string): DemoCampaign | undefined {
