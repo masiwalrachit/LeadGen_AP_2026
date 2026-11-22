@@ -16,18 +16,18 @@ related_targets: ["src/app/dashboard/dashboard.module.css"]
 
 ## Audience and job
 
-Small web-development agencies monitoring asynchronous discovery and qualification work. The dashboard helps them understand what the selected campaign is doing now, where processing is blocked, how strong its evidence coverage is, and which campaign to open next.
+Small web-development agencies choosing between discovery and analysis while monitoring asynchronous qualification work. The dashboard makes Find Leads and Analyze Leads immediately distinct, then helps users understand current processing and evidence coverage.
 
 ## Task and content
 
-- Lead with the selected campaign's five-stage processing movement.
+- Lead with direct access to Find Leads and Analyze Leads, followed by the selected run's five-stage processing movement.
 - Keep validation queue and evidence health in a supporting rail.
 - Follow with a complete campaign ledger showing stage, native progress, candidate count, and qualified-lead count.
 - Preserve the illustrative-data disclosure and mark creation, search, archive, and campaign-detail behavior as planned and unavailable.
 
 ## Direction
 
-**Campaign Observatory** in the **Daylight Control Room** world. The first viewport places the deep navy workspace rail at left, page title and disabled planned Create campaign control above, the selected campaign pipeline across the main field, and validation/evidence support at right. The memorable moment is the pipeline itself: a horizontal campaign trajectory on desktop that becomes a clear vertical sequence on mobile.
+**Lead Workspace** in the **Daylight Control Room** world. The deep navy rail separates Find Leads and Analyze Leads as sibling destinations, keeps Team and Settings available, and places the current user with sign out directly beneath the brand. The first viewport then exposes both primary actions above the selected processing pipeline and its validation/evidence support.
 
 ## Constraints
 

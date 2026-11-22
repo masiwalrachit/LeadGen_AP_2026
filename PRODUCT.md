@@ -8,7 +8,7 @@ web
 
 ## Stack
 
-Delegated and confirmed through product discussion: TypeScript, Next.js, Tailwind CSS, Supabase PostgreSQL/Auth/Storage, Trigger.dev background jobs, Brave Search, Google Places API, PageSpeed Insights, and planned FreeLLMAPI-routed structured assessment.
+Delegated and confirmed through product discussion: TypeScript, Next.js, Tailwind CSS, Supabase PostgreSQL/Auth/Storage, Trigger.dev background jobs, Brave Search, Google Places API, PageSpeed Insights, and planned direct Grok structured assessment through the xAI API.
 
 ## Users
 
@@ -26,14 +26,14 @@ LeadGen focuses on “why this business, why this service, and why now.” Its u
 
 ## Operating Context
 
-An agency creates a campaign for a client or its own business, selects a service playbook, defines an industry and location, waits while discovery and validation run asynchronously, and then reviews a lead inbox. Users save, reject, mark contacted, and export leads while providing feedback that improves campaign ranking.
+The workspace has two primary lead workflows. **Find Leads** starts from a service, industry, and location and discovers public business candidates. **Analyze Leads** starts from an existing CSV and validates, filters, and interprets those records. Both workflows preserve evidence before qualification and keep review results inside the workflow that produced them. Team management and advanced workspace configuration remain first-class areas.
 
 ## Capabilities and Constraints
 
 - Initial service playbooks: new website, website redesign, e-commerce development, and website maintenance/performance.
 - Initial discovery sources: Brave Search, Google Places, permitted public business websites, sitemaps, and RSS where available.
 - Website validation uses HTTP/HTML checks and PageSpeed Insights.
-- A locally hosted FreeLLMAPI router is planned for structured intent classification only after deterministic filtering.
+- Grok is the planned LLM for structured intent classification through the xAI API, only after deterministic filtering.
 - Every recommendation must retain source evidence and confidence.
 - The first release does not automate outreach, scrape authenticated social platforms, bypass access controls, or promise guaranteed buying intent.
 - Collection must respect source terms, robots.txt, rate limits, retention requirements, and public-business-data boundaries.
