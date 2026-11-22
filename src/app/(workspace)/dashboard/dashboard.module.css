@@ -1,0 +1,417 @@
+.section {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.section h2,
+.sectionHead h2 {
+  font-size: var(--text-lg);
+  font-weight: 650;
+  line-height: var(--leading-tight);
+}
+
+.sectionHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.textLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: var(--primary);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.textLink:hover {
+  text-decoration: underline;
+}
+
+/* ---------- KPI strip ---------- */
+.kpis {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 40rem) {
+  .kpis {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.kpi {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 0 var(--space-4);
+  padding: var(--space-4) var(--space-5);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow-card);
+  color: inherit;
+  text-decoration: none;
+  transition: transform var(--duration-base) var(--ease-out), box-shadow var(--duration-base) var(--ease-out);
+}
+
+.kpi:hover {
+  box-shadow: var(--shadow-lift);
+  transform: translateY(-2px);
+}
+
+.kpiIcon {
+  display: grid;
+  grid-row: 1 / 4;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: var(--radius-md);
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+
+.kpi strong {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.kpiLabel {
+  font-size: var(--text-base);
+  font-weight: 600;
+}
+
+.kpiSub {
+  color: var(--ink-2);
+  font-size: var(--text-sm);
+}
+
+/* ---------- Ready to review: one featured lead + two smaller ---------- */
+.hero {
+  display: grid;
+  gap: var(--space-4);
+}
+
+@media (min-width: 56rem) {
+  .hero {
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  }
+}
+
+.grow {
+  min-width: 0;
+  flex: 1;
+}
+
+.featured {
+  position: relative;
+  display: grid;
+  align-content: space-between;
+  gap: var(--space-5);
+  padding: var(--space-6);
+  overflow: hidden;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-xl);
+  background:
+    radial-gradient(28rem 14rem at 100% 0%, color-mix(in srgb, var(--primary-soft) 80%, transparent), transparent 70%),
+    var(--surface);
+  box-shadow: var(--shadow-lift);
+  transition: transform var(--duration-base) var(--ease-out);
+}
+
+.featured:hover {
+  transform: translateY(-2px);
+}
+
+.featured:focus-within {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
+}
+
+.featuredTop {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.ringBlock {
+  display: grid;
+  flex: none;
+  justify-items: center;
+  gap: var(--space-1);
+}
+
+.band {
+  color: var(--ink-2);
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+
+.featuredName {
+  font-size: var(--text-xl);
+  font-weight: 700;
+  line-height: var(--leading-tight);
+}
+
+.featuredName a,
+.cardName a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* The whole card is clickable through the title link. */
+.featuredName a::after,
+.cardName a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+.featuredName a:focus-visible,
+.cardName a:focus-visible {
+  outline: none;
+}
+
+.campaign {
+  color: var(--ink-2);
+  font-size: var(--text-sm);
+}
+
+.reasons {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--text-md);
+}
+
+.reasons li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+}
+
+.reasons svg {
+  flex: none;
+  margin-top: 0.3rem;
+}
+
+.reasons mark,
+.cardReason mark {
+  padding: 0 0.2em;
+  border-radius: 2px;
+  background: linear-gradient(var(--mark), var(--mark)) no-repeat left / 100% 100%;
+  color: var(--ink);
+  animation: sweep 600ms var(--ease-out) 300ms both;
+}
+
+.review {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--primary);
+  font-weight: 650;
+}
+
+.others {
+  display: grid;
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  height: 100%;
+  padding: var(--space-4) var(--space-5);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow-card);
+  transition: transform var(--duration-base) var(--ease-out), box-shadow var(--duration-base) var(--ease-out);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-lift);
+  transform: translateY(-2px);
+}
+
+.card:focus-within {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
+}
+
+.cardName {
+  font-size: var(--text-md);
+  font-weight: 650;
+  line-height: var(--leading-tight);
+}
+
+.cardReason {
+  margin-top: var(--space-1);
+  font-size: var(--text-sm);
+}
+
+@keyframes sweep {
+  from {
+    background-size: 0% 100%;
+  }
+  to {
+    background-size: 100% 100%;
+  }
+}
+
+/* ---------- Campaigns ---------- */
+.tableWrap {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow-card);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th {
+  padding: var(--space-3) var(--space-5);
+  background: var(--sunken);
+  color: var(--ink-2);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-align: left;
+}
+
+.table td {
+  padding: var(--space-4) var(--space-5);
+  border-top: 1px solid var(--line);
+  vertical-align: middle;
+}
+
+.table tbody tr:hover td {
+  background: var(--hover);
+}
+
+.campaignName {
+  display: block;
+  font-size: var(--text-base);
+  font-weight: 600;
+}
+
+.problem {
+  display: block;
+  max-width: 34rem;
+  margin-top: var(--space-1);
+  color: var(--danger);
+  font-size: var(--text-sm);
+}
+
+.statusCell {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-1);
+}
+
+.progressRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.progressTrack {
+  display: block;
+  width: 6rem;
+  height: 0.5rem;
+  overflow: hidden;
+  border-radius: var(--radius-pill);
+  background: var(--track);
+}
+
+.progressTrack span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--primary), color-mix(in srgb, var(--primary) 60%, #7f9bff));
+}
+
+.progress {
+  color: var(--ink-2);
+  font-size: var(--text-sm);
+}
+
+.num {
+  font-size: var(--text-md);
+  font-weight: 700;
+}
+
+.muted {
+  color: var(--ink-2);
+  font-size: var(--text-sm);
+  white-space: nowrap;
+}
+
+/* Phones: every row becomes a labelled record; nothing is dropped. */
+@media (max-width: 47.99rem) {
+  .table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+
+  .table,
+  .table tbody,
+  .table tr,
+  .table td {
+    display: block;
+  }
+
+  .table tr {
+    padding: var(--space-4);
+    border-top: 1px solid var(--line);
+  }
+
+  .table tr:first-child {
+    border-top: 0;
+  }
+
+  .table td {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding: var(--space-2) 0;
+    border-top: 0;
+  }
+
+  .table td::before {
+    content: attr(data-label);
+    color: var(--ink-2);
+    font-size: var(--text-sm);
+    font-weight: 400;
+  }
+
+  .table td:first-child {
+    display: block;
+  }
+
+  .table td:first-child::before {
+    display: none;
+  }
+}

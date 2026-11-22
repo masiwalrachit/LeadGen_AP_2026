@@ -1,0 +1,39 @@
+.ring {
+  position: relative;
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+}
+
+.ring svg {
+  position: absolute;
+  inset: 0;
+}
+
+.track {
+  stroke: var(--track);
+}
+
+.arc {
+  stroke: var(--primary);
+}
+
+.animate {
+  animation: draw 800ms var(--ease-out) 200ms both;
+}
+
+@keyframes draw {
+  from {
+    stroke-dashoffset: var(--circumference);
+  }
+  to {
+    stroke-dashoffset: var(--offset);
+  }
+}
+
+.value {
+  position: relative;
+  color: var(--ink);
+  font-weight: 700;
+  line-height: 1;
+}

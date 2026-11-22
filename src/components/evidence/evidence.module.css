@@ -1,0 +1,390 @@
+/* Lead detail layout. Desktop: two columns (brief + sources | score + decision).
+   Phones: the column wrappers dissolve and `order` gives the reading order:
+   brief, score, sources, decision. */
+.layout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.colMain,
+.colSide {
+  display: contents;
+}
+
+.colMain > :first-child {
+  order: 1;
+}
+
+.colSide > :first-child {
+  order: 2;
+}
+
+.colMain > :last-child {
+  order: 3;
+}
+
+.colSide > :last-child {
+  order: 4;
+}
+
+@media (min-width: 64rem) {
+  .layout {
+    display: grid;
+    align-items: start;
+    grid-template-columns: minmax(0, 1fr) 22rem;
+  }
+
+  .colMain,
+  .colSide {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+
+  .colSide {
+    position: sticky;
+    top: var(--space-6);
+  }
+}
+
+.card {
+  padding: var(--space-5) var(--space-6);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow-card);
+}
+
+.heading {
+  color: var(--ink-2);
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+
+/* ---------- Brief ---------- */
+.briefText {
+  margin-top: var(--space-3);
+  font-size: clamp(1.1875rem, 1.1rem + 0.45vw, 1.4375rem);
+  line-height: var(--leading-prose);
+  text-wrap: pretty;
+}
+
+.claim {
+  padding: 0 0.15em;
+  border-radius: 2px;
+  background: linear-gradient(var(--mark), var(--mark)) no-repeat left / 100% 100%;
+  animation: sweep 600ms var(--ease-out) calc(300ms + var(--i, 0) * 170ms) both;
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--primary);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.22em;
+  cursor: pointer;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+.claim:hover {
+  box-shadow: 0 0 0 2px var(--mark);
+}
+
+/* Context claims (who/where) are cited but not highlighted: only website problems get the marker. */
+.claimContext {
+  padding: 0;
+  background: transparent;
+  animation: none;
+  text-decoration-style: dotted;
+  text-decoration-thickness: 1.5px;
+}
+
+.claimContext:hover {
+  box-shadow: none;
+  background: var(--hover);
+}
+
+.note {
+  display: inline;
+  margin-left: 0.2em;
+  padding: 0.05em 0.3em;
+  border: 1px solid var(--primary);
+  border-radius: var(--radius-xs);
+  background: var(--surface);
+  color: var(--primary);
+  font-size: 0.65em;
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: none;
+  vertical-align: 0.4em;
+  white-space: nowrap;
+}
+
+.claim[aria-pressed="true"] .note {
+  background: var(--primary);
+  color: var(--on-primary);
+}
+
+/* ---------- Sources ---------- */
+.sourceList {
+  margin: var(--space-3) calc(var(--space-6) * -1) calc(var(--space-5) * -1);
+  padding: 0;
+  list-style: none;
+}
+
+.source {
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1fr);
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-6) var(--space-4) calc(var(--space-6) - 3px);
+  border-top: 1px solid var(--line);
+  border-left: 3px solid transparent;
+  transition: background-color var(--duration-base) var(--ease-out);
+}
+
+.source:last-child {
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+}
+
+.source[data-pinned="true"] {
+  border-left-color: var(--primary);
+  background: var(--mark-soft);
+}
+
+.sourceNumber {
+  display: grid;
+  place-items: center;
+  height: 1.75rem;
+  border: 1px solid var(--primary);
+  border-radius: var(--radius-xs);
+  background: var(--surface);
+  color: var(--primary);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.source[data-pinned="true"] .sourceNumber {
+  background: var(--primary);
+  color: var(--on-primary);
+}
+
+.sourceTitle {
+  font-size: var(--text-base);
+  font-weight: 600;
+}
+
+.sourceMeta {
+  color: var(--ink-2);
+  font-size: var(--text-sm);
+}
+
+.sourceMore {
+  display: grid;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+.code {
+  color: var(--ink-2);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  overflow-wrap: anywhere;
+}
+
+.quote {
+  color: var(--ink-2);
+  font-size: var(--text-sm);
+}
+
+.sourceLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  justify-self: start;
+  color: var(--primary);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.sourceLink:hover {
+  text-decoration: underline;
+}
+
+/* ---------- Score ---------- */
+.scoreHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.total {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin-top: var(--space-3);
+}
+
+.total p {
+  display: grid;
+  color: var(--ink-2);
+  font-size: var(--text-sm);
+}
+
+.total p strong {
+  color: var(--ink);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.dims {
+  display: grid;
+  gap: var(--space-1);
+  margin: var(--space-4) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.dim {
+  display: grid;
+  grid-template-columns: 4.75rem minmax(0, 1fr) 2.25rem;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-2);
+  margin: 0 calc(var(--space-2) * -1);
+  border-left: 3px solid transparent;
+  border-radius: var(--radius-sm);
+  transition: background-color var(--duration-base) var(--ease-out);
+}
+
+/* A bar lights up when it is fed by the source you are looking at. */
+.dim[data-cited="true"] {
+  border-left-color: var(--primary);
+  background: var(--primary-soft);
+}
+
+.dimName {
+  font-size: var(--text-base);
+  font-weight: 600;
+}
+
+.bar {
+  height: 0.625rem;
+  overflow: hidden;
+  border-radius: var(--radius-pill);
+  background: var(--track);
+}
+
+.bar span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--primary), color-mix(in srgb, var(--primary) 62%, #7f9bff));
+  transform-origin: left;
+  animation: grow var(--duration-slow) var(--ease-out) calc(250ms + var(--i, 0) * 70ms) both;
+}
+
+@keyframes grow {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+.dimValue {
+  font-size: var(--text-base);
+  font-weight: 700;
+  text-align: right;
+}
+
+.scoreNote {
+  margin-top: var(--space-4);
+  color: var(--ink-2);
+  font-size: var(--text-sm);
+}
+
+/* ---------- Decision ---------- */
+.actions {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.actionRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2);
+}
+
+.contact {
+  display: grid;
+  gap: 0.15rem;
+  min-width: 0;
+  color: var(--ink-2);
+  font-size: var(--text-sm);
+}
+
+.contact a {
+  overflow: hidden;
+  color: var(--primary);
+  font-size: var(--text-base);
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.none {
+  color: var(--ink-3);
+  font-size: var(--text-base);
+}
+
+.live {
+  min-height: 1.25rem;
+  color: var(--ink-2);
+  font-size: var(--text-sm);
+}
+
+/* The highlighter draws itself across each claim, one after another. */
+@keyframes sweep {
+  from {
+    background-size: 0% 100%;
+  }
+  to {
+    background-size: 100% 100%;
+  }
+}
+
+/* Opening a source flashes its row once, so the eye lands on it. */
+.source[data-flash="true"] {
+  animation: flash 900ms var(--ease-out);
+}
+
+@keyframes flash {
+  from {
+    background-color: var(--mark);
+  }
+}
+
+/* Phones: Save and Reject stay reachable while you read the evidence. */
+.quickBar {
+  display: none;
+}
+
+@media (max-width: 63.99rem) {
+  .layout {
+    padding-bottom: 5rem;
+  }
+
+  .quickBar {
+    position: fixed;
+    inset: auto 0 0 0;
+    z-index: 15;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--gutter) calc(var(--space-3) + env(safe-area-inset-bottom));
+    border-top: 1px solid var(--line);
+    background: color-mix(in srgb, var(--surface) 94%, transparent);
+    backdrop-filter: blur(8px);
+  }
+}

@@ -2,12 +2,22 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { usernameInitial, usernameSchema } from "@/lib/auth/username";
+import { isDemoMode } from "@/lib/demo/mode";
+import { readDemoSession } from "@/lib/demo/session";
+import { DEMO_WORKSPACE_ID } from "@/lib/demo/session-shared";
 
 export type WorkspaceAccess =
   | { kind: "authenticated"; workspaceId: string | null }
   | { kind: "database-missing" };
 
 export async function getWorkspaceAccess(): Promise<WorkspaceAccess> {
+  if (isDemoMode()) {
+    // Demo mode (no Supabase configured): the demo session cookie stands in for sign-in.
+    const session = await readDemoSession();
+    if (!session.user) redirect("/signup");
+    return { kind: "authenticated", workspaceId: session.workspace ? DEMO_WORKSPACE_ID : null };
+  }
+
   const supabase = await createClient();
   const { data: claimData } = await supabase.auth.getClaims();
   if (!claimData?.claims?.sub) redirect("/signup");
@@ -60,6 +70,14 @@ export type WorkspaceTeam = z.infer<typeof workspaceTeamSchema>;
 
 export async function getWorkspaceContext(): Promise<WorkspaceContext> {
   const workspaceId = await requireWorkspace();
+
+  if (isDemoMode()) {
+    const { workspace } = await readDemoSession();
+    if (!workspace) redirect("/onboarding");
+    const username = usernameSchema.safeParse(workspace.username).data ?? "member";
+    return { workspaceId, workspaceName: workspace.name, username, userInitial: usernameInitial(username) };
+  }
+
   const supabase = await createClient();
   const { data: claimData } = await supabase.auth.getClaims();
   const userId = claimData?.claims?.sub;
@@ -89,6 +107,25 @@ export async function getWorkspaceContext(): Promise<WorkspaceContext> {
 }
 
 export async function getWorkspaceTeam(workspaceId: string): Promise<WorkspaceTeam> {
+  if (isDemoMode()) {
+    // Demo mode: the signed-in demo user is the only member and the owner.
+    const { user, workspace } = await readDemoSession();
+    if (!workspace) redirect("/onboarding");
+    return {
+      currentRole: "owner",
+      joinCode: workspace.joinCode || null,
+      members: [
+        {
+          userId: "00000000-0000-4000-8000-000000000001",
+          username: usernameSchema.safeParse(workspace.username).data ?? "member",
+          fullName: user?.name ?? workspace.username,
+          role: "owner",
+          joinedAt: new Date().toISOString(),
+        },
+      ],
+    };
+  }
+
   const supabase = await createClient();
   const { data, error } = await supabase.rpc("get_workspace_team", {
     target_workspace: workspaceId,

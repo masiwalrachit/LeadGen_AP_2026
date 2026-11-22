@@ -28,7 +28,7 @@ export async function updateSession(request: NextRequest) {
   const { data } = await supabase.auth.getClaims();
   const signedIn = Boolean(data?.claims?.sub);
   const pathname = request.nextUrl.pathname;
-  const privateRoute = ["/app", "/onboarding", "/dashboard", "/campaigns", "/leads", "/setup"].some(
+  const privateRoute = ["/app", "/onboarding", "/dashboard", "/campaigns", "/find-leads", "/analyze-leads", "/team", "/leads", "/setup"].some(
     (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),
   );
 
