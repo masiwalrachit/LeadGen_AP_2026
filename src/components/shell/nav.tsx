@@ -54,17 +54,32 @@ export function MobileMenu({ children }: { children: React.ReactNode }) {
   const [openedAt, setOpenedAt] = useState(pathname);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
 
-  // Close when the route changes (adjusting state during render instead of in an effect).
-  if (open && pathname !== openedAt) {
-    setOpen(false);
-  }
+  useEffect(() => {
+    if (open && pathname !== openedAt) setOpen(false);
+  }, [open, openedAt, pathname]);
 
   useEffect(() => {
     if (!open) return;
     closeRef.current?.focus();
     const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") setOpen(false);
+      if (event.key !== "Tab") return;
+
+      const focusable = panelRef.current?.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), select:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])',
+      );
+      if (!focusable?.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
     };
     document.addEventListener("keydown", onKey);
     document.body.style.overflow = "hidden";
@@ -95,7 +110,7 @@ export function MobileMenu({ children }: { children: React.ReactNode }) {
       {open ? (
         <div className={styles.drawer} id="mobile-drawer" role="dialog" aria-modal="true" aria-label="Navigation">
           <button className={styles.scrim} type="button" aria-label="Close navigation" tabIndex={-1} onClick={() => setOpen(false)} />
-          <div className={styles.drawerPanel}>
+          <div ref={panelRef} className={styles.drawerPanel}>
             <div className={styles.drawerHead}>
               <span className={styles.navLabel}>Menu</span>
               <button ref={closeRef} className={styles.menuButton} type="button" aria-label="Close navigation" onClick={() => setOpen(false)}>
