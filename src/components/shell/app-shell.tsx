@@ -26,13 +26,6 @@ function initials(name: string) {
 function SidebarBody({ workspaceName, username, userInitial, leadCount }: Omit<ShellProps, "children">) {
   return (
     <>
-      <div className={styles.workspace}>
-        <span className={styles.avatar} aria-hidden="true">{initials(workspaceName)}</span>
-        <div className={styles.grow}>
-          <strong title={workspaceName}>{workspaceName}</strong>
-        </div>
-      </div>
-      <Nav leadCount={leadCount} />
       <div className={styles.sidebarFoot}>
         <div className={styles.user}>
           <span className={styles.userAvatar} aria-hidden="true">{userInitial}</span>
@@ -45,6 +38,13 @@ function SidebarBody({ workspaceName, username, userInitial, leadCount }: Omit<S
           <ThemeToggle />
         </div>
       </div>
+      <div className={styles.workspace}>
+        <span className={styles.avatar} aria-hidden="true">{initials(workspaceName)}</span>
+        <div className={styles.grow}>
+          <strong title={workspaceName}>{workspaceName}</strong>
+        </div>
+      </div>
+      <Nav leadCount={leadCount} />
     </>
   );
 }
