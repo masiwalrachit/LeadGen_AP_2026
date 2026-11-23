@@ -62,7 +62,7 @@ export function DemoStrip({ children }: { children?: React.ReactNode }) {
   return (
     <div className={styles.demoStrip} role="note">
       <Info size={16} aria-hidden="true" />
-      Illustrative demo data
+      Local simulation
       {children ? <span>{children}</span> : null}
     </div>
   );

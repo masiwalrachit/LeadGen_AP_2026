@@ -261,7 +261,7 @@ export function DiscoveryExplorer({ points, area }: { points: MapPoint[]; area: 
         </aside>
       </div>
       <p className={styles.footnote}>
-        Demo: the search is simulated over invented businesses, so it never depends on a paid API. Real discovery would use Google Places.
+        This demo uses invented businesses and fixed rules. It makes no Google Places, Gemini or other LLM requests; the map uses OpenStreetMap tiles.
       </p>
     </div>
   );
