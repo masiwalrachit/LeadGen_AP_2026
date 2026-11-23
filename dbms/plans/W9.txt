@@ -1,0 +1,35 @@
+-- W9 WRITE: Discovery: insert a business, or reuse the existing one with the same domain.
+-- parameters: 'New Cafe', 'http://newcafe.example', 'newcafe.example', 'Cafe', '5 Main Road', 'South Delhi', 'DL', 'IN'
+
+=== W9 run 1 ===
+Insert on businesses  (cost=0.00..0.01 rows=1 width=1688) (actual time=0.366..0.368 rows=1 loops=1)
+  Conflict Resolution: UPDATE
+  Conflict Arbiter Indexes: businesses_normalized_domain_key
+  Tuples Inserted: 1
+  Conflicting Tuples: 0
+  Buffers: shared hit=37 dirtied=1 written=1
+  ->  Result  (cost=0.00..0.01 rows=1 width=1688) (actual time=0.017..0.018 rows=1 loops=1)
+Planning:
+  Buffers: shared hit=55
+Planning Time: 0.187 ms
+Execution Time: 0.416 ms
+=== W9 run 2 ===
+Insert on businesses  (cost=0.00..0.01 rows=1 width=1688) (actual time=0.074..0.075 rows=1 loops=1)
+  Conflict Resolution: UPDATE
+  Conflict Arbiter Indexes: businesses_normalized_domain_key
+  Tuples Inserted: 1
+  Conflicting Tuples: 0
+  Buffers: shared hit=9
+  ->  Result  (cost=0.00..0.01 rows=1 width=1688) (actual time=0.010..0.010 rows=1 loops=1)
+Planning Time: 0.062 ms
+Execution Time: 0.086 ms
+=== W9 run 3 ===
+Insert on businesses  (cost=0.00..0.01 rows=1 width=1688) (actual time=0.052..0.053 rows=1 loops=1)
+  Conflict Resolution: UPDATE
+  Conflict Arbiter Indexes: businesses_normalized_domain_key
+  Tuples Inserted: 1
+  Conflicting Tuples: 0
+  Buffers: shared hit=9
+  ->  Result  (cost=0.00..0.01 rows=1 width=1688) (actual time=0.008..0.008 rows=1 loops=1)
+Planning Time: 0.046 ms
+Execution Time: 0.063 ms

@@ -1,0 +1,72 @@
+-- R12 READ: Validation worker: candidates of a campaign still waiting to be qualified.
+-- parameters: '3288ed57-dd1f-4d8b-8602-463579bd0512'
+
+=== R12 run 1 ===
+Sort  (cost=849.19..849.34 rows=62 width=101) (actual time=0.473..0.477 rows=62 loops=1)
+  Sort Key: ca.discovered_at
+  Sort Method: quicksort  Memory: 32kB
+  Buffers: shared hit=202
+  ->  Nested Loop  (cost=19.53..847.34 rows=62 width=101) (actual time=0.093..0.420 rows=62 loops=1)
+        Buffers: shared hit=199
+        ->  Bitmap Heap Scan on candidates ca  (cost=19.24..404.43 rows=62 width=40) (actual time=0.054..0.112 rows=62 loops=1)
+              Recheck Cond: (campaign_id = '3288ed57-dd1f-4d8b-8602-463579bd0512'::uuid)
+              Filter: ((qualification_status)::text = 'pending'::text)
+              Rows Removed by Filter: 313
+              Heap Blocks: exact=8
+              Buffers: shared hit=13
+              ->  Bitmap Index Scan on uq_candidates_campaign_business  (cost=0.00..19.23 rows=375 width=0) (actual time=0.040..0.040 rows=375 loops=1)
+                    Index Cond: (campaign_id = '3288ed57-dd1f-4d8b-8602-463579bd0512'::uuid)
+                    Buffers: shared hit=5
+        ->  Index Scan using businesses_pkey on businesses b  (cost=0.29..7.14 rows=1 width=77) (actual time=0.004..0.004 rows=1 loops=62)
+              Index Cond: (business_id = ca.business_id)
+              Buffers: shared hit=186
+Planning:
+  Buffers: shared hit=301
+Planning Time: 0.641 ms
+Execution Time: 0.591 ms
+=== R12 run 2 ===
+Sort  (cost=849.19..849.34 rows=62 width=101) (actual time=0.229..0.232 rows=62 loops=1)
+  Sort Key: ca.discovered_at
+  Sort Method: quicksort  Memory: 32kB
+  Buffers: shared hit=199
+  ->  Nested Loop  (cost=19.53..847.34 rows=62 width=101) (actual time=0.028..0.205 rows=62 loops=1)
+        Buffers: shared hit=199
+        ->  Bitmap Heap Scan on candidates ca  (cost=19.24..404.43 rows=62 width=40) (actual time=0.023..0.059 rows=62 loops=1)
+              Recheck Cond: (campaign_id = '3288ed57-dd1f-4d8b-8602-463579bd0512'::uuid)
+              Filter: ((qualification_status)::text = 'pending'::text)
+              Rows Removed by Filter: 313
+              Heap Blocks: exact=8
+              Buffers: shared hit=13
+              ->  Bitmap Index Scan on uq_candidates_campaign_business  (cost=0.00..19.23 rows=375 width=0) (actual time=0.017..0.017 rows=375 loops=1)
+                    Index Cond: (campaign_id = '3288ed57-dd1f-4d8b-8602-463579bd0512'::uuid)
+                    Buffers: shared hit=5
+        ->  Index Scan using businesses_pkey on businesses b  (cost=0.29..7.14 rows=1 width=77) (actual time=0.002..0.002 rows=1 loops=62)
+              Index Cond: (business_id = ca.business_id)
+              Buffers: shared hit=186
+Planning:
+  Buffers: shared hit=6
+Planning Time: 0.143 ms
+Execution Time: 0.251 ms
+=== R12 run 3 ===
+Sort  (cost=849.19..849.34 rows=62 width=101) (actual time=0.144..0.147 rows=62 loops=1)
+  Sort Key: ca.discovered_at
+  Sort Method: quicksort  Memory: 32kB
+  Buffers: shared hit=199
+  ->  Nested Loop  (cost=19.53..847.34 rows=62 width=101) (actual time=0.018..0.127 rows=62 loops=1)
+        Buffers: shared hit=199
+        ->  Bitmap Heap Scan on candidates ca  (cost=19.24..404.43 rows=62 width=40) (actual time=0.016..0.045 rows=62 loops=1)
+              Recheck Cond: (campaign_id = '3288ed57-dd1f-4d8b-8602-463579bd0512'::uuid)
+              Filter: ((qualification_status)::text = 'pending'::text)
+              Rows Removed by Filter: 313
+              Heap Blocks: exact=8
+              Buffers: shared hit=13
+              ->  Bitmap Index Scan on uq_candidates_campaign_business  (cost=0.00..19.23 rows=375 width=0) (actual time=0.011..0.011 rows=375 loops=1)
+                    Index Cond: (campaign_id = '3288ed57-dd1f-4d8b-8602-463579bd0512'::uuid)
+                    Buffers: shared hit=5
+        ->  Index Scan using businesses_pkey on businesses b  (cost=0.29..7.14 rows=1 width=77) (actual time=0.001..0.001 rows=1 loops=62)
+              Index Cond: (business_id = ca.business_id)
+              Buffers: shared hit=186
+Planning:
+  Buffers: shared hit=6
+Planning Time: 0.110 ms
+Execution Time: 0.163 ms

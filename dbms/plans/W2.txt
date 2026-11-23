@@ -1,0 +1,47 @@
+-- W2 WRITE: Onboarding: create a workspace and add its creator as the owner, in one statement.
+-- parameters: 'New Agency', NULL, 'South Delhi', '00000000-0000-0000-0000-000000000001'
+
+=== W2 run 1 ===
+Insert on workspace_members  (cost=0.01..0.04 rows=1 width=98) (actual time=0.225..0.226 rows=1 loops=1)
+  Buffers: shared hit=58
+  CTE w
+    ->  Insert on workspaces  (cost=0.00..0.01 rows=1 width=648) (actual time=0.183..0.184 rows=1 loops=1)
+          Buffers: shared hit=39
+          ->  Result  (cost=0.00..0.01 rows=1 width=648) (actual time=0.015..0.015 rows=1 loops=1)
+  ->  CTE Scan on w  (cost=0.00..0.02 rows=1 width=98) (actual time=0.185..0.186 rows=1 loops=1)
+        Buffers: shared hit=39
+Planning:
+  Buffers: shared hit=9
+Planning Time: 0.413 ms
+Trigger for constraint workspaces_created_by_fkey on workspaces: time=0.430 calls=1
+Trigger for constraint workspace_members_workspace_id_fkey on workspace_members: time=0.067 calls=1
+Trigger for constraint workspace_members_user_id_fkey on workspace_members: time=0.035 calls=1
+Execution Time: 0.802 ms
+=== W2 run 2 ===
+Insert on workspace_members  (cost=0.01..0.04 rows=1 width=98) (actual time=0.050..0.051 rows=1 loops=1)
+  Buffers: shared hit=4
+  CTE w
+    ->  Insert on workspaces  (cost=0.00..0.01 rows=1 width=648) (actual time=0.040..0.041 rows=1 loops=1)
+          Buffers: shared hit=2
+          ->  Result  (cost=0.00..0.01 rows=1 width=648) (actual time=0.009..0.009 rows=1 loops=1)
+  ->  CTE Scan on w  (cost=0.00..0.02 rows=1 width=98) (actual time=0.042..0.042 rows=1 loops=1)
+        Buffers: shared hit=2
+Planning Time: 0.050 ms
+Trigger for constraint workspaces_created_by_fkey on workspaces: time=0.032 calls=1
+Trigger for constraint workspace_members_workspace_id_fkey on workspace_members: time=0.016 calls=1
+Trigger for constraint workspace_members_user_id_fkey on workspace_members: time=0.012 calls=1
+Execution Time: 0.123 ms
+=== W2 run 3 ===
+Insert on workspace_members  (cost=0.01..0.04 rows=1 width=98) (actual time=0.032..0.033 rows=1 loops=1)
+  Buffers: shared hit=4
+  CTE w
+    ->  Insert on workspaces  (cost=0.00..0.01 rows=1 width=648) (actual time=0.025..0.025 rows=1 loops=1)
+          Buffers: shared hit=2
+          ->  Result  (cost=0.00..0.01 rows=1 width=648) (actual time=0.005..0.006 rows=1 loops=1)
+  ->  CTE Scan on w  (cost=0.00..0.02 rows=1 width=98) (actual time=0.026..0.026 rows=1 loops=1)
+        Buffers: shared hit=2
+Planning Time: 0.038 ms
+Trigger for constraint workspaces_created_by_fkey on workspaces: time=0.024 calls=1
+Trigger for constraint workspace_members_workspace_id_fkey on workspace_members: time=0.014 calls=1
+Trigger for constraint workspace_members_user_id_fkey on workspace_members: time=0.012 calls=1
+Execution Time: 0.093 ms

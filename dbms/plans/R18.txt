@@ -1,0 +1,111 @@
+-- R18 READ: Scoring: the newest scoring model of a playbook with its dimension weights.
+-- parameters: '1'
+
+=== R18 run 1 ===
+Sort  (cost=4.81..4.82 rows=5 width=45) (actual time=0.075..0.077 rows=5 loops=1)
+  Sort Key: smw.weight DESC
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=7
+  InitPlan 1 (returns $1)
+    ->  Aggregate  (cost=1.08..1.09 rows=1 width=4) (actual time=0.004..0.004 rows=1 loops=1)
+          Buffers: shared hit=1
+          ->  Seq Scan on scoring_models  (cost=0.00..1.07 rows=2 width=4) (actual time=0.001..0.001 rows=2 loops=1)
+                Filter: (playbook_id = '1'::smallint)
+                Rows Removed by Filter: 4
+                Buffers: shared hit=1
+  ->  Hash Join  (cost=2.21..3.66 rows=5 width=45) (actual time=0.047..0.052 rows=5 loops=1)
+        Hash Cond: ((smw.dimension_code)::text = (sd.dimension_code)::text)
+        Buffers: shared hit=4
+        ->  Hash Join  (cost=1.10..2.52 rows=5 width=36) (actual time=0.028..0.031 rows=5 loops=1)
+              Hash Cond: (smw.scoring_model_id = sm.scoring_model_id)
+              Buffers: shared hit=3
+              ->  Seq Scan on scoring_model_weights smw  (cost=0.00..1.29 rows=29 width=27) (actual time=0.004..0.005 rows=29 loops=1)
+                    Buffers: shared hit=1
+              ->  Hash  (cost=1.09..1.09 rows=1 width=25) (actual time=0.010..0.010 rows=1 loops=1)
+                    Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                    Buffers: shared hit=2
+                    ->  Seq Scan on scoring_models sm  (cost=0.00..1.09 rows=1 width=25) (actual time=0.008..0.008 rows=1 loops=1)
+                          Filter: ((playbook_id = '1'::smallint) AND (version = $1))
+                          Rows Removed by Filter: 5
+                          Buffers: shared hit=2
+        ->  Hash  (cost=1.05..1.05 rows=5 width=15) (actual time=0.010..0.010 rows=5 loops=1)
+              Buckets: 1024  Batches: 1  Memory Usage: 9kB
+              Buffers: shared hit=1
+              ->  Seq Scan on score_dimensions sd  (cost=0.00..1.05 rows=5 width=15) (actual time=0.004..0.004 rows=5 loops=1)
+                    Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=416
+Planning Time: 0.845 ms
+Execution Time: 0.135 ms
+=== R18 run 2 ===
+Sort  (cost=4.81..4.82 rows=5 width=45) (actual time=0.029..0.030 rows=5 loops=1)
+  Sort Key: smw.weight DESC
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=4
+  InitPlan 1 (returns $1)
+    ->  Aggregate  (cost=1.08..1.09 rows=1 width=4) (actual time=0.003..0.003 rows=1 loops=1)
+          Buffers: shared hit=1
+          ->  Seq Scan on scoring_models  (cost=0.00..1.07 rows=2 width=4) (actual time=0.001..0.001 rows=2 loops=1)
+                Filter: (playbook_id = '1'::smallint)
+                Rows Removed by Filter: 4
+                Buffers: shared hit=1
+  ->  Hash Join  (cost=2.21..3.66 rows=5 width=45) (actual time=0.020..0.025 rows=5 loops=1)
+        Hash Cond: ((smw.dimension_code)::text = (sd.dimension_code)::text)
+        Buffers: shared hit=4
+        ->  Hash Join  (cost=1.10..2.52 rows=5 width=36) (actual time=0.013..0.016 rows=5 loops=1)
+              Hash Cond: (smw.scoring_model_id = sm.scoring_model_id)
+              Buffers: shared hit=3
+              ->  Seq Scan on scoring_model_weights smw  (cost=0.00..1.29 rows=29 width=27) (actual time=0.001..0.002 rows=29 loops=1)
+                    Buffers: shared hit=1
+              ->  Hash  (cost=1.09..1.09 rows=1 width=25) (actual time=0.006..0.006 rows=1 loops=1)
+                    Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                    Buffers: shared hit=2
+                    ->  Seq Scan on scoring_models sm  (cost=0.00..1.09 rows=1 width=25) (actual time=0.005..0.005 rows=1 loops=1)
+                          Filter: ((playbook_id = '1'::smallint) AND (version = $1))
+                          Rows Removed by Filter: 5
+                          Buffers: shared hit=2
+        ->  Hash  (cost=1.05..1.05 rows=5 width=15) (actual time=0.004..0.004 rows=5 loops=1)
+              Buckets: 1024  Batches: 1  Memory Usage: 9kB
+              Buffers: shared hit=1
+              ->  Seq Scan on score_dimensions sd  (cost=0.00..1.05 rows=5 width=15) (actual time=0.002..0.002 rows=5 loops=1)
+                    Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=8
+Planning Time: 0.205 ms
+Execution Time: 0.054 ms
+=== R18 run 3 ===
+Sort  (cost=4.81..4.82 rows=5 width=45) (actual time=0.024..0.026 rows=5 loops=1)
+  Sort Key: smw.weight DESC
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=4
+  InitPlan 1 (returns $1)
+    ->  Aggregate  (cost=1.08..1.09 rows=1 width=4) (actual time=0.002..0.003 rows=1 loops=1)
+          Buffers: shared hit=1
+          ->  Seq Scan on scoring_models  (cost=0.00..1.07 rows=2 width=4) (actual time=0.001..0.001 rows=2 loops=1)
+                Filter: (playbook_id = '1'::smallint)
+                Rows Removed by Filter: 4
+                Buffers: shared hit=1
+  ->  Hash Join  (cost=2.21..3.66 rows=5 width=45) (actual time=0.017..0.021 rows=5 loops=1)
+        Hash Cond: ((smw.dimension_code)::text = (sd.dimension_code)::text)
+        Buffers: shared hit=4
+        ->  Hash Join  (cost=1.10..2.52 rows=5 width=36) (actual time=0.010..0.013 rows=5 loops=1)
+              Hash Cond: (smw.scoring_model_id = sm.scoring_model_id)
+              Buffers: shared hit=3
+              ->  Seq Scan on scoring_model_weights smw  (cost=0.00..1.29 rows=29 width=27) (actual time=0.001..0.002 rows=29 loops=1)
+                    Buffers: shared hit=1
+              ->  Hash  (cost=1.09..1.09 rows=1 width=25) (actual time=0.005..0.006 rows=1 loops=1)
+                    Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                    Buffers: shared hit=2
+                    ->  Seq Scan on scoring_models sm  (cost=0.00..1.09 rows=1 width=25) (actual time=0.004..0.005 rows=1 loops=1)
+                          Filter: ((playbook_id = '1'::smallint) AND (version = $1))
+                          Rows Removed by Filter: 5
+                          Buffers: shared hit=2
+        ->  Hash  (cost=1.05..1.05 rows=5 width=15) (actual time=0.004..0.004 rows=5 loops=1)
+              Buckets: 1024  Batches: 1  Memory Usage: 9kB
+              Buffers: shared hit=1
+              ->  Seq Scan on score_dimensions sd  (cost=0.00..1.05 rows=5 width=15) (actual time=0.001..0.002 rows=5 loops=1)
+                    Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=8
+Planning Time: 0.160 ms
+Execution Time: 0.039 ms

@@ -1,0 +1,53 @@
+-- W24 WRITE: Cleanup: delete a draft campaign (its candidates, signals and leads cascade).
+-- parameters: '663610b1-45aa-4e27-85fa-39a1bd7cd3fc', 'b60f43aa-0a5d-4efc-8e59-cdcb92afcb6d'
+
+=== W24 run 1 ===
+Delete on campaigns  (cost=0.00..3.40 rows=0 width=0) (actual time=0.112..0.113 rows=0 loops=1)
+  Buffers: shared hit=7
+  ->  Seq Scan on campaigns  (cost=0.00..3.40 rows=1 width=6) (actual time=0.017..0.021 rows=1 loops=1)
+        Filter: ((campaign_id = '663610b1-45aa-4e27-85fa-39a1bd7cd3fc'::uuid) AND (workspace_id = 'b60f43aa-0a5d-4efc-8e59-cdcb92afcb6d'::uuid) AND ((status)::text = 'draft'::text))
+        Rows Removed by Filter: 79
+        Buffers: shared hit=2
+Planning:
+  Buffers: shared hit=75
+Planning Time: 0.349 ms
+Trigger for constraint candidates_campaign_id_fkey on campaigns: time=0.825 calls=1
+Trigger for constraint candidate_signals_candidate_id_fkey on candidates: time=3.287 calls=375
+Trigger for constraint llm_assessments_candidate_id_fkey on candidates: time=2.147 calls=375
+Trigger for constraint leads_candidate_id_fkey on candidates: time=2.426 calls=375
+Trigger for constraint fk_signal_evidence_signal on candidate_signals: time=7.606 calls=564
+Trigger for constraint lead_score_components_candidate_id_fkey on leads: time=7.296 calls=120
+Trigger for constraint lead_review_events_candidate_id_fkey on leads: time=48.827 calls=120
+Execution Time: 72.771 ms
+=== W24 run 2 ===
+Delete on campaigns  (cost=0.00..3.40 rows=0 width=0) (actual time=0.024..0.024 rows=0 loops=1)
+  Buffers: shared hit=4
+  ->  Seq Scan on campaigns  (cost=0.00..3.40 rows=1 width=6) (actual time=0.013..0.016 rows=1 loops=1)
+        Filter: ((campaign_id = '663610b1-45aa-4e27-85fa-39a1bd7cd3fc'::uuid) AND (workspace_id = 'b60f43aa-0a5d-4efc-8e59-cdcb92afcb6d'::uuid) AND ((status)::text = 'draft'::text))
+        Rows Removed by Filter: 79
+        Buffers: shared hit=2
+Planning Time: 0.096 ms
+Trigger for constraint candidates_campaign_id_fkey on campaigns: time=0.343 calls=1
+Trigger for constraint candidate_signals_candidate_id_fkey on candidates: time=21.874 calls=375
+Trigger for constraint llm_assessments_candidate_id_fkey on candidates: time=1.867 calls=375
+Trigger for constraint leads_candidate_id_fkey on candidates: time=3.197 calls=375
+Trigger for constraint fk_signal_evidence_signal on candidate_signals: time=4.651 calls=564
+Trigger for constraint lead_score_components_candidate_id_fkey on leads: time=1.397 calls=120
+Trigger for constraint lead_review_events_candidate_id_fkey on leads: time=20.780 calls=120
+Execution Time: 54.350 ms
+=== W24 run 3 ===
+Delete on campaigns  (cost=0.00..3.40 rows=0 width=0) (actual time=0.022..0.022 rows=0 loops=1)
+  Buffers: shared hit=4
+  ->  Seq Scan on campaigns  (cost=0.00..3.40 rows=1 width=6) (actual time=0.012..0.014 rows=1 loops=1)
+        Filter: ((campaign_id = '663610b1-45aa-4e27-85fa-39a1bd7cd3fc'::uuid) AND (workspace_id = 'b60f43aa-0a5d-4efc-8e59-cdcb92afcb6d'::uuid) AND ((status)::text = 'draft'::text))
+        Rows Removed by Filter: 79
+        Buffers: shared hit=2
+Planning Time: 0.093 ms
+Trigger for constraint candidates_campaign_id_fkey on campaigns: time=0.313 calls=1
+Trigger for constraint candidate_signals_candidate_id_fkey on candidates: time=2.894 calls=375
+Trigger for constraint llm_assessments_candidate_id_fkey on candidates: time=1.519 calls=375
+Trigger for constraint leads_candidate_id_fkey on candidates: time=1.764 calls=375
+Trigger for constraint fk_signal_evidence_signal on candidate_signals: time=4.081 calls=564
+Trigger for constraint lead_score_components_candidate_id_fkey on leads: time=1.292 calls=120
+Trigger for constraint lead_review_events_candidate_id_fkey on leads: time=18.664 calls=120
+Execution Time: 30.747 ms

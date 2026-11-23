@@ -1,0 +1,102 @@
+-- R23 READ: Dashboard: number of leads per review status for every campaign of a workspace.
+-- parameters: 'b60f43aa-0a5d-4efc-8e59-cdcb92afcb6d'
+
+=== R23 run 1 ===
+Sort  (cost=1270.49..1270.51 rows=10 width=102) (actual time=7.192..7.195 rows=10 loops=1)
+  Sort Key: cp.name
+  Sort Method: quicksort  Memory: 26kB
+  Buffers: shared hit=661
+  ->  HashAggregate  (cost=1270.17..1270.32 rows=10 width=102) (actual time=7.160..7.167 rows=10 loops=1)
+        Group Key: cp.campaign_id
+        Batches: 1  Memory Usage: 24kB
+        Buffers: shared hit=658
+        ->  Hash Join  (cost=798.92..1238.92 rows=1250 width=49) (actual time=4.954..6.906 rows=1240 loops=1)
+              Hash Cond: (l.candidate_id = ca.candidate_id)
+              Buffers: shared hit=658
+              ->  Seq Scan on leads l  (cost=0.00..390.00 rows=10000 width=27) (actual time=0.195..1.001 rows=10000 loops=1)
+                    Buffers: shared hit=290
+              ->  Hash  (cost=752.05..752.05 rows=3750 width=54) (actual time=4.737..4.739 rows=3750 loops=1)
+                    Buckets: 4096  Batches: 1  Memory Usage: 348kB
+                    Buffers: shared hit=368
+                    ->  Hash Join  (cost=3.12..752.05 rows=3750 width=54) (actual time=0.034..4.221 rows=3750 loops=1)
+                          Hash Cond: (ca.campaign_id = cp.campaign_id)
+                          Buffers: shared hit=368
+                          ->  Seq Scan on candidates ca  (cost=0.00..666.00 rows=30000 width=32) (actual time=0.004..1.854 rows=30000 loops=1)
+                                Buffers: shared hit=366
+                          ->  Hash  (cost=3.00..3.00 rows=10 width=38) (actual time=0.018..0.019 rows=10 loops=1)
+                                Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                                Buffers: shared hit=2
+                                ->  Seq Scan on campaigns cp  (cost=0.00..3.00 rows=10 width=38) (actual time=0.006..0.013 rows=10 loops=1)
+                                      Filter: (workspace_id = 'b60f43aa-0a5d-4efc-8e59-cdcb92afcb6d'::uuid)
+                                      Rows Removed by Filter: 70
+                                      Buffers: shared hit=2
+Planning:
+  Buffers: shared hit=196
+Planning Time: 0.639 ms
+Execution Time: 7.274 ms
+=== R23 run 2 ===
+Sort  (cost=1270.49..1270.51 rows=10 width=102) (actual time=6.989..6.992 rows=10 loops=1)
+  Sort Key: cp.name
+  Sort Method: quicksort  Memory: 26kB
+  Buffers: shared hit=658
+  ->  HashAggregate  (cost=1270.17..1270.32 rows=10 width=102) (actual time=6.973..6.980 rows=10 loops=1)
+        Group Key: cp.campaign_id
+        Batches: 1  Memory Usage: 24kB
+        Buffers: shared hit=658
+        ->  Hash Join  (cost=798.92..1238.92 rows=1250 width=49) (actual time=4.879..6.728 rows=1240 loops=1)
+              Hash Cond: (l.candidate_id = ca.candidate_id)
+              Buffers: shared hit=658
+              ->  Seq Scan on leads l  (cost=0.00..390.00 rows=10000 width=27) (actual time=0.107..0.840 rows=10000 loops=1)
+                    Buffers: shared hit=290
+              ->  Hash  (cost=752.05..752.05 rows=3750 width=54) (actual time=4.756..4.758 rows=3750 loops=1)
+                    Buckets: 4096  Batches: 1  Memory Usage: 348kB
+                    Buffers: shared hit=368
+                    ->  Hash Join  (cost=3.12..752.05 rows=3750 width=54) (actual time=0.022..4.291 rows=3750 loops=1)
+                          Hash Cond: (ca.campaign_id = cp.campaign_id)
+                          Buffers: shared hit=368
+                          ->  Seq Scan on candidates ca  (cost=0.00..666.00 rows=30000 width=32) (actual time=0.002..1.744 rows=30000 loops=1)
+                                Buffers: shared hit=366
+                          ->  Hash  (cost=3.00..3.00 rows=10 width=38) (actual time=0.012..0.013 rows=10 loops=1)
+                                Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                                Buffers: shared hit=2
+                                ->  Seq Scan on campaigns cp  (cost=0.00..3.00 rows=10 width=38) (actual time=0.004..0.009 rows=10 loops=1)
+                                      Filter: (workspace_id = 'b60f43aa-0a5d-4efc-8e59-cdcb92afcb6d'::uuid)
+                                      Rows Removed by Filter: 70
+                                      Buffers: shared hit=2
+Planning:
+  Buffers: shared hit=17
+Planning Time: 0.249 ms
+Execution Time: 7.026 ms
+=== R23 run 3 ===
+Sort  (cost=1270.49..1270.51 rows=10 width=102) (actual time=6.530..6.533 rows=10 loops=1)
+  Sort Key: cp.name
+  Sort Method: quicksort  Memory: 26kB
+  Buffers: shared hit=658
+  ->  HashAggregate  (cost=1270.17..1270.32 rows=10 width=102) (actual time=6.516..6.523 rows=10 loops=1)
+        Group Key: cp.campaign_id
+        Batches: 1  Memory Usage: 24kB
+        Buffers: shared hit=658
+        ->  Hash Join  (cost=798.92..1238.92 rows=1250 width=49) (actual time=4.557..6.275 rows=1240 loops=1)
+              Hash Cond: (l.candidate_id = ca.candidate_id)
+              Buffers: shared hit=658
+              ->  Seq Scan on leads l  (cost=0.00..390.00 rows=10000 width=27) (actual time=0.060..0.756 rows=10000 loops=1)
+                    Buffers: shared hit=290
+              ->  Hash  (cost=752.05..752.05 rows=3750 width=54) (actual time=4.479..4.481 rows=3750 loops=1)
+                    Buckets: 4096  Batches: 1  Memory Usage: 348kB
+                    Buffers: shared hit=368
+                    ->  Hash Join  (cost=3.12..752.05 rows=3750 width=54) (actual time=0.017..4.064 rows=3750 loops=1)
+                          Hash Cond: (ca.campaign_id = cp.campaign_id)
+                          Buffers: shared hit=368
+                          ->  Seq Scan on candidates ca  (cost=0.00..666.00 rows=30000 width=32) (actual time=0.001..1.709 rows=30000 loops=1)
+                                Buffers: shared hit=366
+                          ->  Hash  (cost=3.00..3.00 rows=10 width=38) (actual time=0.011..0.012 rows=10 loops=1)
+                                Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                                Buffers: shared hit=2
+                                ->  Seq Scan on campaigns cp  (cost=0.00..3.00 rows=10 width=38) (actual time=0.003..0.009 rows=10 loops=1)
+                                      Filter: (workspace_id = 'b60f43aa-0a5d-4efc-8e59-cdcb92afcb6d'::uuid)
+                                      Rows Removed by Filter: 70
+                                      Buffers: shared hit=2
+Planning:
+  Buffers: shared hit=17
+Planning Time: 0.218 ms
+Execution Time: 6.562 ms

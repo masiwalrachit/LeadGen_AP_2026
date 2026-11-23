@@ -1,0 +1,84 @@
+-- R6 READ: Clients page: clients of a workspace with how many campaigns each has.
+-- parameters: 'b60f43aa-0a5d-4efc-8e59-cdcb92afcb6d'
+
+=== R6 run 1 ===
+Sort  (cost=4.72..4.73 rows=5 width=77) (actual time=0.069..0.071 rows=5 loops=1)
+  Sort Key: c.name
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=6
+  ->  HashAggregate  (cost=4.61..4.66 rows=5 width=77) (actual time=0.045..0.048 rows=5 loops=1)
+        Group Key: c.client_id
+        Batches: 1  Memory Usage: 24kB
+        Buffers: shared hit=3
+        ->  Hash Right Join  (cost=1.56..4.59 rows=5 width=85) (actual time=0.030..0.040 rows=7 loops=1)
+              Hash Cond: (cp.client_id = c.client_id)
+              Buffers: shared hit=3
+              ->  Seq Scan on campaigns cp  (cost=0.00..3.00 rows=10 width=48) (actual time=0.003..0.009 rows=10 loops=1)
+                    Filter: (workspace_id = 'b60f43aa-0a5d-4efc-8e59-cdcb92afcb6d'::uuid)
+                    Rows Removed by Filter: 70
+                    Buffers: shared hit=2
+              ->  Hash  (cost=1.50..1.50 rows=5 width=85) (actual time=0.014..0.015 rows=5 loops=1)
+                    Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                    Buffers: shared hit=1
+                    ->  Seq Scan on clients c  (cost=0.00..1.50 rows=5 width=85) (actual time=0.006..0.008 rows=5 loops=1)
+                          Filter: (workspace_id = 'b60f43aa-0a5d-4efc-8e59-cdcb92afcb6d'::uuid)
+                          Rows Removed by Filter: 35
+                          Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=177
+Planning Time: 0.644 ms
+Execution Time: 0.156 ms
+=== R6 run 2 ===
+Sort  (cost=4.72..4.73 rows=5 width=77) (actual time=0.030..0.032 rows=5 loops=1)
+  Sort Key: c.name
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=3
+  ->  HashAggregate  (cost=4.61..4.66 rows=5 width=77) (actual time=0.023..0.024 rows=5 loops=1)
+        Group Key: c.client_id
+        Batches: 1  Memory Usage: 24kB
+        Buffers: shared hit=3
+        ->  Hash Right Join  (cost=1.56..4.59 rows=5 width=85) (actual time=0.011..0.019 rows=7 loops=1)
+              Hash Cond: (cp.client_id = c.client_id)
+              Buffers: shared hit=3
+              ->  Seq Scan on campaigns cp  (cost=0.00..3.00 rows=10 width=48) (actual time=0.002..0.006 rows=10 loops=1)
+                    Filter: (workspace_id = 'b60f43aa-0a5d-4efc-8e59-cdcb92afcb6d'::uuid)
+                    Rows Removed by Filter: 70
+                    Buffers: shared hit=2
+              ->  Hash  (cost=1.50..1.50 rows=5 width=85) (actual time=0.007..0.007 rows=5 loops=1)
+                    Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                    Buffers: shared hit=1
+                    ->  Seq Scan on clients c  (cost=0.00..1.50 rows=5 width=85) (actual time=0.003..0.005 rows=5 loops=1)
+                          Filter: (workspace_id = 'b60f43aa-0a5d-4efc-8e59-cdcb92afcb6d'::uuid)
+                          Rows Removed by Filter: 35
+                          Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=8
+Planning Time: 0.129 ms
+Execution Time: 0.056 ms
+=== R6 run 3 ===
+Sort  (cost=4.72..4.73 rows=5 width=77) (actual time=0.028..0.029 rows=5 loops=1)
+  Sort Key: c.name
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=3
+  ->  HashAggregate  (cost=4.61..4.66 rows=5 width=77) (actual time=0.022..0.023 rows=5 loops=1)
+        Group Key: c.client_id
+        Batches: 1  Memory Usage: 24kB
+        Buffers: shared hit=3
+        ->  Hash Right Join  (cost=1.56..4.59 rows=5 width=85) (actual time=0.011..0.018 rows=7 loops=1)
+              Hash Cond: (cp.client_id = c.client_id)
+              Buffers: shared hit=3
+              ->  Seq Scan on campaigns cp  (cost=0.00..3.00 rows=10 width=48) (actual time=0.001..0.006 rows=10 loops=1)
+                    Filter: (workspace_id = 'b60f43aa-0a5d-4efc-8e59-cdcb92afcb6d'::uuid)
+                    Rows Removed by Filter: 70
+                    Buffers: shared hit=2
+              ->  Hash  (cost=1.50..1.50 rows=5 width=85) (actual time=0.007..0.007 rows=5 loops=1)
+                    Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                    Buffers: shared hit=1
+                    ->  Seq Scan on clients c  (cost=0.00..1.50 rows=5 width=85) (actual time=0.003..0.005 rows=5 loops=1)
+                          Filter: (workspace_id = 'b60f43aa-0a5d-4efc-8e59-cdcb92afcb6d'::uuid)
+                          Rows Removed by Filter: 35
+                          Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=8
+Planning Time: 0.144 ms
+Execution Time: 0.049 ms

@@ -1,0 +1,23 @@
+-- R11 READ: Discovery dedup: is a business with this normalized domain already known?
+-- parameters: 'biz8404.example'
+
+=== R11 run 1 ===
+Index Scan using businesses_normalized_domain_key on businesses  (cost=0.29..8.30 rows=1 width=67) (actual time=0.025..0.026 rows=1 loops=1)
+  Index Cond: ((normalized_domain)::text = 'biz8404.example'::text)
+  Buffers: shared hit=3
+Planning:
+  Buffers: shared hit=107
+Planning Time: 0.436 ms
+Execution Time: 0.048 ms
+=== R11 run 2 ===
+Index Scan using businesses_normalized_domain_key on businesses  (cost=0.29..8.30 rows=1 width=67) (actual time=0.007..0.007 rows=1 loops=1)
+  Index Cond: ((normalized_domain)::text = 'biz8404.example'::text)
+  Buffers: shared hit=3
+Planning Time: 0.049 ms
+Execution Time: 0.015 ms
+=== R11 run 3 ===
+Index Scan using businesses_normalized_domain_key on businesses  (cost=0.29..8.30 rows=1 width=67) (actual time=0.006..0.006 rows=1 loops=1)
+  Index Cond: ((normalized_domain)::text = 'biz8404.example'::text)
+  Buffers: shared hit=3
+Planning Time: 0.059 ms
+Execution Time: 0.012 ms

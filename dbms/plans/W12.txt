@@ -1,0 +1,41 @@
+-- W12 WRITE: Validation: store one piece of evidence (same URL at the same time is stored once).
+-- parameters: 'b9800614-3f2d-44a8-9e9b-f9ab41659c68', 'website', 'https://biz8404.example/contact', '2026-11-20 10:00:00+05:30', 'Contact page', 'Phone listed', '{"phone": true}'
+
+=== W12 run 1 ===
+Insert on evidence  (cost=0.00..0.01 rows=1 width=624) (actual time=0.254..0.255 rows=1 loops=1)
+  Conflict Resolution: NOTHING
+  Conflict Arbiter Indexes: uq_evidence_business_url_time
+  Tuples Inserted: 1
+  Conflicting Tuples: 0
+  Buffers: shared hit=61
+  ->  Result  (cost=0.00..0.01 rows=1 width=624) (actual time=0.026..0.026 rows=1 loops=1)
+        Buffers: shared hit=10
+Planning:
+  Buffers: shared hit=76
+Planning Time: 0.183 ms
+Trigger for constraint evidence_business_id_fkey: time=0.437 calls=1
+Execution Time: 0.710 ms
+=== W12 run 2 ===
+Insert on evidence  (cost=0.00..0.01 rows=1 width=624) (actual time=0.077..0.078 rows=1 loops=1)
+  Conflict Resolution: NOTHING
+  Conflict Arbiter Indexes: uq_evidence_business_url_time
+  Tuples Inserted: 1
+  Conflicting Tuples: 0
+  Buffers: shared hit=17
+  ->  Result  (cost=0.00..0.01 rows=1 width=624) (actual time=0.006..0.006 rows=1 loops=1)
+        Buffers: shared hit=1
+Planning Time: 0.099 ms
+Trigger for constraint evidence_business_id_fkey: time=0.069 calls=1
+Execution Time: 0.174 ms
+=== W12 run 3 ===
+Insert on evidence  (cost=0.00..0.01 rows=1 width=624) (actual time=0.062..0.062 rows=1 loops=1)
+  Conflict Resolution: NOTHING
+  Conflict Arbiter Indexes: uq_evidence_business_url_time
+  Tuples Inserted: 1
+  Conflicting Tuples: 0
+  Buffers: shared hit=17
+  ->  Result  (cost=0.00..0.01 rows=1 width=624) (actual time=0.009..0.009 rows=1 loops=1)
+        Buffers: shared hit=1
+Planning Time: 0.047 ms
+Trigger for constraint evidence_business_id_fkey: time=0.045 calls=1
+Execution Time: 0.115 ms

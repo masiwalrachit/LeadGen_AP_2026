@@ -1,0 +1,35 @@
+-- W4 WRITE: Team page: remove a member from a workspace. Blocked on purpose (ON DELETE RESTRICT via fk_campaigns_creator_membership) if that member created campaigns there.
+-- parameters: 'b60f43aa-0a5d-4efc-8e59-cdcb92afcb6d', '00000000-0000-0000-0000-000000000034'
+
+=== W4 run 1 ===
+Delete on workspace_members  (cost=0.00..1.71 rows=0 width=0) (actual time=0.075..0.075 rows=0 loops=1)
+  Buffers: shared hit=6
+  ->  Seq Scan on workspace_members  (cost=0.00..1.71 rows=1 width=6) (actual time=0.011..0.012 rows=1 loops=1)
+        Filter: ((workspace_id = 'b60f43aa-0a5d-4efc-8e59-cdcb92afcb6d'::uuid) AND (user_id = '00000000-0000-0000-0000-000000000034'::uuid))
+        Rows Removed by Filter: 46
+        Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=70
+Planning Time: 0.308 ms
+Trigger for constraint fk_campaigns_creator_membership: time=0.307 calls=1
+Execution Time: 0.424 ms
+=== W4 run 2 ===
+Delete on workspace_members  (cost=0.00..1.71 rows=0 width=0) (actual time=0.017..0.017 rows=0 loops=1)
+  Buffers: shared hit=3
+  ->  Seq Scan on workspace_members  (cost=0.00..1.71 rows=1 width=6) (actual time=0.006..0.007 rows=1 loops=1)
+        Filter: ((workspace_id = 'b60f43aa-0a5d-4efc-8e59-cdcb92afcb6d'::uuid) AND (user_id = '00000000-0000-0000-0000-000000000034'::uuid))
+        Rows Removed by Filter: 46
+        Buffers: shared hit=1
+Planning Time: 0.067 ms
+Trigger for constraint fk_campaigns_creator_membership: time=0.048 calls=1
+Execution Time: 0.072 ms
+=== W4 run 3 ===
+Delete on workspace_members  (cost=0.00..1.71 rows=0 width=0) (actual time=0.010..0.010 rows=0 loops=1)
+  Buffers: shared hit=3
+  ->  Seq Scan on workspace_members  (cost=0.00..1.71 rows=1 width=6) (actual time=0.005..0.005 rows=1 loops=1)
+        Filter: ((workspace_id = 'b60f43aa-0a5d-4efc-8e59-cdcb92afcb6d'::uuid) AND (user_id = '00000000-0000-0000-0000-000000000034'::uuid))
+        Rows Removed by Filter: 46
+        Buffers: shared hit=1
+Planning Time: 0.030 ms
+Trigger for constraint fk_campaigns_creator_membership: time=0.032 calls=1
+Execution Time: 0.048 ms

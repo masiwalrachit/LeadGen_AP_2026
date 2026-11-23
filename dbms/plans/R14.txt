@@ -1,0 +1,47 @@
+-- R14 READ: Evidence panel: all evidence collected for a business, newest first.
+-- parameters: 'b9800614-3f2d-44a8-9e9b-f9ab41659c68'
+
+=== R14 run 1 ===
+Sort  (cost=16.09..16.10 rows=3 width=143) (actual time=0.077..0.078 rows=3 loops=1)
+  Sort Key: observed_at DESC
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=9
+  ->  Bitmap Heap Scan on evidence  (cost=4.44..16.07 rows=3 width=143) (actual time=0.034..0.047 rows=3 loops=1)
+        Recheck Cond: (business_id = 'b9800614-3f2d-44a8-9e9b-f9ab41659c68'::uuid)
+        Heap Blocks: exact=3
+        Buffers: shared hit=6
+        ->  Bitmap Index Scan on uq_evidence_business_url_time  (cost=0.00..4.44 rows=3 width=0) (actual time=0.022..0.022 rows=3 loops=1)
+              Index Cond: (business_id = 'b9800614-3f2d-44a8-9e9b-f9ab41659c68'::uuid)
+              Buffers: shared hit=3
+Planning:
+  Buffers: shared hit=172
+Planning Time: 0.481 ms
+Execution Time: 0.113 ms
+=== R14 run 2 ===
+Sort  (cost=16.09..16.10 rows=3 width=143) (actual time=0.019..0.020 rows=3 loops=1)
+  Sort Key: observed_at DESC
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=6
+  ->  Bitmap Heap Scan on evidence  (cost=4.44..16.07 rows=3 width=143) (actual time=0.012..0.015 rows=3 loops=1)
+        Recheck Cond: (business_id = 'b9800614-3f2d-44a8-9e9b-f9ab41659c68'::uuid)
+        Heap Blocks: exact=3
+        Buffers: shared hit=6
+        ->  Bitmap Index Scan on uq_evidence_business_url_time  (cost=0.00..4.44 rows=3 width=0) (actual time=0.008..0.008 rows=3 loops=1)
+              Index Cond: (business_id = 'b9800614-3f2d-44a8-9e9b-f9ab41659c68'::uuid)
+              Buffers: shared hit=3
+Planning Time: 0.069 ms
+Execution Time: 0.031 ms
+=== R14 run 3 ===
+Sort  (cost=16.09..16.10 rows=3 width=143) (actual time=0.014..0.015 rows=3 loops=1)
+  Sort Key: observed_at DESC
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=6
+  ->  Bitmap Heap Scan on evidence  (cost=4.44..16.07 rows=3 width=143) (actual time=0.008..0.010 rows=3 loops=1)
+        Recheck Cond: (business_id = 'b9800614-3f2d-44a8-9e9b-f9ab41659c68'::uuid)
+        Heap Blocks: exact=3
+        Buffers: shared hit=6
+        ->  Bitmap Index Scan on uq_evidence_business_url_time  (cost=0.00..4.44 rows=3 width=0) (actual time=0.005..0.005 rows=3 loops=1)
+              Index Cond: (business_id = 'b9800614-3f2d-44a8-9e9b-f9ab41659c68'::uuid)
+              Buffers: shared hit=3
+Planning Time: 0.053 ms
+Execution Time: 0.024 ms

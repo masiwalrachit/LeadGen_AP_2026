@@ -1,0 +1,66 @@
+-- R2 READ: Workspace switcher: all workspaces the user belongs to, with their role.
+-- parameters: '00000000-0000-0000-0000-000000000001'
+
+=== R2 run 1 ===
+Sort  (cost=2.72..2.73 rows=1 width=47) (actual time=0.069..0.070 rows=1 loops=1)
+  Sort Key: w.name
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=5
+  ->  Hash Join  (cost=1.60..2.71 rows=1 width=47) (actual time=0.047..0.050 rows=1 loops=1)
+        Hash Cond: (w.workspace_id = wm.workspace_id)
+        Buffers: shared hit=2
+        ->  Seq Scan on workspaces w  (cost=0.00..1.08 rows=8 width=33) (actual time=0.005..0.005 rows=8 loops=1)
+              Buffers: shared hit=1
+        ->  Hash  (cost=1.59..1.59 rows=1 width=30) (actual time=0.011..0.012 rows=1 loops=1)
+              Buckets: 1024  Batches: 1  Memory Usage: 9kB
+              Buffers: shared hit=1
+              ->  Seq Scan on workspace_members wm  (cost=0.00..1.59 rows=1 width=30) (actual time=0.004..0.007 rows=1 loops=1)
+                    Filter: (user_id = '00000000-0000-0000-0000-000000000001'::uuid)
+                    Rows Removed by Filter: 46
+                    Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=221
+Planning Time: 0.493 ms
+Execution Time: 0.098 ms
+=== R2 run 2 ===
+Sort  (cost=2.72..2.73 rows=1 width=47) (actual time=0.013..0.014 rows=1 loops=1)
+  Sort Key: w.name
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=2
+  ->  Hash Join  (cost=1.60..2.71 rows=1 width=47) (actual time=0.009..0.011 rows=1 loops=1)
+        Hash Cond: (w.workspace_id = wm.workspace_id)
+        Buffers: shared hit=2
+        ->  Seq Scan on workspaces w  (cost=0.00..1.08 rows=8 width=33) (actual time=0.001..0.002 rows=8 loops=1)
+              Buffers: shared hit=1
+        ->  Hash  (cost=1.59..1.59 rows=1 width=30) (actual time=0.005..0.006 rows=1 loops=1)
+              Buckets: 1024  Batches: 1  Memory Usage: 9kB
+              Buffers: shared hit=1
+              ->  Seq Scan on workspace_members wm  (cost=0.00..1.59 rows=1 width=30) (actual time=0.002..0.004 rows=1 loops=1)
+                    Filter: (user_id = '00000000-0000-0000-0000-000000000001'::uuid)
+                    Rows Removed by Filter: 46
+                    Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=4
+Planning Time: 0.099 ms
+Execution Time: 0.023 ms
+=== R2 run 3 ===
+Sort  (cost=2.72..2.73 rows=1 width=47) (actual time=0.014..0.015 rows=1 loops=1)
+  Sort Key: w.name
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=2
+  ->  Hash Join  (cost=1.60..2.71 rows=1 width=47) (actual time=0.011..0.013 rows=1 loops=1)
+        Hash Cond: (w.workspace_id = wm.workspace_id)
+        Buffers: shared hit=2
+        ->  Seq Scan on workspaces w  (cost=0.00..1.08 rows=8 width=33) (actual time=0.001..0.002 rows=8 loops=1)
+              Buffers: shared hit=1
+        ->  Hash  (cost=1.59..1.59 rows=1 width=30) (actual time=0.005..0.005 rows=1 loops=1)
+              Buckets: 1024  Batches: 1  Memory Usage: 9kB
+              Buffers: shared hit=1
+              ->  Seq Scan on workspace_members wm  (cost=0.00..1.59 rows=1 width=30) (actual time=0.002..0.004 rows=1 loops=1)
+                    Filter: (user_id = '00000000-0000-0000-0000-000000000001'::uuid)
+                    Rows Removed by Filter: 46
+                    Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=4
+Planning Time: 0.071 ms
+Execution Time: 0.036 ms

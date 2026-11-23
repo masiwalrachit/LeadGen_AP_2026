@@ -1,0 +1,32 @@
+-- W8 WRITE: Job runner: move a campaign to its next pipeline status (queued -> discovering -> validating -> scoring -> completed / failed / cancelled).
+-- parameters: '3288ed57-dd1f-4d8b-8602-463579bd0512', 'completed'
+
+=== W8 run 1 ===
+Update on campaigns  (cost=0.00..3.00 rows=1 width=54) (actual time=0.244..0.253 rows=1 loops=1)
+  Buffers: shared hit=47
+  ->  Seq Scan on campaigns  (cost=0.00..3.00 rows=1 width=54) (actual time=0.007..0.015 rows=1 loops=1)
+        Filter: (campaign_id = '3288ed57-dd1f-4d8b-8602-463579bd0512'::uuid)
+        Rows Removed by Filter: 79
+        Buffers: shared hit=2
+Planning:
+  Buffers: shared hit=64
+Planning Time: 0.360 ms
+Execution Time: 0.311 ms
+=== W8 run 2 ===
+Update on campaigns  (cost=0.00..3.00 rows=1 width=54) (actual time=0.070..0.074 rows=1 loops=1)
+  Buffers: shared hit=9
+  ->  Seq Scan on campaigns  (cost=0.00..3.00 rows=1 width=54) (actual time=0.006..0.010 rows=1 loops=1)
+        Filter: (campaign_id = '3288ed57-dd1f-4d8b-8602-463579bd0512'::uuid)
+        Rows Removed by Filter: 79
+        Buffers: shared hit=2
+Planning Time: 0.063 ms
+Execution Time: 0.084 ms
+=== W8 run 3 ===
+Update on campaigns  (cost=0.00..3.00 rows=1 width=54) (actual time=0.078..0.082 rows=1 loops=1)
+  Buffers: shared hit=9
+  ->  Seq Scan on campaigns  (cost=0.00..3.00 rows=1 width=54) (actual time=0.006..0.010 rows=1 loops=1)
+        Filter: (campaign_id = '3288ed57-dd1f-4d8b-8602-463579bd0512'::uuid)
+        Rows Removed by Filter: 79
+        Buffers: shared hit=2
+Planning Time: 0.044 ms
+Execution Time: 0.091 ms

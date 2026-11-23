@@ -1,0 +1,110 @@
+-- W21 WRITE: Scoring: refresh the cached final_score from the components and model weights.
+-- parameters: '01d51efb-1a48-4ea7-a9dd-00785c5b1476'
+
+=== W21 run 1 ===
+Update on leads l  (cost=10.37..33.63 rows=1 width=90) (actual time=0.420..0.424 rows=1 loops=1)
+  Buffers: shared hit=56
+  ->  Nested Loop  (cost=10.37..33.63 rows=1 width=90) (actual time=0.227..0.230 rows=1 loops=1)
+        Buffers: shared hit=13
+        ->  Subquery Scan on s  (cost=10.09..25.32 rows=1 width=120) (actual time=0.217..0.220 rows=1 loops=1)
+              Buffers: shared hit=10
+              ->  GroupAggregate  (cost=10.09..25.31 rows=1 width=48) (actual time=0.113..0.115 rows=1 loops=1)
+                    Filter: (round((sum((lsc.dimension_score * smw.weight)) / NULLIF(sum(smw.weight), '0'::numeric)), 2) IS NOT NULL)
+                    Buffers: shared hit=10
+                    ->  Hash Join  (cost=10.09..25.25 rows=5 width=27) (actual time=0.084..0.093 rows=5 loops=1)
+                          Hash Cond: ((lsc.dimension_code)::text = (smw.dimension_code)::text)
+                          Buffers: shared hit=10
+                          ->  Index Scan using lead_score_components_pkey on lead_score_components lsc  (cost=0.29..15.38 rows=5 width=28) (actual time=0.020..0.027 rows=5 loops=1)
+                                Index Cond: (candidate_id = '01d51efb-1a48-4ea7-a9dd-00785c5b1476'::uuid)
+                                Buffers: shared hit=6
+                          ->  Hash  (cost=9.74..9.74 rows=5 width=27) (actual time=0.049..0.050 rows=5 loops=1)
+                                Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                                Buffers: shared hit=4
+                                ->  Hash Join  (cost=8.31..9.74 rows=5 width=27) (actual time=0.042..0.046 rows=5 loops=1)
+                                      Hash Cond: (smw.scoring_model_id = l2.scoring_model_id)
+                                      Buffers: shared hit=4
+                                      ->  Seq Scan on scoring_model_weights smw  (cost=0.00..1.29 rows=29 width=27) (actual time=0.004..0.006 rows=29 loops=1)
+                                            Buffers: shared hit=1
+                                      ->  Hash  (cost=8.30..8.30 rows=1 width=32) (actual time=0.022..0.022 rows=1 loops=1)
+                                            Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                                            Buffers: shared hit=3
+                                            ->  Index Scan using leads_pkey on leads l2  (cost=0.29..8.30 rows=1 width=32) (actual time=0.017..0.017 rows=1 loops=1)
+                                                  Index Cond: (candidate_id = '01d51efb-1a48-4ea7-a9dd-00785c5b1476'::uuid)
+                                                  Buffers: shared hit=3
+        ->  Index Scan using leads_pkey on leads l  (cost=0.29..8.30 rows=1 width=22) (actual time=0.007..0.007 rows=1 loops=1)
+              Index Cond: (candidate_id = s.candidate_id)
+              Buffers: shared hit=3
+Planning:
+  Buffers: shared hit=251
+Planning Time: 1.050 ms
+Execution Time: 0.535 ms
+=== W21 run 2 ===
+Update on leads l  (cost=10.37..33.63 rows=1 width=90) (actual time=0.135..0.138 rows=1 loops=1)
+  Buffers: shared hit=19
+  ->  Nested Loop  (cost=10.37..33.63 rows=1 width=90) (actual time=0.056..0.059 rows=1 loops=1)
+        Buffers: shared hit=12
+        ->  Subquery Scan on s  (cost=10.09..25.32 rows=1 width=120) (actual time=0.052..0.054 rows=1 loops=1)
+              Buffers: shared hit=9
+              ->  GroupAggregate  (cost=10.09..25.31 rows=1 width=48) (actual time=0.050..0.051 rows=1 loops=1)
+                    Filter: (round((sum((lsc.dimension_score * smw.weight)) / NULLIF(sum(smw.weight), '0'::numeric)), 2) IS NOT NULL)
+                    Buffers: shared hit=9
+                    ->  Hash Join  (cost=10.09..25.25 rows=5 width=27) (actual time=0.040..0.043 rows=5 loops=1)
+                          Hash Cond: ((lsc.dimension_code)::text = (smw.dimension_code)::text)
+                          Buffers: shared hit=9
+                          ->  Index Scan using lead_score_components_pkey on lead_score_components lsc  (cost=0.29..15.38 rows=5 width=28) (actual time=0.007..0.008 rows=5 loops=1)
+                                Index Cond: (candidate_id = '01d51efb-1a48-4ea7-a9dd-00785c5b1476'::uuid)
+                                Buffers: shared hit=3
+                          ->  Hash  (cost=9.74..9.74 rows=5 width=27) (actual time=0.029..0.030 rows=5 loops=1)
+                                Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                                Buffers: shared hit=6
+                                ->  Hash Join  (cost=8.31..9.74 rows=5 width=27) (actual time=0.024..0.027 rows=5 loops=1)
+                                      Hash Cond: (smw.scoring_model_id = l2.scoring_model_id)
+                                      Buffers: shared hit=6
+                                      ->  Seq Scan on scoring_model_weights smw  (cost=0.00..1.29 rows=29 width=27) (actual time=0.002..0.004 rows=29 loops=1)
+                                            Buffers: shared hit=1
+                                      ->  Hash  (cost=8.30..8.30 rows=1 width=32) (actual time=0.013..0.014 rows=1 loops=1)
+                                            Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                                            Buffers: shared hit=5
+                                            ->  Index Scan using leads_pkey on leads l2  (cost=0.29..8.30 rows=1 width=32) (actual time=0.009..0.011 rows=1 loops=1)
+                                                  Index Cond: (candidate_id = '01d51efb-1a48-4ea7-a9dd-00785c5b1476'::uuid)
+                                                  Buffers: shared hit=5
+        ->  Index Scan using leads_pkey on leads l  (cost=0.29..8.30 rows=1 width=22) (actual time=0.003..0.003 rows=1 loops=1)
+              Index Cond: (candidate_id = s.candidate_id)
+              Buffers: shared hit=3
+Planning Time: 0.264 ms
+Execution Time: 0.166 ms
+=== W21 run 3 ===
+Update on leads l  (cost=10.37..33.63 rows=1 width=90) (actual time=0.099..0.101 rows=1 loops=1)
+  Buffers: shared hit=19
+  ->  Nested Loop  (cost=10.37..33.63 rows=1 width=90) (actual time=0.044..0.046 rows=1 loops=1)
+        Buffers: shared hit=12
+        ->  Subquery Scan on s  (cost=10.09..25.32 rows=1 width=120) (actual time=0.041..0.043 rows=1 loops=1)
+              Buffers: shared hit=9
+              ->  GroupAggregate  (cost=10.09..25.31 rows=1 width=48) (actual time=0.040..0.041 rows=1 loops=1)
+                    Filter: (round((sum((lsc.dimension_score * smw.weight)) / NULLIF(sum(smw.weight), '0'::numeric)), 2) IS NOT NULL)
+                    Buffers: shared hit=9
+                    ->  Hash Join  (cost=10.09..25.25 rows=5 width=27) (actual time=0.030..0.033 rows=5 loops=1)
+                          Hash Cond: ((lsc.dimension_code)::text = (smw.dimension_code)::text)
+                          Buffers: shared hit=9
+                          ->  Index Scan using lead_score_components_pkey on lead_score_components lsc  (cost=0.29..15.38 rows=5 width=28) (actual time=0.005..0.006 rows=5 loops=1)
+                                Index Cond: (candidate_id = '01d51efb-1a48-4ea7-a9dd-00785c5b1476'::uuid)
+                                Buffers: shared hit=3
+                          ->  Hash  (cost=9.74..9.74 rows=5 width=27) (actual time=0.020..0.021 rows=5 loops=1)
+                                Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                                Buffers: shared hit=6
+                                ->  Hash Join  (cost=8.31..9.74 rows=5 width=27) (actual time=0.016..0.019 rows=5 loops=1)
+                                      Hash Cond: (smw.scoring_model_id = l2.scoring_model_id)
+                                      Buffers: shared hit=6
+                                      ->  Seq Scan on scoring_model_weights smw  (cost=0.00..1.29 rows=29 width=27) (actual time=0.002..0.004 rows=29 loops=1)
+                                            Buffers: shared hit=1
+                                      ->  Hash  (cost=8.30..8.30 rows=1 width=32) (actual time=0.008..0.008 rows=1 loops=1)
+                                            Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                                            Buffers: shared hit=5
+                                            ->  Index Scan using leads_pkey on leads l2  (cost=0.29..8.30 rows=1 width=32) (actual time=0.005..0.007 rows=1 loops=1)
+                                                  Index Cond: (candidate_id = '01d51efb-1a48-4ea7-a9dd-00785c5b1476'::uuid)
+                                                  Buffers: shared hit=5
+        ->  Index Scan using leads_pkey on leads l  (cost=0.29..8.30 rows=1 width=22) (actual time=0.002..0.002 rows=1 loops=1)
+              Index Cond: (candidate_id = s.candidate_id)
+              Buffers: shared hit=3
+Planning Time: 0.235 ms
+Execution Time: 0.126 ms

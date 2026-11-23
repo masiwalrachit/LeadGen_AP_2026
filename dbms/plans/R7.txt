@@ -1,0 +1,183 @@
+-- R7 READ: Campaign list: every campaign in a workspace with client, playbook, creator and candidate / lead counts (client is optional, so LEFT JOIN).
+-- parameters: 'b60f43aa-0a5d-4efc-8e59-cdcb92afcb6d'
+
+=== R7 run 1 ===
+Sort  (cost=1837.36..1846.73 rows=3750 width=133) (actual time=23.122..23.130 rows=10 loops=1)
+  Sort Key: cp.created_at DESC
+  Sort Method: quicksort  Memory: 26kB
+  Buffers: shared hit=670
+  ->  GroupAggregate  (cost=1511.62..1614.74 rows=3750 width=133) (actual time=22.290..23.105 rows=10 loops=1)
+        Group Key: cp.campaign_id, cl.name, sp.name, u.full_name
+        Buffers: shared hit=667
+        ->  Sort  (cost=1511.62..1520.99 rows=3750 width=149) (actual time=22.132..22.346 rows=3750 loops=1)
+              Sort Key: cp.campaign_id, cl.name, sp.name, u.full_name, ca.candidate_id
+              Sort Method: quicksort  Memory: 721kB
+              Buffers: shared hit=667
+              ->  Hash Left Join  (cost=803.79..1289.01 rows=3750 width=149) (actual time=7.364..12.047 rows=3750 loops=1)
+                    Hash Cond: (cp.client_id = cl.client_id)
+                    Buffers: shared hit=661
+                    ->  Hash Join  (cost=801.89..1276.53 rows=3750 width=144) (actual time=7.319..11.423 rows=3750 loops=1)
+                          Hash Cond: (cp.created_by = u.user_id)
+                          Buffers: shared hit=660
+                          ->  Hash Join  (cost=799.99..1263.74 rows=3750 width=148) (actual time=7.283..10.796 rows=3750 loops=1)
+                                Hash Cond: (cp.playbook_id = sp.playbook_id)
+                                Buffers: shared hit=659
+                                ->  Hash Right Join  (cost=798.92..1238.92 rows=3750 width=137) (actual time=7.258..10.212 rows=3750 loops=1)
+                                      Hash Cond: (l.candidate_id = ca.candidate_id)
+                                      Buffers: shared hit=658
+                                      ->  Seq Scan on leads l  (cost=0.00..390.00 rows=10000 width=16) (actual time=0.942..1.866 rows=10000 loops=1)
+                                            Buffers: shared hit=290
+                                      ->  Hash  (cost=752.05..752.05 rows=3750 width=121) (actual time=6.283..6.285 rows=3750 loops=1)
+                                            Buckets: 4096  Batches: 1  Memory Usage: 614kB
+                                            Buffers: shared hit=368
+                                            ->  Hash Right Join  (cost=3.12..752.05 rows=3750 width=121) (actual time=0.039..5.159 rows=3750 loops=1)
+                                                  Hash Cond: (ca.campaign_id = cp.campaign_id)
+                                                  Buffers: shared hit=368
+                                                  ->  Seq Scan on candidates ca  (cost=0.00..666.00 rows=30000 width=32) (actual time=0.004..2.231 rows=30000 loops=1)
+                                                        Buffers: shared hit=366
+                                                  ->  Hash  (cost=3.00..3.00 rows=10 width=105) (actual time=0.018..0.019 rows=10 loops=1)
+                                                        Buckets: 1024  Batches: 1  Memory Usage: 10kB
+                                                        Buffers: shared hit=2
+                                                        ->  Seq Scan on campaigns cp  (cost=0.00..3.00 rows=10 width=105) (actual time=0.005..0.012 rows=10 loops=1)
+                                                              Filter: (workspace_id = 'b60f43aa-0a5d-4efc-8e59-cdcb92afcb6d'::uuid)
+                                                              Rows Removed by Filter: 70
+                                                              Buffers: shared hit=2
+                                ->  Hash  (cost=1.03..1.03 rows=3 width=15) (actual time=0.008..0.008 rows=3 loops=1)
+                                      Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                                      Buffers: shared hit=1
+                                      ->  Seq Scan on service_playbooks sp  (cost=0.00..1.03 rows=3 width=15) (actual time=0.001..0.002 rows=3 loops=1)
+                                            Buffers: shared hit=1
+                          ->  Hash  (cost=1.40..1.40 rows=40 width=28) (actual time=0.023..0.023 rows=40 loops=1)
+                                Buckets: 1024  Batches: 1  Memory Usage: 11kB
+                                Buffers: shared hit=1
+                                ->  Seq Scan on users u  (cost=0.00..1.40 rows=40 width=28) (actual time=0.006..0.010 rows=40 loops=1)
+                                      Buffers: shared hit=1
+                    ->  Hash  (cost=1.40..1.40 rows=40 width=37) (actual time=0.019..0.019 rows=40 loops=1)
+                          Buckets: 1024  Batches: 1  Memory Usage: 11kB
+                          Buffers: shared hit=1
+                          ->  Seq Scan on clients cl  (cost=0.00..1.40 rows=40 width=37) (actual time=0.005..0.009 rows=40 loops=1)
+                                Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=470
+Planning Time: 1.457 ms
+Execution Time: 23.258 ms
+=== R7 run 2 ===
+Sort  (cost=1837.36..1846.73 rows=3750 width=133) (actual time=19.630..19.640 rows=10 loops=1)
+  Sort Key: cp.created_at DESC
+  Sort Method: quicksort  Memory: 26kB
+  Buffers: shared hit=661
+  ->  GroupAggregate  (cost=1511.62..1614.74 rows=3750 width=133) (actual time=18.793..19.623 rows=10 loops=1)
+        Group Key: cp.campaign_id, cl.name, sp.name, u.full_name
+        Buffers: shared hit=661
+        ->  Sort  (cost=1511.62..1520.99 rows=3750 width=149) (actual time=18.682..18.869 rows=3750 loops=1)
+              Sort Key: cp.campaign_id, cl.name, sp.name, u.full_name, ca.candidate_id
+              Sort Method: quicksort  Memory: 721kB
+              Buffers: shared hit=661
+              ->  Hash Left Join  (cost=803.79..1289.01 rows=3750 width=149) (actual time=6.057..10.362 rows=3750 loops=1)
+                    Hash Cond: (cp.client_id = cl.client_id)
+                    Buffers: shared hit=661
+                    ->  Hash Join  (cost=801.89..1276.53 rows=3750 width=144) (actual time=6.036..9.793 rows=3750 loops=1)
+                          Hash Cond: (cp.created_by = u.user_id)
+                          Buffers: shared hit=660
+                          ->  Hash Join  (cost=799.99..1263.74 rows=3750 width=148) (actual time=6.012..9.209 rows=3750 loops=1)
+                                Hash Cond: (cp.playbook_id = sp.playbook_id)
+                                Buffers: shared hit=659
+                                ->  Hash Right Join  (cost=798.92..1238.92 rows=3750 width=137) (actual time=6.002..8.657 rows=3750 loops=1)
+                                      Hash Cond: (l.candidate_id = ca.candidate_id)
+                                      Buffers: shared hit=658
+                                      ->  Seq Scan on leads l  (cost=0.00..390.00 rows=10000 width=16) (actual time=0.090..0.934 rows=10000 loops=1)
+                                            Buffers: shared hit=290
+                                      ->  Hash  (cost=752.05..752.05 rows=3750 width=121) (actual time=5.892..5.895 rows=3750 loops=1)
+                                            Buckets: 4096  Batches: 1  Memory Usage: 614kB
+                                            Buffers: shared hit=368
+                                            ->  Hash Right Join  (cost=3.12..752.05 rows=3750 width=121) (actual time=0.026..4.998 rows=3750 loops=1)
+                                                  Hash Cond: (ca.campaign_id = cp.campaign_id)
+                                                  Buffers: shared hit=368
+                                                  ->  Seq Scan on candidates ca  (cost=0.00..666.00 rows=30000 width=32) (actual time=0.002..2.031 rows=30000 loops=1)
+                                                        Buffers: shared hit=366
+                                                  ->  Hash  (cost=3.00..3.00 rows=10 width=105) (actual time=0.016..0.017 rows=10 loops=1)
+                                                        Buckets: 1024  Batches: 1  Memory Usage: 10kB
+                                                        Buffers: shared hit=2
+                                                        ->  Seq Scan on campaigns cp  (cost=0.00..3.00 rows=10 width=105) (actual time=0.005..0.012 rows=10 loops=1)
+                                                              Filter: (workspace_id = 'b60f43aa-0a5d-4efc-8e59-cdcb92afcb6d'::uuid)
+                                                              Rows Removed by Filter: 70
+                                                              Buffers: shared hit=2
+                                ->  Hash  (cost=1.03..1.03 rows=3 width=15) (actual time=0.005..0.006 rows=3 loops=1)
+                                      Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                                      Buffers: shared hit=1
+                                      ->  Seq Scan on service_playbooks sp  (cost=0.00..1.03 rows=3 width=15) (actual time=0.002..0.003 rows=3 loops=1)
+                                            Buffers: shared hit=1
+                          ->  Hash  (cost=1.40..1.40 rows=40 width=28) (actual time=0.019..0.020 rows=40 loops=1)
+                                Buckets: 1024  Batches: 1  Memory Usage: 11kB
+                                Buffers: shared hit=1
+                                ->  Seq Scan on users u  (cost=0.00..1.40 rows=40 width=28) (actual time=0.008..0.012 rows=40 loops=1)
+                                      Buffers: shared hit=1
+                    ->  Hash  (cost=1.40..1.40 rows=40 width=37) (actual time=0.012..0.013 rows=40 loops=1)
+                          Buckets: 1024  Batches: 1  Memory Usage: 11kB
+                          Buffers: shared hit=1
+                          ->  Seq Scan on clients cl  (cost=0.00..1.40 rows=40 width=37) (actual time=0.004..0.007 rows=40 loops=1)
+                                Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=34
+Planning Time: 1.210 ms
+Execution Time: 19.702 ms
+=== R7 run 3 ===
+Sort  (cost=1837.36..1846.73 rows=3750 width=133) (actual time=19.655..19.663 rows=10 loops=1)
+  Sort Key: cp.created_at DESC
+  Sort Method: quicksort  Memory: 26kB
+  Buffers: shared hit=661
+  ->  GroupAggregate  (cost=1511.62..1614.74 rows=3750 width=133) (actual time=18.821..19.651 rows=10 loops=1)
+        Group Key: cp.campaign_id, cl.name, sp.name, u.full_name
+        Buffers: shared hit=661
+        ->  Sort  (cost=1511.62..1520.99 rows=3750 width=149) (actual time=18.707..18.892 rows=3750 loops=1)
+              Sort Key: cp.campaign_id, cl.name, sp.name, u.full_name, ca.candidate_id
+              Sort Method: quicksort  Memory: 721kB
+              Buffers: shared hit=661
+              ->  Hash Left Join  (cost=803.79..1289.01 rows=3750 width=149) (actual time=5.607..9.965 rows=3750 loops=1)
+                    Hash Cond: (cp.client_id = cl.client_id)
+                    Buffers: shared hit=661
+                    ->  Hash Join  (cost=801.89..1276.53 rows=3750 width=144) (actual time=5.589..9.366 rows=3750 loops=1)
+                          Hash Cond: (cp.created_by = u.user_id)
+                          Buffers: shared hit=660
+                          ->  Hash Join  (cost=799.99..1263.74 rows=3750 width=148) (actual time=5.566..8.735 rows=3750 loops=1)
+                                Hash Cond: (cp.playbook_id = sp.playbook_id)
+                                Buffers: shared hit=659
+                                ->  Hash Right Join  (cost=798.92..1238.92 rows=3750 width=137) (actual time=5.558..8.169 rows=3750 loops=1)
+                                      Hash Cond: (l.candidate_id = ca.candidate_id)
+                                      Buffers: shared hit=658
+                                      ->  Seq Scan on leads l  (cost=0.00..390.00 rows=10000 width=16) (actual time=0.093..0.928 rows=10000 loops=1)
+                                            Buffers: shared hit=290
+                                      ->  Hash  (cost=752.05..752.05 rows=3750 width=121) (actual time=5.458..5.460 rows=3750 loops=1)
+                                            Buckets: 4096  Batches: 1  Memory Usage: 614kB
+                                            Buffers: shared hit=368
+                                            ->  Hash Right Join  (cost=3.12..752.05 rows=3750 width=121) (actual time=0.020..4.645 rows=3750 loops=1)
+                                                  Hash Cond: (ca.campaign_id = cp.campaign_id)
+                                                  Buffers: shared hit=368
+                                                  ->  Seq Scan on candidates ca  (cost=0.00..666.00 rows=30000 width=32) (actual time=0.001..1.937 rows=30000 loops=1)
+                                                        Buffers: shared hit=366
+                                                  ->  Hash  (cost=3.00..3.00 rows=10 width=105) (actual time=0.014..0.015 rows=10 loops=1)
+                                                        Buckets: 1024  Batches: 1  Memory Usage: 10kB
+                                                        Buffers: shared hit=2
+                                                        ->  Seq Scan on campaigns cp  (cost=0.00..3.00 rows=10 width=105) (actual time=0.003..0.010 rows=10 loops=1)
+                                                              Filter: (workspace_id = 'b60f43aa-0a5d-4efc-8e59-cdcb92afcb6d'::uuid)
+                                                              Rows Removed by Filter: 70
+                                                              Buffers: shared hit=2
+                                ->  Hash  (cost=1.03..1.03 rows=3 width=15) (actual time=0.003..0.003 rows=3 loops=1)
+                                      Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                                      Buffers: shared hit=1
+                                      ->  Seq Scan on service_playbooks sp  (cost=0.00..1.03 rows=3 width=15) (actual time=0.001..0.002 rows=3 loops=1)
+                                            Buffers: shared hit=1
+                          ->  Hash  (cost=1.40..1.40 rows=40 width=28) (actual time=0.016..0.016 rows=40 loops=1)
+                                Buckets: 1024  Batches: 1  Memory Usage: 11kB
+                                Buffers: shared hit=1
+                                ->  Seq Scan on users u  (cost=0.00..1.40 rows=40 width=28) (actual time=0.004..0.008 rows=40 loops=1)
+                                      Buffers: shared hit=1
+                    ->  Hash  (cost=1.40..1.40 rows=40 width=37) (actual time=0.013..0.013 rows=40 loops=1)
+                          Buckets: 1024  Batches: 1  Memory Usage: 11kB
+                          Buffers: shared hit=1
+                          ->  Seq Scan on clients cl  (cost=0.00..1.40 rows=40 width=37) (actual time=0.004..0.008 rows=40 loops=1)
+                                Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=34
+Planning Time: 0.678 ms
+Execution Time: 19.749 ms

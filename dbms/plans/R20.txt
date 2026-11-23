@@ -1,0 +1,108 @@
+-- R20 READ: Lead detail: "explain every score" - each dimension's score, weight and explanation.
+-- parameters: '01d51efb-1a48-4ea7-a9dd-00785c5b1476'
+
+=== R20 run 1 ===
+Sort  (cost=26.94..26.95 rows=5 width=61) (actual time=0.134..0.137 rows=5 loops=1)
+  Sort Key: smw.weight DESC NULLS LAST
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=11
+  ->  Hash Left Join  (cost=2.30..26.88 rows=5 width=61) (actual time=0.093..0.104 rows=5 loops=1)
+        Hash Cond: ((l.scoring_model_id = smw.scoring_model_id) AND ((lsc.dimension_code)::text = (smw.dimension_code)::text))
+        Buffers: shared hit=8
+        ->  Nested Loop  (cost=0.57..25.13 rows=5 width=78) (actual time=0.058..0.066 rows=5 loops=1)
+              Join Filter: ((lsc.dimension_code)::text = (sd.dimension_code)::text)
+              Rows Removed by Join Filter: 10
+              Buffers: shared hit=7
+              ->  Nested Loop  (cost=0.57..23.75 rows=5 width=63) (actual time=0.046..0.051 rows=5 loops=1)
+                    Buffers: shared hit=6
+                    ->  Index Scan using lead_score_components_pkey on lead_score_components lsc  (cost=0.29..15.38 rows=5 width=63) (actual time=0.015..0.016 rows=5 loops=1)
+                          Index Cond: (candidate_id = '01d51efb-1a48-4ea7-a9dd-00785c5b1476'::uuid)
+                          Buffers: shared hit=3
+                    ->  Materialize  (cost=0.29..8.31 rows=1 width=32) (actual time=0.006..0.006 rows=1 loops=5)
+                          Buffers: shared hit=3
+                          ->  Index Scan using leads_pkey on leads l  (cost=0.29..8.30 rows=1 width=32) (actual time=0.021..0.022 rows=1 loops=1)
+                                Index Cond: (candidate_id = '01d51efb-1a48-4ea7-a9dd-00785c5b1476'::uuid)
+                                Buffers: shared hit=3
+              ->  Materialize  (cost=0.00..1.07 rows=5 width=15) (actual time=0.001..0.002 rows=3 loops=5)
+                    Buffers: shared hit=1
+                    ->  Seq Scan on score_dimensions sd  (cost=0.00..1.05 rows=5 width=15) (actual time=0.003..0.004 rows=5 loops=1)
+                          Buffers: shared hit=1
+        ->  Hash  (cost=1.29..1.29 rows=29 width=27) (actual time=0.018..0.019 rows=29 loops=1)
+              Buckets: 1024  Batches: 1  Memory Usage: 10kB
+              Buffers: shared hit=1
+              ->  Seq Scan on scoring_model_weights smw  (cost=0.00..1.29 rows=29 width=27) (actual time=0.004..0.008 rows=29 loops=1)
+                    Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=387
+Planning Time: 1.117 ms
+Execution Time: 0.210 ms
+=== R20 run 2 ===
+Sort  (cost=26.94..26.95 rows=5 width=61) (actual time=0.068..0.071 rows=5 loops=1)
+  Sort Key: smw.weight DESC NULLS LAST
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=8
+  ->  Hash Left Join  (cost=2.30..26.88 rows=5 width=61) (actual time=0.054..0.064 rows=5 loops=1)
+        Hash Cond: ((l.scoring_model_id = smw.scoring_model_id) AND ((lsc.dimension_code)::text = (smw.dimension_code)::text))
+        Buffers: shared hit=8
+        ->  Nested Loop  (cost=0.57..25.13 rows=5 width=78) (actual time=0.031..0.039 rows=5 loops=1)
+              Join Filter: ((lsc.dimension_code)::text = (sd.dimension_code)::text)
+              Rows Removed by Join Filter: 10
+              Buffers: shared hit=7
+              ->  Nested Loop  (cost=0.57..23.75 rows=5 width=63) (actual time=0.022..0.027 rows=5 loops=1)
+                    Buffers: shared hit=6
+                    ->  Index Scan using lead_score_components_pkey on lead_score_components lsc  (cost=0.29..15.38 rows=5 width=63) (actual time=0.011..0.012 rows=5 loops=1)
+                          Index Cond: (candidate_id = '01d51efb-1a48-4ea7-a9dd-00785c5b1476'::uuid)
+                          Buffers: shared hit=3
+                    ->  Materialize  (cost=0.29..8.31 rows=1 width=32) (actual time=0.002..0.002 rows=1 loops=5)
+                          Buffers: shared hit=3
+                          ->  Index Scan using leads_pkey on leads l  (cost=0.29..8.30 rows=1 width=32) (actual time=0.008..0.009 rows=1 loops=1)
+                                Index Cond: (candidate_id = '01d51efb-1a48-4ea7-a9dd-00785c5b1476'::uuid)
+                                Buffers: shared hit=3
+              ->  Materialize  (cost=0.00..1.07 rows=5 width=15) (actual time=0.001..0.002 rows=3 loops=5)
+                    Buffers: shared hit=1
+                    ->  Seq Scan on score_dimensions sd  (cost=0.00..1.05 rows=5 width=15) (actual time=0.002..0.003 rows=5 loops=1)
+                          Buffers: shared hit=1
+        ->  Hash  (cost=1.29..1.29 rows=29 width=27) (actual time=0.016..0.016 rows=29 loops=1)
+              Buckets: 1024  Batches: 1  Memory Usage: 10kB
+              Buffers: shared hit=1
+              ->  Seq Scan on scoring_model_weights smw  (cost=0.00..1.29 rows=29 width=27) (actual time=0.004..0.008 rows=29 loops=1)
+                    Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=4
+Planning Time: 0.274 ms
+Execution Time: 0.099 ms
+=== R20 run 3 ===
+Sort  (cost=26.94..26.95 rows=5 width=61) (actual time=0.050..0.052 rows=5 loops=1)
+  Sort Key: smw.weight DESC NULLS LAST
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=8
+  ->  Hash Left Join  (cost=2.30..26.88 rows=5 width=61) (actual time=0.036..0.046 rows=5 loops=1)
+        Hash Cond: ((l.scoring_model_id = smw.scoring_model_id) AND ((lsc.dimension_code)::text = (smw.dimension_code)::text))
+        Buffers: shared hit=8
+        ->  Nested Loop  (cost=0.57..25.13 rows=5 width=78) (actual time=0.017..0.024 rows=5 loops=1)
+              Join Filter: ((lsc.dimension_code)::text = (sd.dimension_code)::text)
+              Rows Removed by Join Filter: 10
+              Buffers: shared hit=7
+              ->  Nested Loop  (cost=0.57..23.75 rows=5 width=63) (actual time=0.011..0.015 rows=5 loops=1)
+                    Buffers: shared hit=6
+                    ->  Index Scan using lead_score_components_pkey on lead_score_components lsc  (cost=0.29..15.38 rows=5 width=63) (actual time=0.005..0.006 rows=5 loops=1)
+                          Index Cond: (candidate_id = '01d51efb-1a48-4ea7-a9dd-00785c5b1476'::uuid)
+                          Buffers: shared hit=3
+                    ->  Materialize  (cost=0.29..8.31 rows=1 width=32) (actual time=0.001..0.001 rows=1 loops=5)
+                          Buffers: shared hit=3
+                          ->  Index Scan using leads_pkey on leads l  (cost=0.29..8.30 rows=1 width=32) (actual time=0.004..0.005 rows=1 loops=1)
+                                Index Cond: (candidate_id = '01d51efb-1a48-4ea7-a9dd-00785c5b1476'::uuid)
+                                Buffers: shared hit=3
+              ->  Materialize  (cost=0.00..1.07 rows=5 width=15) (actual time=0.001..0.001 rows=3 loops=5)
+                    Buffers: shared hit=1
+                    ->  Seq Scan on score_dimensions sd  (cost=0.00..1.05 rows=5 width=15) (actual time=0.002..0.002 rows=5 loops=1)
+                          Buffers: shared hit=1
+        ->  Hash  (cost=1.29..1.29 rows=29 width=27) (actual time=0.012..0.013 rows=29 loops=1)
+              Buckets: 1024  Batches: 1  Memory Usage: 10kB
+              Buffers: shared hit=1
+              ->  Seq Scan on scoring_model_weights smw  (cost=0.00..1.29 rows=29 width=27) (actual time=0.002..0.005 rows=29 loops=1)
+                    Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=4
+Planning Time: 0.270 ms
+Execution Time: 0.083 ms

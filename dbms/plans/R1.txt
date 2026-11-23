@@ -1,0 +1,26 @@
+-- R1 READ: Sign-in: load the app profile of the user who just authenticated (by email).
+-- parameters: 'user1@agency1.example'
+
+=== R1 run 1 ===
+Seq Scan on users  (cost=0.00..1.50 rows=1 width=58) (actual time=0.006..0.008 rows=1 loops=1)
+  Filter: ((email)::text = 'user1@agency1.example'::text)
+  Rows Removed by Filter: 39
+  Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=90
+Planning Time: 0.307 ms
+Execution Time: 0.019 ms
+=== R1 run 2 ===
+Seq Scan on users  (cost=0.00..1.50 rows=1 width=58) (actual time=0.002..0.004 rows=1 loops=1)
+  Filter: ((email)::text = 'user1@agency1.example'::text)
+  Rows Removed by Filter: 39
+  Buffers: shared hit=1
+Planning Time: 0.025 ms
+Execution Time: 0.007 ms
+=== R1 run 3 ===
+Seq Scan on users  (cost=0.00..1.50 rows=1 width=58) (actual time=0.002..0.004 rows=1 loops=1)
+  Filter: ((email)::text = 'user1@agency1.example'::text)
+  Rows Removed by Filter: 39
+  Buffers: shared hit=1
+Planning Time: 0.019 ms
+Execution Time: 0.006 ms

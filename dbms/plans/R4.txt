@@ -1,0 +1,26 @@
+-- R4 READ: Access check: is this user a member of this workspace, and with which role?
+-- parameters: 'b60f43aa-0a5d-4efc-8e59-cdcb92afcb6d', '00000000-0000-0000-0000-000000000001'
+
+=== R4 run 1 ===
+Seq Scan on workspace_members  (cost=0.00..1.71 rows=1 width=6) (actual time=0.006..0.008 rows=1 loops=1)
+  Filter: ((workspace_id = 'b60f43aa-0a5d-4efc-8e59-cdcb92afcb6d'::uuid) AND (user_id = '00000000-0000-0000-0000-000000000001'::uuid))
+  Rows Removed by Filter: 46
+  Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=70
+Planning Time: 0.286 ms
+Execution Time: 0.042 ms
+=== R4 run 2 ===
+Seq Scan on workspace_members  (cost=0.00..1.71 rows=1 width=6) (actual time=0.003..0.005 rows=1 loops=1)
+  Filter: ((workspace_id = 'b60f43aa-0a5d-4efc-8e59-cdcb92afcb6d'::uuid) AND (user_id = '00000000-0000-0000-0000-000000000001'::uuid))
+  Rows Removed by Filter: 46
+  Buffers: shared hit=1
+Planning Time: 0.034 ms
+Execution Time: 0.009 ms
+=== R4 run 3 ===
+Seq Scan on workspace_members  (cost=0.00..1.71 rows=1 width=6) (actual time=0.002..0.004 rows=1 loops=1)
+  Filter: ((workspace_id = 'b60f43aa-0a5d-4efc-8e59-cdcb92afcb6d'::uuid) AND (user_id = '00000000-0000-0000-0000-000000000001'::uuid))
+  Rows Removed by Filter: 46
+  Buffers: shared hit=1
+Planning Time: 0.021 ms
+Execution Time: 0.007 ms

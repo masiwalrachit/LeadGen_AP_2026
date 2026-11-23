@@ -1,0 +1,44 @@
+-- W13 WRITE: Validation: store a public contact path backed by evidence of the same business.
+-- parameters: 'b9800614-3f2d-44a8-9e9b-f9ab41659c68', 'phone', '+91 98100 00000', 'false', '8405'
+
+=== W13 run 1 ===
+Insert on business_contacts  (cost=0.00..0.01 rows=1 width=123) (actual time=0.190..0.191 rows=1 loops=1)
+  Conflict Resolution: NOTHING
+  Conflict Arbiter Indexes: uq_business_contacts_value
+  Tuples Inserted: 1
+  Conflicting Tuples: 0
+  Buffers: shared hit=47
+  ->  Result  (cost=0.00..0.01 rows=1 width=123) (actual time=0.029..0.029 rows=1 loops=1)
+        Buffers: shared hit=10
+Planning:
+  Buffers: shared hit=57
+Planning Time: 0.198 ms
+Trigger for constraint business_contacts_business_id_fkey: time=0.476 calls=1
+Trigger for constraint fk_business_contacts_evidence: time=0.266 calls=1
+Execution Time: 0.953 ms
+=== W13 run 2 ===
+Insert on business_contacts  (cost=0.00..0.01 rows=1 width=123) (actual time=0.041..0.042 rows=1 loops=1)
+  Conflict Resolution: NOTHING
+  Conflict Arbiter Indexes: uq_business_contacts_value
+  Tuples Inserted: 1
+  Conflicting Tuples: 0
+  Buffers: shared hit=10
+  ->  Result  (cost=0.00..0.01 rows=1 width=123) (actual time=0.003..0.004 rows=1 loops=1)
+        Buffers: shared hit=1
+Planning Time: 0.040 ms
+Trigger for constraint business_contacts_business_id_fkey: time=0.046 calls=1
+Trigger for constraint fk_business_contacts_evidence: time=0.034 calls=1
+Execution Time: 0.133 ms
+=== W13 run 3 ===
+Insert on business_contacts  (cost=0.00..0.01 rows=1 width=123) (actual time=0.039..0.039 rows=1 loops=1)
+  Conflict Resolution: NOTHING
+  Conflict Arbiter Indexes: uq_business_contacts_value
+  Tuples Inserted: 1
+  Conflicting Tuples: 0
+  Buffers: shared hit=10
+  ->  Result  (cost=0.00..0.01 rows=1 width=123) (actual time=0.003..0.003 rows=1 loops=1)
+        Buffers: shared hit=1
+Planning Time: 0.036 ms
+Trigger for constraint business_contacts_business_id_fkey: time=0.038 calls=1
+Trigger for constraint fk_business_contacts_evidence: time=0.029 calls=1
+Execution Time: 0.115 ms

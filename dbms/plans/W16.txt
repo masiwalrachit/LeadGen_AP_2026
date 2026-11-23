@@ -1,0 +1,29 @@
+-- W16 WRITE: Validation: save the LLM's interpretation of a candidate.
+-- parameters: '01d51efb-1a48-4ea7-a9dd-00785c5b1476', 'test-llm', 'v1', 'needs_service', 'Re-assessed for timing test'
+
+=== W16 run 1 ===
+Insert on llm_assessments  (cost=0.00..0.01 rows=1 width=578) (actual time=0.207..0.208 rows=1 loops=1)
+  Buffers: shared hit=78
+  ->  Result  (cost=0.00..0.01 rows=1 width=578) (actual time=0.039..0.040 rows=1 loops=1)
+        Buffers: shared hit=10
+Planning:
+  Buffers: shared hit=6
+Planning Time: 0.085 ms
+Trigger for constraint llm_assessments_candidate_id_fkey: time=0.452 calls=1
+Execution Time: 0.681 ms
+=== W16 run 2 ===
+Insert on llm_assessments  (cost=0.00..0.01 rows=1 width=578) (actual time=0.039..0.040 rows=1 loops=1)
+  Buffers: shared hit=6
+  ->  Result  (cost=0.00..0.01 rows=1 width=578) (actual time=0.003..0.003 rows=1 loops=1)
+        Buffers: shared hit=1
+Planning Time: 0.047 ms
+Trigger for constraint llm_assessments_candidate_id_fkey: time=0.047 calls=1
+Execution Time: 0.094 ms
+=== W16 run 3 ===
+Insert on llm_assessments  (cost=0.00..0.01 rows=1 width=578) (actual time=0.033..0.034 rows=1 loops=1)
+  Buffers: shared hit=6
+  ->  Result  (cost=0.00..0.01 rows=1 width=578) (actual time=0.003..0.003 rows=1 loops=1)
+        Buffers: shared hit=1
+Planning Time: 0.032 ms
+Trigger for constraint llm_assessments_candidate_id_fkey: time=0.048 calls=1
+Execution Time: 0.090 ms

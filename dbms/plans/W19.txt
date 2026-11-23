@@ -1,0 +1,32 @@
+-- W19 WRITE: Scoring: publish a qualified candidate as a lead in the inbox.
+-- parameters: 'aa308625-2b45-4c8a-ac37-beef21e9f135', '7f461906-b68e-4366-85d5-448f33df44da', '75', 'Timing test lead'
+
+=== W19 run 1 ===
+Insert on leads  (cost=0.00..0.01 rows=0 width=0) (actual time=0.261..0.262 rows=0 loops=1)
+  Buffers: shared hit=65
+  ->  Result  (cost=0.00..0.01 rows=1 width=150) (actual time=0.004..0.004 rows=1 loops=1)
+Planning:
+  Buffers: shared hit=9
+Planning Time: 0.107 ms
+Trigger for constraint leads_candidate_id_fkey: time=0.448 calls=1
+Trigger for constraint leads_scoring_model_id_fkey: time=0.137 calls=1
+Trigger for constraint leads_reviewed_by_fkey: time=0.027 calls=1
+Execution Time: 0.892 ms
+=== W19 run 2 ===
+Insert on leads  (cost=0.00..0.01 rows=0 width=0) (actual time=0.067..0.067 rows=0 loops=1)
+  Buffers: shared hit=4
+  ->  Result  (cost=0.00..0.01 rows=1 width=150) (actual time=0.001..0.001 rows=1 loops=1)
+Planning Time: 0.045 ms
+Trigger for constraint leads_candidate_id_fkey: time=0.053 calls=1
+Trigger for constraint leads_scoring_model_id_fkey: time=0.020 calls=1
+Trigger for constraint leads_reviewed_by_fkey: time=0.001 calls=1
+Execution Time: 0.150 ms
+=== W19 run 3 ===
+Insert on leads  (cost=0.00..0.01 rows=0 width=0) (actual time=0.059..0.059 rows=0 loops=1)
+  Buffers: shared hit=4
+  ->  Result  (cost=0.00..0.01 rows=1 width=150) (actual time=0.001..0.001 rows=1 loops=1)
+Planning Time: 0.036 ms
+Trigger for constraint leads_candidate_id_fkey: time=0.039 calls=1
+Trigger for constraint leads_scoring_model_id_fkey: time=0.019 calls=1
+Trigger for constraint leads_reviewed_by_fkey: time=0.001 calls=1
+Execution Time: 0.127 ms

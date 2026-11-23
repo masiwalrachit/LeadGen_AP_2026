@@ -1,0 +1,35 @@
+-- W1 WRITE: First sign-in: create the app profile for a Supabase Auth user (safe to repeat).
+-- parameters: '00000000-0000-0000-0000-000000009999', 'newuser@agency9.example', 'New User'
+
+=== W1 run 1 ===
+Insert on users  (cost=0.00..0.01 rows=0 width=0) (actual time=0.161..0.161 rows=0 loops=1)
+  Conflict Resolution: NOTHING
+  Conflict Arbiter Indexes: users_pkey
+  Tuples Inserted: 1
+  Conflicting Tuples: 0
+  Buffers: shared hit=30
+  ->  Result  (cost=0.00..0.01 rows=1 width=758) (actual time=0.003..0.004 rows=1 loops=1)
+Planning:
+  Buffers: shared hit=52
+Planning Time: 0.136 ms
+Execution Time: 0.173 ms
+=== W1 run 2 ===
+Insert on users  (cost=0.00..0.01 rows=0 width=0) (actual time=0.033..0.033 rows=0 loops=1)
+  Conflict Resolution: NOTHING
+  Conflict Arbiter Indexes: users_pkey
+  Tuples Inserted: 1
+  Conflicting Tuples: 0
+  Buffers: shared hit=7
+  ->  Result  (cost=0.00..0.01 rows=1 width=758) (actual time=0.001..0.001 rows=1 loops=1)
+Planning Time: 0.020 ms
+Execution Time: 0.038 ms
+=== W1 run 3 ===
+Insert on users  (cost=0.00..0.01 rows=0 width=0) (actual time=0.020..0.020 rows=0 loops=1)
+  Conflict Resolution: NOTHING
+  Conflict Arbiter Indexes: users_pkey
+  Tuples Inserted: 1
+  Conflicting Tuples: 0
+  Buffers: shared hit=7
+  ->  Result  (cost=0.00..0.01 rows=1 width=758) (actual time=0.001..0.001 rows=1 loops=1)
+Planning Time: 0.014 ms
+Execution Time: 0.024 ms

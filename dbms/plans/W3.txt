@@ -1,0 +1,41 @@
+-- W3 WRITE: Team page: invite / add a member to a workspace.
+-- parameters: 'b60f43aa-0a5d-4efc-8e59-cdcb92afcb6d', '00000000-0000-0000-0000-000000000010', 'member'
+
+=== W3 run 1 ===
+Insert on workspace_members  (cost=0.00..0.01 rows=0 width=0) (actual time=0.107..0.107 rows=0 loops=1)
+  Conflict Resolution: UPDATE
+  Conflict Arbiter Indexes: workspace_members_pkey
+  Tuples Inserted: 1
+  Conflicting Tuples: 0
+  Buffers: shared hit=19
+  ->  Result  (cost=0.00..0.01 rows=1 width=98) (actual time=0.003..0.004 rows=1 loops=1)
+Planning:
+  Buffers: shared hit=39
+Planning Time: 0.143 ms
+Trigger for constraint workspace_members_workspace_id_fkey: time=0.408 calls=1
+Trigger for constraint workspace_members_user_id_fkey: time=0.142 calls=1
+Execution Time: 0.721 ms
+=== W3 run 2 ===
+Insert on workspace_members  (cost=0.00..0.01 rows=0 width=0) (actual time=0.035..0.036 rows=0 loops=1)
+  Conflict Resolution: UPDATE
+  Conflict Arbiter Indexes: workspace_members_pkey
+  Tuples Inserted: 1
+  Conflicting Tuples: 0
+  Buffers: shared hit=5
+  ->  Result  (cost=0.00..0.01 rows=1 width=98) (actual time=0.001..0.001 rows=1 loops=1)
+Planning Time: 0.032 ms
+Trigger for constraint workspace_members_workspace_id_fkey: time=0.043 calls=1
+Trigger for constraint workspace_members_user_id_fkey: time=0.018 calls=1
+Execution Time: 0.106 ms
+=== W3 run 3 ===
+Insert on workspace_members  (cost=0.00..0.01 rows=0 width=0) (actual time=0.030..0.030 rows=0 loops=1)
+  Conflict Resolution: UPDATE
+  Conflict Arbiter Indexes: workspace_members_pkey
+  Tuples Inserted: 1
+  Conflicting Tuples: 0
+  Buffers: shared hit=5
+  ->  Result  (cost=0.00..0.01 rows=1 width=98) (actual time=0.001..0.001 rows=1 loops=1)
+Planning Time: 0.026 ms
+Trigger for constraint workspace_members_workspace_id_fkey: time=0.031 calls=1
+Trigger for constraint workspace_members_user_id_fkey: time=0.017 calls=1
+Execution Time: 0.085 ms

@@ -1,0 +1,47 @@
+-- W17 WRITE: Admin: publish a new version of a playbook's scoring model.
+-- parameters: '1', '70'
+
+=== W17 run 1 ===
+Insert on scoring_models  (cost=1.08..1.10 rows=1 width=42) (actual time=0.115..0.116 rows=1 loops=1)
+  Buffers: shared hit=16
+  ->  Subquery Scan on "*SELECT*"  (cost=1.08..1.10 rows=1 width=42) (actual time=0.027..0.028 rows=1 loops=1)
+        Buffers: shared hit=1
+        ->  Aggregate  (cost=1.08..1.09 rows=1 width=38) (actual time=0.013..0.014 rows=1 loops=1)
+              Buffers: shared hit=1
+              ->  Seq Scan on scoring_models scoring_models_1  (cost=0.00..1.07 rows=2 width=4) (actual time=0.007..0.008 rows=2 loops=1)
+                    Filter: (playbook_id = '1'::smallint)
+                    Rows Removed by Filter: 4
+                    Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=119
+Planning Time: 0.423 ms
+Trigger for constraint scoring_models_playbook_id_fkey: time=0.251 calls=1
+Execution Time: 0.407 ms
+=== W17 run 2 ===
+Insert on scoring_models  (cost=1.08..1.10 rows=1 width=42) (actual time=0.053..0.054 rows=1 loops=1)
+  Buffers: shared hit=5
+  ->  Subquery Scan on "*SELECT*"  (cost=1.08..1.10 rows=1 width=42) (actual time=0.017..0.018 rows=1 loops=1)
+        Buffers: shared hit=1
+        ->  Aggregate  (cost=1.08..1.09 rows=1 width=38) (actual time=0.007..0.008 rows=1 loops=1)
+              Buffers: shared hit=1
+              ->  Seq Scan on scoring_models scoring_models_1  (cost=0.00..1.07 rows=2 width=4) (actual time=0.004..0.005 rows=2 loops=1)
+                    Filter: (playbook_id = '1'::smallint)
+                    Rows Removed by Filter: 4
+                    Buffers: shared hit=1
+Planning Time: 0.117 ms
+Trigger for constraint scoring_models_playbook_id_fkey: time=0.036 calls=1
+Execution Time: 0.112 ms
+=== W17 run 3 ===
+Insert on scoring_models  (cost=1.08..1.10 rows=1 width=42) (actual time=0.058..0.060 rows=1 loops=1)
+  Buffers: shared hit=5
+  ->  Subquery Scan on "*SELECT*"  (cost=1.08..1.10 rows=1 width=42) (actual time=0.018..0.019 rows=1 loops=1)
+        Buffers: shared hit=1
+        ->  Aggregate  (cost=1.08..1.09 rows=1 width=38) (actual time=0.008..0.008 rows=1 loops=1)
+              Buffers: shared hit=1
+              ->  Seq Scan on scoring_models scoring_models_1  (cost=0.00..1.07 rows=2 width=4) (actual time=0.004..0.005 rows=2 loops=1)
+                    Filter: (playbook_id = '1'::smallint)
+                    Rows Removed by Filter: 4
+                    Buffers: shared hit=1
+Planning Time: 0.088 ms
+Trigger for constraint scoring_models_playbook_id_fkey: time=0.044 calls=1
+Execution Time: 0.155 ms

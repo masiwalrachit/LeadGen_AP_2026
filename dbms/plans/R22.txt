@@ -1,0 +1,60 @@
+-- R22 READ: Review history: who saved / contacted / rejected a lead, and when.
+-- parameters: '01d51efb-1a48-4ea7-a9dd-00785c5b1476'
+
+=== R22 run 1 ===
+Sort  (cost=87.57..87.58 rows=1 width=53) (actual time=0.224..0.224 rows=1 loops=1)
+  Sort Key: e.acted_at
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=48
+  ->  Nested Loop  (cost=0.00..87.56 rows=1 width=53) (actual time=0.012..0.202 rows=1 loops=1)
+        Join Filter: (u.user_id = e.user_id)
+        Rows Removed by Join Filter: 8
+        Buffers: shared hit=45
+        ->  Seq Scan on lead_review_events e  (cost=0.00..85.66 rows=1 width=57) (actual time=0.007..0.197 rows=1 loops=1)
+              Filter: (candidate_id = '01d51efb-1a48-4ea7-a9dd-00785c5b1476'::uuid)
+              Rows Removed by Filter: 3332
+              Buffers: shared hit=44
+        ->  Seq Scan on users u  (cost=0.00..1.40 rows=40 width=28) (actual time=0.001..0.002 rows=9 loops=1)
+              Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=258
+Planning Time: 0.538 ms
+Execution Time: 0.242 ms
+=== R22 run 2 ===
+Sort  (cost=87.57..87.58 rows=1 width=53) (actual time=0.147..0.147 rows=1 loops=1)
+  Sort Key: e.acted_at
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=45
+  ->  Nested Loop  (cost=0.00..87.56 rows=1 width=53) (actual time=0.007..0.145 rows=1 loops=1)
+        Join Filter: (u.user_id = e.user_id)
+        Rows Removed by Join Filter: 8
+        Buffers: shared hit=45
+        ->  Seq Scan on lead_review_events e  (cost=0.00..85.66 rows=1 width=57) (actual time=0.004..0.141 rows=1 loops=1)
+              Filter: (candidate_id = '01d51efb-1a48-4ea7-a9dd-00785c5b1476'::uuid)
+              Rows Removed by Filter: 3332
+              Buffers: shared hit=44
+        ->  Seq Scan on users u  (cost=0.00..1.40 rows=40 width=28) (actual time=0.001..0.001 rows=9 loops=1)
+              Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=2
+Planning Time: 0.081 ms
+Execution Time: 0.155 ms
+=== R22 run 3 ===
+Sort  (cost=87.57..87.58 rows=1 width=53) (actual time=0.125..0.125 rows=1 loops=1)
+  Sort Key: e.acted_at
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=45
+  ->  Nested Loop  (cost=0.00..87.56 rows=1 width=53) (actual time=0.006..0.124 rows=1 loops=1)
+        Join Filter: (u.user_id = e.user_id)
+        Rows Removed by Join Filter: 8
+        Buffers: shared hit=45
+        ->  Seq Scan on lead_review_events e  (cost=0.00..85.66 rows=1 width=57) (actual time=0.003..0.121 rows=1 loops=1)
+              Filter: (candidate_id = '01d51efb-1a48-4ea7-a9dd-00785c5b1476'::uuid)
+              Rows Removed by Filter: 3332
+              Buffers: shared hit=44
+        ->  Seq Scan on users u  (cost=0.00..1.40 rows=40 width=28) (actual time=0.001..0.001 rows=9 loops=1)
+              Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=2
+Planning Time: 0.053 ms
+Execution Time: 0.131 ms

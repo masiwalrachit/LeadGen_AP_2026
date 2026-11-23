@@ -1,0 +1,36 @@
+-- W15 WRITE: Validation: link a signal to the evidence that supports it.
+-- parameters: '01d51efb-1a48-4ea7-a9dd-00785c5b1476', 'outdated_design', '48405'
+
+=== W15 run 1 ===
+Insert on signal_evidence  (cost=0.00..0.01 rows=0 width=0) (actual time=0.287..0.287 rows=0 loops=1)
+  Conflict Resolution: NOTHING
+  Tuples Inserted: 1
+  Conflicting Tuples: 0
+  Buffers: shared hit=78 dirtied=1 written=1
+  ->  Result  (cost=0.00..0.01 rows=1 width=122) (actual time=0.001..0.001 rows=1 loops=1)
+Planning Time: 0.079 ms
+Trigger for constraint signal_evidence_evidence_id_fkey: time=0.527 calls=1
+Trigger for constraint fk_signal_evidence_signal: time=0.246 calls=1
+Execution Time: 1.075 ms
+=== W15 run 2 ===
+Insert on signal_evidence  (cost=0.00..0.01 rows=0 width=0) (actual time=0.030..0.030 rows=0 loops=1)
+  Conflict Resolution: NOTHING
+  Tuples Inserted: 1
+  Conflicting Tuples: 0
+  Buffers: shared hit=9
+  ->  Result  (cost=0.00..0.01 rows=1 width=122) (actual time=0.001..0.001 rows=1 loops=1)
+Planning Time: 0.034 ms
+Trigger for constraint signal_evidence_evidence_id_fkey: time=0.081 calls=1
+Trigger for constraint fk_signal_evidence_signal: time=0.044 calls=1
+Execution Time: 0.163 ms
+=== W15 run 3 ===
+Insert on signal_evidence  (cost=0.00..0.01 rows=0 width=0) (actual time=0.030..0.030 rows=0 loops=1)
+  Conflict Resolution: NOTHING
+  Tuples Inserted: 1
+  Conflicting Tuples: 0
+  Buffers: shared hit=9
+  ->  Result  (cost=0.00..0.01 rows=1 width=122) (actual time=0.001..0.001 rows=1 loops=1)
+Planning Time: 0.023 ms
+Trigger for constraint signal_evidence_evidence_id_fkey: time=0.048 calls=1
+Trigger for constraint fk_signal_evidence_signal: time=0.027 calls=1
+Execution Time: 0.111 ms

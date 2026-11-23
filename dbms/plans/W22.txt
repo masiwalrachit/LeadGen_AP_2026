@@ -1,0 +1,29 @@
+-- W22 WRITE: Validation result: mark a candidate qualified / unqualified / discarded.
+-- parameters: '01d51efb-1a48-4ea7-a9dd-00785c5b1476', 'qualified'
+
+=== W22 run 1 ===
+Update on candidates  (cost=0.29..8.30 rows=0 width=0) (actual time=0.191..0.192 rows=0 loops=1)
+  Buffers: shared hit=35
+  ->  Index Scan using candidates_pkey on candidates  (cost=0.29..8.30 rows=1 width=64) (actual time=0.016..0.017 rows=1 loops=1)
+        Index Cond: (candidate_id = '01d51efb-1a48-4ea7-a9dd-00785c5b1476'::uuid)
+        Buffers: shared hit=3
+Planning:
+  Buffers: shared hit=79
+Planning Time: 0.302 ms
+Execution Time: 0.282 ms
+=== W22 run 2 ===
+Update on candidates  (cost=0.29..8.30 rows=0 width=0) (actual time=0.051..0.051 rows=0 loops=1)
+  Buffers: shared hit=19
+  ->  Index Scan using candidates_pkey on candidates  (cost=0.29..8.30 rows=1 width=64) (actual time=0.007..0.008 rows=1 loops=1)
+        Index Cond: (candidate_id = '01d51efb-1a48-4ea7-a9dd-00785c5b1476'::uuid)
+        Buffers: shared hit=5
+Planning Time: 0.042 ms
+Execution Time: 0.059 ms
+=== W22 run 3 ===
+Update on candidates  (cost=0.29..8.30 rows=0 width=0) (actual time=0.034..0.035 rows=0 loops=1)
+  Buffers: shared hit=19
+  ->  Index Scan using candidates_pkey on candidates  (cost=0.29..8.30 rows=1 width=64) (actual time=0.004..0.005 rows=1 loops=1)
+        Index Cond: (candidate_id = '01d51efb-1a48-4ea7-a9dd-00785c5b1476'::uuid)
+        Buffers: shared hit=5
+Planning Time: 0.025 ms
+Execution Time: 0.040 ms

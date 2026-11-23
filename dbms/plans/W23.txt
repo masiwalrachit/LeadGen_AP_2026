@@ -1,0 +1,53 @@
+-- W23 WRITE: Review: save / contact / reject a lead AND append the history event in one statement, so the cached review_status and lead_review_events never disagree.
+-- parameters: '01d51efb-1a48-4ea7-a9dd-00785c5b1476', 'contacted', '00000000-0000-0000-0000-000000000001', 'Called the owner'
+
+=== W23 run 1 ===
+Insert on lead_review_events  (cost=8.30..8.33 rows=1 width=122) (actual time=0.388..0.393 rows=1 loops=1)
+  Buffers: shared hit=91
+  CTE upd
+    ->  Update on leads  (cost=0.29..8.30 rows=1 width=72) (actual time=0.281..0.285 rows=1 loops=1)
+          Buffers: shared hit=58
+          ->  Index Scan using leads_pkey on leads  (cost=0.29..8.30 rows=1 width=72) (actual time=0.025..0.029 rows=1 loops=1)
+                Index Cond: (candidate_id = '01d51efb-1a48-4ea7-a9dd-00785c5b1476'::uuid)
+                Buffers: shared hit=5
+  ->  CTE Scan on upd  (cost=0.00..0.03 rows=1 width=122) (actual time=0.314..0.319 rows=1 loops=1)
+        Buffers: shared hit=68
+Planning:
+  Buffers: shared hit=64
+Planning Time: 0.399 ms
+Trigger for constraint leads_reviewed_by_fkey on leads: time=0.224 calls=1
+Trigger for constraint lead_review_events_candidate_id_fkey on lead_review_events: time=0.077 calls=1
+Trigger for constraint lead_review_events_user_id_fkey on lead_review_events: time=0.041 calls=1
+Execution Time: 0.796 ms
+=== W23 run 2 ===
+Insert on lead_review_events  (cost=8.30..8.33 rows=1 width=122) (actual time=0.120..0.124 rows=1 loops=1)
+  Buffers: shared hit=17
+  CTE upd
+    ->  Update on leads  (cost=0.29..8.30 rows=1 width=72) (actual time=0.087..0.091 rows=1 loops=1)
+          Buffers: shared hit=13
+          ->  Index Scan using leads_pkey on leads  (cost=0.29..8.30 rows=1 width=72) (actual time=0.011..0.014 rows=1 loops=1)
+                Index Cond: (candidate_id = '01d51efb-1a48-4ea7-a9dd-00785c5b1476'::uuid)
+                Buffers: shared hit=5
+  ->  CTE Scan on upd  (cost=0.00..0.03 rows=1 width=122) (actual time=0.091..0.095 rows=1 loops=1)
+        Buffers: shared hit=14
+Planning Time: 0.070 ms
+Trigger for constraint leads_reviewed_by_fkey on leads: time=0.038 calls=1
+Trigger for constraint lead_review_events_candidate_id_fkey on lead_review_events: time=0.022 calls=1
+Trigger for constraint lead_review_events_user_id_fkey on lead_review_events: time=0.013 calls=1
+Execution Time: 0.221 ms
+=== W23 run 3 ===
+Insert on lead_review_events  (cost=8.30..8.33 rows=1 width=122) (actual time=0.175..0.178 rows=1 loops=1)
+  Buffers: shared hit=18 dirtied=1 written=1
+  CTE upd
+    ->  Update on leads  (cost=0.29..8.30 rows=1 width=72) (actual time=0.069..0.071 rows=1 loops=1)
+          Buffers: shared hit=13
+          ->  Index Scan using leads_pkey on leads  (cost=0.29..8.30 rows=1 width=72) (actual time=0.008..0.009 rows=1 loops=1)
+                Index Cond: (candidate_id = '01d51efb-1a48-4ea7-a9dd-00785c5b1476'::uuid)
+                Buffers: shared hit=5
+  ->  CTE Scan on upd  (cost=0.00..0.03 rows=1 width=122) (actual time=0.072..0.073 rows=1 loops=1)
+        Buffers: shared hit=14
+Planning Time: 0.067 ms
+Trigger for constraint leads_reviewed_by_fkey on leads: time=0.028 calls=1
+Trigger for constraint lead_review_events_candidate_id_fkey on lead_review_events: time=0.019 calls=1
+Trigger for constraint lead_review_events_user_id_fkey on lead_review_events: time=0.013 calls=1
+Execution Time: 0.253 ms

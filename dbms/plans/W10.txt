@@ -1,0 +1,38 @@
+-- W10 WRITE: Discovery: remember the external source id so a retried job does not duplicate it.
+-- parameters: 'openstreetmap', 'osm-new-1', 'b9800614-3f2d-44a8-9e9b-f9ab41659c68'
+
+=== W10 run 1 ===
+Insert on business_source_records  (cost=0.00..0.01 rows=0 width=0) (actual time=0.212..0.212 rows=0 loops=1)
+  Conflict Resolution: NOTHING
+  Conflict Arbiter Indexes: business_source_records_pkey
+  Tuples Inserted: 1
+  Conflicting Tuples: 0
+  Buffers: shared hit=25
+  ->  Result  (cost=0.00..0.01 rows=1 width=520) (actual time=0.003..0.003 rows=1 loops=1)
+Planning:
+  Buffers: shared hit=39
+Planning Time: 0.143 ms
+Trigger for constraint business_source_records_business_id_fkey: time=0.526 calls=1
+Execution Time: 0.752 ms
+=== W10 run 2 ===
+Insert on business_source_records  (cost=0.00..0.01 rows=0 width=0) (actual time=0.046..0.046 rows=0 loops=1)
+  Conflict Resolution: NOTHING
+  Conflict Arbiter Indexes: business_source_records_pkey
+  Tuples Inserted: 1
+  Conflicting Tuples: 0
+  Buffers: shared hit=7
+  ->  Result  (cost=0.00..0.01 rows=1 width=520) (actual time=0.001..0.001 rows=1 loops=1)
+Planning Time: 0.061 ms
+Trigger for constraint business_source_records_business_id_fkey: time=0.052 calls=1
+Execution Time: 0.105 ms
+=== W10 run 3 ===
+Insert on business_source_records  (cost=0.00..0.01 rows=0 width=0) (actual time=0.042..0.042 rows=0 loops=1)
+  Conflict Resolution: NOTHING
+  Conflict Arbiter Indexes: business_source_records_pkey
+  Tuples Inserted: 1
+  Conflicting Tuples: 0
+  Buffers: shared hit=7
+  ->  Result  (cost=0.00..0.01 rows=1 width=520) (actual time=0.001..0.001 rows=1 loops=1)
+Planning Time: 0.030 ms
+Trigger for constraint business_source_records_business_id_fkey: time=0.043 calls=1
+Execution Time: 0.092 ms

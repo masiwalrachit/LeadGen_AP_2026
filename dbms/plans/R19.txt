@@ -1,0 +1,120 @@
+-- R19 READ: Lead inbox: published leads of a campaign, filtered by review status, best score first.
+-- parameters: '3288ed57-dd1f-4d8b-8602-463579bd0512', 'b60f43aa-0a5d-4efc-8e59-cdcb92afcb6d', 'new', '25', '0'
+
+=== R19 run 1 ===
+Limit  (cost=1184.09..1184.15 rows=25 width=102) (actual time=2.486..2.492 rows=25 loops=1)
+  Buffers: shared hit=554
+  ->  Sort  (cost=1184.09..1184.29 rows=83 width=102) (actual time=2.486..2.489 rows=25 loops=1)
+        Sort Key: l.final_score DESC, l.published_at
+        Sort Method: top-N heapsort  Memory: 30kB
+        Buffers: shared hit=554
+        ->  Nested Loop  (cost=408.55..1181.74 rows=83 width=102) (actual time=0.414..2.418 rows=81 loops=1)
+              Buffers: shared hit=548
+              ->  Nested Loop  (cost=408.26..844.79 rows=83 width=73) (actual time=0.401..2.086 rows=81 loops=1)
+                    Buffers: shared hit=305
+                    ->  Seq Scan on campaigns cp  (cost=0.00..3.20 rows=1 width=16) (actual time=0.005..0.010 rows=1 loops=1)
+                          Filter: ((campaign_id = '3288ed57-dd1f-4d8b-8602-463579bd0512'::uuid) AND (workspace_id = 'b60f43aa-0a5d-4efc-8e59-cdcb92afcb6d'::uuid))
+                          Rows Removed by Filter: 79
+                          Buffers: shared hit=2
+                    ->  Hash Join  (cost=408.26..840.76 rows=83 width=89) (actual time=0.395..2.064 rows=81 loops=1)
+                          Hash Cond: (l.candidate_id = ca.candidate_id)
+                          Buffers: shared hit=303
+                          ->  Seq Scan on leads l  (cost=0.00..415.00 rows=6667 width=57) (actual time=0.197..1.319 rows=6667 loops=1)
+                                Filter: ((review_status)::text = 'new'::text)
+                                Rows Removed by Filter: 3333
+                                Buffers: shared hit=290
+                          ->  Hash  (cost=403.57..403.57 rows=375 width=48) (actual time=0.154..0.154 rows=375 loops=1)
+                                Buckets: 1024  Batches: 1  Memory Usage: 38kB
+                                Buffers: shared hit=13
+                                ->  Bitmap Heap Scan on candidates ca  (cost=19.32..403.57 rows=375 width=48) (actual time=0.053..0.100 rows=375 loops=1)
+                                      Recheck Cond: (campaign_id = '3288ed57-dd1f-4d8b-8602-463579bd0512'::uuid)
+                                      Heap Blocks: exact=8
+                                      Buffers: shared hit=13
+                                      ->  Bitmap Index Scan on uq_candidates_campaign_business  (cost=0.00..19.23 rows=375 width=0) (actual time=0.045..0.045 rows=375 loops=1)
+                                            Index Cond: (campaign_id = '3288ed57-dd1f-4d8b-8602-463579bd0512'::uuid)
+                                            Buffers: shared hit=5
+              ->  Index Scan using businesses_pkey on businesses b  (cost=0.29..4.06 rows=1 width=61) (actual time=0.004..0.004 rows=1 loops=81)
+                    Index Cond: (business_id = ca.business_id)
+                    Buffers: shared hit=243
+Planning:
+  Buffers: shared hit=373
+Planning Time: 0.971 ms
+Execution Time: 2.561 ms
+=== R19 run 2 ===
+Limit  (cost=1184.09..1184.15 rows=25 width=102) (actual time=1.945..1.951 rows=25 loops=1)
+  Buffers: shared hit=548
+  ->  Sort  (cost=1184.09..1184.29 rows=83 width=102) (actual time=1.945..1.948 rows=25 loops=1)
+        Sort Key: l.final_score DESC, l.published_at
+        Sort Method: top-N heapsort  Memory: 30kB
+        Buffers: shared hit=548
+        ->  Nested Loop  (cost=408.55..1181.74 rows=83 width=102) (actual time=0.234..1.900 rows=81 loops=1)
+              Buffers: shared hit=548
+              ->  Nested Loop  (cost=408.26..844.79 rows=83 width=73) (actual time=0.230..1.751 rows=81 loops=1)
+                    Buffers: shared hit=305
+                    ->  Seq Scan on campaigns cp  (cost=0.00..3.20 rows=1 width=16) (actual time=0.003..0.007 rows=1 loops=1)
+                          Filter: ((campaign_id = '3288ed57-dd1f-4d8b-8602-463579bd0512'::uuid) AND (workspace_id = 'b60f43aa-0a5d-4efc-8e59-cdcb92afcb6d'::uuid))
+                          Rows Removed by Filter: 79
+                          Buffers: shared hit=2
+                    ->  Hash Join  (cost=408.26..840.76 rows=83 width=89) (actual time=0.227..1.734 rows=81 loops=1)
+                          Hash Cond: (l.candidate_id = ca.candidate_id)
+                          Buffers: shared hit=303
+                          ->  Seq Scan on leads l  (cost=0.00..415.00 rows=6667 width=57) (actual time=0.087..1.139 rows=6667 loops=1)
+                                Filter: ((review_status)::text = 'new'::text)
+                                Rows Removed by Filter: 3333
+                                Buffers: shared hit=290
+                          ->  Hash  (cost=403.57..403.57 rows=375 width=48) (actual time=0.110..0.110 rows=375 loops=1)
+                                Buckets: 1024  Batches: 1  Memory Usage: 38kB
+                                Buffers: shared hit=13
+                                ->  Bitmap Heap Scan on candidates ca  (cost=19.32..403.57 rows=375 width=48) (actual time=0.024..0.068 rows=375 loops=1)
+                                      Recheck Cond: (campaign_id = '3288ed57-dd1f-4d8b-8602-463579bd0512'::uuid)
+                                      Heap Blocks: exact=8
+                                      Buffers: shared hit=13
+                                      ->  Bitmap Index Scan on uq_candidates_campaign_business  (cost=0.00..19.23 rows=375 width=0) (actual time=0.019..0.019 rows=375 loops=1)
+                                            Index Cond: (campaign_id = '3288ed57-dd1f-4d8b-8602-463579bd0512'::uuid)
+                                            Buffers: shared hit=5
+              ->  Index Scan using businesses_pkey on businesses b  (cost=0.29..4.06 rows=1 width=61) (actual time=0.001..0.001 rows=1 loops=81)
+                    Index Cond: (business_id = ca.business_id)
+                    Buffers: shared hit=243
+Planning:
+  Buffers: shared hit=16
+Planning Time: 0.322 ms
+Execution Time: 1.975 ms
+=== R19 run 3 ===
+Limit  (cost=1184.09..1184.15 rows=25 width=102) (actual time=1.766..1.771 rows=25 loops=1)
+  Buffers: shared hit=548
+  ->  Sort  (cost=1184.09..1184.29 rows=83 width=102) (actual time=1.766..1.768 rows=25 loops=1)
+        Sort Key: l.final_score DESC, l.published_at
+        Sort Method: top-N heapsort  Memory: 30kB
+        Buffers: shared hit=548
+        ->  Nested Loop  (cost=408.55..1181.74 rows=83 width=102) (actual time=0.164..1.727 rows=81 loops=1)
+              Buffers: shared hit=548
+              ->  Nested Loop  (cost=408.26..844.79 rows=83 width=73) (actual time=0.161..1.605 rows=81 loops=1)
+                    Buffers: shared hit=305
+                    ->  Seq Scan on campaigns cp  (cost=0.00..3.20 rows=1 width=16) (actual time=0.002..0.007 rows=1 loops=1)
+                          Filter: ((campaign_id = '3288ed57-dd1f-4d8b-8602-463579bd0512'::uuid) AND (workspace_id = 'b60f43aa-0a5d-4efc-8e59-cdcb92afcb6d'::uuid))
+                          Rows Removed by Filter: 79
+                          Buffers: shared hit=2
+                    ->  Hash Join  (cost=408.26..840.76 rows=83 width=89) (actual time=0.158..1.588 rows=81 loops=1)
+                          Hash Cond: (l.candidate_id = ca.candidate_id)
+                          Buffers: shared hit=303
+                          ->  Seq Scan on leads l  (cost=0.00..415.00 rows=6667 width=57) (actual time=0.037..1.000 rows=6667 loops=1)
+                                Filter: ((review_status)::text = 'new'::text)
+                                Rows Removed by Filter: 3333
+                                Buffers: shared hit=290
+                          ->  Hash  (cost=403.57..403.57 rows=375 width=48) (actual time=0.096..0.096 rows=375 loops=1)
+                                Buckets: 1024  Batches: 1  Memory Usage: 38kB
+                                Buffers: shared hit=13
+                                ->  Bitmap Heap Scan on candidates ca  (cost=19.32..403.57 rows=375 width=48) (actual time=0.018..0.055 rows=375 loops=1)
+                                      Recheck Cond: (campaign_id = '3288ed57-dd1f-4d8b-8602-463579bd0512'::uuid)
+                                      Heap Blocks: exact=8
+                                      Buffers: shared hit=13
+                                      ->  Bitmap Index Scan on uq_candidates_campaign_business  (cost=0.00..19.23 rows=375 width=0) (actual time=0.013..0.013 rows=375 loops=1)
+                                            Index Cond: (campaign_id = '3288ed57-dd1f-4d8b-8602-463579bd0512'::uuid)
+                                            Buffers: shared hit=5
+              ->  Index Scan using businesses_pkey on businesses b  (cost=0.29..4.06 rows=1 width=61) (actual time=0.001..0.001 rows=1 loops=81)
+                    Index Cond: (business_id = ca.business_id)
+                    Buffers: shared hit=243
+Planning:
+  Buffers: shared hit=16
+Planning Time: 0.289 ms
+Execution Time: 1.793 ms

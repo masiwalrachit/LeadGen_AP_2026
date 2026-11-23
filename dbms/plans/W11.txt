@@ -1,0 +1,41 @@
+-- W11 WRITE: Discovery: add the business to the campaign as a candidate (once per campaign).
+-- parameters: '3288ed57-dd1f-4d8b-8602-463579bd0512', '0001c2ab-9518-41c5-b127-e4de2ade22ac'
+
+=== W11 run 1 ===
+Insert on candidates  (cost=0.00..0.01 rows=1 width=114) (actual time=0.179..0.180 rows=1 loops=1)
+  Conflict Resolution: NOTHING
+  Conflict Arbiter Indexes: uq_candidates_campaign_business
+  Tuples Inserted: 1
+  Conflicting Tuples: 0
+  Buffers: shared hit=30
+  ->  Result  (cost=0.00..0.01 rows=1 width=114) (actual time=0.013..0.014 rows=1 loops=1)
+Planning:
+  Buffers: shared hit=60
+Planning Time: 0.184 ms
+Trigger for constraint candidates_campaign_id_fkey: time=0.412 calls=1
+Trigger for constraint candidates_business_id_fkey: time=0.205 calls=1
+Execution Time: 0.818 ms
+=== W11 run 2 ===
+Insert on candidates  (cost=0.00..0.01 rows=1 width=114) (actual time=0.068..0.068 rows=1 loops=1)
+  Conflict Resolution: NOTHING
+  Conflict Arbiter Indexes: uq_candidates_campaign_business
+  Tuples Inserted: 1
+  Conflicting Tuples: 0
+  Buffers: shared hit=11
+  ->  Result  (cost=0.00..0.01 rows=1 width=114) (actual time=0.011..0.011 rows=1 loops=1)
+Planning Time: 0.038 ms
+Trigger for constraint candidates_campaign_id_fkey: time=0.042 calls=1
+Trigger for constraint candidates_business_id_fkey: time=0.026 calls=1
+Execution Time: 0.145 ms
+=== W11 run 3 ===
+Insert on candidates  (cost=0.00..0.01 rows=1 width=114) (actual time=0.057..0.058 rows=1 loops=1)
+  Conflict Resolution: NOTHING
+  Conflict Arbiter Indexes: uq_candidates_campaign_business
+  Tuples Inserted: 1
+  Conflicting Tuples: 0
+  Buffers: shared hit=11
+  ->  Result  (cost=0.00..0.01 rows=1 width=114) (actual time=0.009..0.009 rows=1 loops=1)
+Planning Time: 0.031 ms
+Trigger for constraint candidates_campaign_id_fkey: time=0.035 calls=1
+Trigger for constraint candidates_business_id_fkey: time=0.049 calls=1
+Execution Time: 0.151 ms

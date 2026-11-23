@@ -1,0 +1,72 @@
+-- R8 READ: Campaign detail: one campaign, only if it belongs to the user's workspace.
+-- parameters: '3288ed57-dd1f-4d8b-8602-463579bd0512', 'b60f43aa-0a5d-4efc-8e59-cdcb92afcb6d'
+
+=== R8 run 1 ===
+Nested Loop  (cost=3.21..5.80 rows=1 width=134) (actual time=0.042..0.048 rows=1 loops=1)
+  Join Filter: (sp.playbook_id = cp.playbook_id)
+  Rows Removed by Join Filter: 1
+  Buffers: shared hit=4
+  ->  Hash Right Join  (cost=3.21..4.73 rows=1 width=121) (actual time=0.040..0.046 rows=1 loops=1)
+        Hash Cond: (cl.client_id = cp.client_id)
+        Buffers: shared hit=3
+        ->  Seq Scan on clients cl  (cost=0.00..1.40 rows=40 width=37) (actual time=0.002..0.004 rows=40 loops=1)
+              Buffers: shared hit=1
+        ->  Hash  (cost=3.20..3.20 rows=1 width=100) (actual time=0.016..0.017 rows=1 loops=1)
+              Buckets: 1024  Batches: 1  Memory Usage: 9kB
+              Buffers: shared hit=2
+              ->  Seq Scan on campaigns cp  (cost=0.00..3.20 rows=1 width=100) (actual time=0.007..0.011 rows=1 loops=1)
+                    Filter: ((campaign_id = '3288ed57-dd1f-4d8b-8602-463579bd0512'::uuid) AND (workspace_id = 'b60f43aa-0a5d-4efc-8e59-cdcb92afcb6d'::uuid))
+                    Rows Removed by Filter: 79
+                    Buffers: shared hit=2
+  ->  Seq Scan on service_playbooks sp  (cost=0.00..1.03 rows=3 width=15) (actual time=0.001..0.001 rows=2 loops=1)
+        Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=415
+Planning Time: 0.804 ms
+Execution Time: 0.093 ms
+=== R8 run 2 ===
+Nested Loop  (cost=3.21..5.80 rows=1 width=134) (actual time=0.017..0.022 rows=1 loops=1)
+  Join Filter: (sp.playbook_id = cp.playbook_id)
+  Rows Removed by Join Filter: 1
+  Buffers: shared hit=4
+  ->  Hash Right Join  (cost=3.21..4.73 rows=1 width=121) (actual time=0.015..0.020 rows=1 loops=1)
+        Hash Cond: (cl.client_id = cp.client_id)
+        Buffers: shared hit=3
+        ->  Seq Scan on clients cl  (cost=0.00..1.40 rows=40 width=37) (actual time=0.001..0.003 rows=40 loops=1)
+              Buffers: shared hit=1
+        ->  Hash  (cost=3.20..3.20 rows=1 width=100) (actual time=0.010..0.010 rows=1 loops=1)
+              Buckets: 1024  Batches: 1  Memory Usage: 9kB
+              Buffers: shared hit=2
+              ->  Seq Scan on campaigns cp  (cost=0.00..3.20 rows=1 width=100) (actual time=0.003..0.007 rows=1 loops=1)
+                    Filter: ((campaign_id = '3288ed57-dd1f-4d8b-8602-463579bd0512'::uuid) AND (workspace_id = 'b60f43aa-0a5d-4efc-8e59-cdcb92afcb6d'::uuid))
+                    Rows Removed by Filter: 79
+                    Buffers: shared hit=2
+  ->  Seq Scan on service_playbooks sp  (cost=0.00..1.03 rows=3 width=15) (actual time=0.000..0.001 rows=2 loops=1)
+        Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=8
+Planning Time: 0.160 ms
+Execution Time: 0.035 ms
+=== R8 run 3 ===
+Nested Loop  (cost=3.21..5.80 rows=1 width=134) (actual time=0.012..0.017 rows=1 loops=1)
+  Join Filter: (sp.playbook_id = cp.playbook_id)
+  Rows Removed by Join Filter: 1
+  Buffers: shared hit=4
+  ->  Hash Right Join  (cost=3.21..4.73 rows=1 width=121) (actual time=0.010..0.016 rows=1 loops=1)
+        Hash Cond: (cl.client_id = cp.client_id)
+        Buffers: shared hit=3
+        ->  Seq Scan on clients cl  (cost=0.00..1.40 rows=40 width=37) (actual time=0.001..0.003 rows=40 loops=1)
+              Buffers: shared hit=1
+        ->  Hash  (cost=3.20..3.20 rows=1 width=100) (actual time=0.007..0.007 rows=1 loops=1)
+              Buckets: 1024  Batches: 1  Memory Usage: 9kB
+              Buffers: shared hit=2
+              ->  Seq Scan on campaigns cp  (cost=0.00..3.20 rows=1 width=100) (actual time=0.002..0.005 rows=1 loops=1)
+                    Filter: ((campaign_id = '3288ed57-dd1f-4d8b-8602-463579bd0512'::uuid) AND (workspace_id = 'b60f43aa-0a5d-4efc-8e59-cdcb92afcb6d'::uuid))
+                    Rows Removed by Filter: 79
+                    Buffers: shared hit=2
+  ->  Seq Scan on service_playbooks sp  (cost=0.00..1.03 rows=3 width=15) (actual time=0.000..0.001 rows=2 loops=1)
+        Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=8
+Planning Time: 0.102 ms
+Execution Time: 0.026 ms

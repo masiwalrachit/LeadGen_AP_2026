@@ -1,0 +1,35 @@
+-- W20 WRITE: Scoring: store one dimension's score and explanation for a lead.
+-- parameters: '01d51efb-1a48-4ea7-a9dd-00785c5b1476', 'fit', '80', 'Updated fit score'
+
+=== W20 run 1 ===
+Insert on lead_score_components  (cost=0.00..0.01 rows=0 width=0) (actual time=0.284..0.284 rows=0 loops=1)
+  Conflict Resolution: UPDATE
+  Conflict Arbiter Indexes: lead_score_components_pkey
+  Tuples Inserted: 0
+  Conflicting Tuples: 1
+  Buffers: shared hit=48
+  ->  Result  (cost=0.00..0.01 rows=1 width=118) (actual time=0.001..0.001 rows=1 loops=1)
+Planning:
+  Buffers: shared hit=38
+Planning Time: 0.156 ms
+Execution Time: 0.327 ms
+=== W20 run 2 ===
+Insert on lead_score_components  (cost=0.00..0.01 rows=0 width=0) (actual time=0.058..0.058 rows=0 loops=1)
+  Conflict Resolution: UPDATE
+  Conflict Arbiter Indexes: lead_score_components_pkey
+  Tuples Inserted: 0
+  Conflicting Tuples: 1
+  Buffers: shared hit=11
+  ->  Result  (cost=0.00..0.01 rows=1 width=118) (actual time=0.001..0.001 rows=1 loops=1)
+Planning Time: 0.041 ms
+Execution Time: 0.066 ms
+=== W20 run 3 ===
+Insert on lead_score_components  (cost=0.00..0.01 rows=0 width=0) (actual time=0.053..0.054 rows=0 loops=1)
+  Conflict Resolution: UPDATE
+  Conflict Arbiter Indexes: lead_score_components_pkey
+  Tuples Inserted: 0
+  Conflicting Tuples: 1
+  Buffers: shared hit=11
+  ->  Result  (cost=0.00..0.01 rows=1 width=118) (actual time=0.001..0.001 rows=1 loops=1)
+Planning Time: 0.034 ms
+Execution Time: 0.062 ms

@@ -1,0 +1,54 @@
+-- R15 READ: Contact panel: public contact paths of a business with the evidence that backs each.
+-- parameters: 'b9800614-3f2d-44a8-9e9b-f9ab41659c68'
+
+=== R15 run 1 ===
+Sort  (cost=20.64..20.64 rows=1 width=77) (actual time=0.050..0.050 rows=1 loops=1)
+  Sort Key: bc.is_primary DESC, bc.contact_type
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=14
+  ->  Nested Loop  (cost=0.58..20.62 rows=1 width=77) (actual time=0.027..0.027 rows=1 loops=1)
+        Buffers: shared hit=6
+        ->  Index Scan using uq_business_contacts_value on business_contacts bc  (cost=0.29..8.30 rows=1 width=62) (actual time=0.012..0.012 rows=1 loops=1)
+              Index Cond: (business_id = 'b9800614-3f2d-44a8-9e9b-f9ab41659c68'::uuid)
+              Buffers: shared hit=3
+        ->  Index Scan using uq_evidence_id_business on evidence e  (cost=0.29..8.31 rows=1 width=63) (actual time=0.011..0.011 rows=1 loops=1)
+              Index Cond: ((evidence_id = bc.evidence_id) AND (business_id = 'b9800614-3f2d-44a8-9e9b-f9ab41659c68'::uuid))
+              Buffers: shared hit=3
+Planning:
+  Buffers: shared hit=296
+Planning Time: 0.644 ms
+Execution Time: 0.087 ms
+=== R15 run 2 ===
+Sort  (cost=20.64..20.64 rows=1 width=77) (actual time=0.025..0.026 rows=1 loops=1)
+  Sort Key: bc.is_primary DESC, bc.contact_type
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=6
+  ->  Nested Loop  (cost=0.58..20.62 rows=1 width=77) (actual time=0.020..0.021 rows=1 loops=1)
+        Buffers: shared hit=6
+        ->  Index Scan using uq_business_contacts_value on business_contacts bc  (cost=0.29..8.30 rows=1 width=62) (actual time=0.006..0.006 rows=1 loops=1)
+              Index Cond: (business_id = 'b9800614-3f2d-44a8-9e9b-f9ab41659c68'::uuid)
+              Buffers: shared hit=3
+        ->  Index Scan using uq_evidence_id_business on evidence e  (cost=0.29..8.31 rows=1 width=63) (actual time=0.013..0.013 rows=1 loops=1)
+              Index Cond: ((evidence_id = bc.evidence_id) AND (business_id = 'b9800614-3f2d-44a8-9e9b-f9ab41659c68'::uuid))
+              Buffers: shared hit=3
+Planning:
+  Buffers: shared hit=3
+Planning Time: 0.138 ms
+Execution Time: 0.036 ms
+=== R15 run 3 ===
+Sort  (cost=20.64..20.64 rows=1 width=77) (actual time=0.007..0.008 rows=1 loops=1)
+  Sort Key: bc.is_primary DESC, bc.contact_type
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=6
+  ->  Nested Loop  (cost=0.58..20.62 rows=1 width=77) (actual time=0.005..0.006 rows=1 loops=1)
+        Buffers: shared hit=6
+        ->  Index Scan using uq_business_contacts_value on business_contacts bc  (cost=0.29..8.30 rows=1 width=62) (actual time=0.002..0.002 rows=1 loops=1)
+              Index Cond: (business_id = 'b9800614-3f2d-44a8-9e9b-f9ab41659c68'::uuid)
+              Buffers: shared hit=3
+        ->  Index Scan using uq_evidence_id_business on evidence e  (cost=0.29..8.31 rows=1 width=63) (actual time=0.002..0.002 rows=1 loops=1)
+              Index Cond: ((evidence_id = bc.evidence_id) AND (business_id = 'b9800614-3f2d-44a8-9e9b-f9ab41659c68'::uuid))
+              Buffers: shared hit=3
+Planning:
+  Buffers: shared hit=3
+Planning Time: 0.087 ms
+Execution Time: 0.015 ms

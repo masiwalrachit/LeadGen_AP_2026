@@ -1,0 +1,66 @@
+-- R5 READ: Settings: service playbooks the workspace offers (used to pick a campaign playbook).
+-- parameters: 'b60f43aa-0a5d-4efc-8e59-cdcb92afcb6d'
+
+=== R5 run 1 ===
+Sort  (cost=2.33..2.34 rows=2 width=61) (actual time=0.051..0.053 rows=2 loops=1)
+  Sort Key: sp.name
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=5
+  ->  Hash Join  (cost=1.27..2.32 rows=2 width=61) (actual time=0.027..0.030 rows=2 loops=1)
+        Hash Cond: (sp.playbook_id = ws.playbook_id)
+        Buffers: shared hit=2
+        ->  Seq Scan on service_playbooks sp  (cost=0.00..1.03 rows=3 width=61) (actual time=0.002..0.002 rows=3 loops=1)
+              Buffers: shared hit=1
+        ->  Hash  (cost=1.25..1.25 rows=2 width=2) (actual time=0.013..0.013 rows=2 loops=1)
+              Buckets: 1024  Batches: 1  Memory Usage: 9kB
+              Buffers: shared hit=1
+              ->  Seq Scan on workspace_services ws  (cost=0.00..1.25 rows=2 width=2) (actual time=0.004..0.005 rows=2 loops=1)
+                    Filter: (workspace_id = 'b60f43aa-0a5d-4efc-8e59-cdcb92afcb6d'::uuid)
+                    Rows Removed by Filter: 18
+                    Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=240
+Planning Time: 0.573 ms
+Execution Time: 0.082 ms
+=== R5 run 2 ===
+Sort  (cost=2.33..2.34 rows=2 width=61) (actual time=0.011..0.012 rows=2 loops=1)
+  Sort Key: sp.name
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=2
+  ->  Hash Join  (cost=1.27..2.32 rows=2 width=61) (actual time=0.007..0.009 rows=2 loops=1)
+        Hash Cond: (sp.playbook_id = ws.playbook_id)
+        Buffers: shared hit=2
+        ->  Seq Scan on service_playbooks sp  (cost=0.00..1.03 rows=3 width=61) (actual time=0.001..0.001 rows=3 loops=1)
+              Buffers: shared hit=1
+        ->  Hash  (cost=1.25..1.25 rows=2 width=2) (actual time=0.004..0.004 rows=2 loops=1)
+              Buckets: 1024  Batches: 1  Memory Usage: 9kB
+              Buffers: shared hit=1
+              ->  Seq Scan on workspace_services ws  (cost=0.00..1.25 rows=2 width=2) (actual time=0.001..0.003 rows=2 loops=1)
+                    Filter: (workspace_id = 'b60f43aa-0a5d-4efc-8e59-cdcb92afcb6d'::uuid)
+                    Rows Removed by Filter: 18
+                    Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=4
+Planning Time: 0.094 ms
+Execution Time: 0.020 ms
+=== R5 run 3 ===
+Sort  (cost=2.33..2.34 rows=2 width=61) (actual time=0.011..0.012 rows=2 loops=1)
+  Sort Key: sp.name
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=2
+  ->  Hash Join  (cost=1.27..2.32 rows=2 width=61) (actual time=0.008..0.009 rows=2 loops=1)
+        Hash Cond: (sp.playbook_id = ws.playbook_id)
+        Buffers: shared hit=2
+        ->  Seq Scan on service_playbooks sp  (cost=0.00..1.03 rows=3 width=61) (actual time=0.001..0.001 rows=3 loops=1)
+              Buffers: shared hit=1
+        ->  Hash  (cost=1.25..1.25 rows=2 width=2) (actual time=0.003..0.004 rows=2 loops=1)
+              Buckets: 1024  Batches: 1  Memory Usage: 9kB
+              Buffers: shared hit=1
+              ->  Seq Scan on workspace_services ws  (cost=0.00..1.25 rows=2 width=2) (actual time=0.001..0.002 rows=2 loops=1)
+                    Filter: (workspace_id = 'b60f43aa-0a5d-4efc-8e59-cdcb92afcb6d'::uuid)
+                    Rows Removed by Filter: 18
+                    Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=4
+Planning Time: 0.070 ms
+Execution Time: 0.019 ms

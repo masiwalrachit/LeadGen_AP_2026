@@ -1,0 +1,29 @@
+-- R17 READ: LLM panel: the latest LLM assessment of a candidate.
+-- parameters: '01d51efb-1a48-4ea7-a9dd-00785c5b1476'
+
+=== R17 run 1 ===
+Limit  (cost=0.29..8.30 rows=1 width=73) (actual time=0.023..0.023 rows=1 loops=1)
+  Buffers: shared hit=3
+  ->  Index Scan Backward using uq_llm_assessments_candidate_time on llm_assessments  (cost=0.29..8.30 rows=1 width=73) (actual time=0.022..0.022 rows=1 loops=1)
+        Index Cond: (candidate_id = '01d51efb-1a48-4ea7-a9dd-00785c5b1476'::uuid)
+        Buffers: shared hit=3
+Planning:
+  Buffers: shared hit=126
+Planning Time: 0.323 ms
+Execution Time: 0.043 ms
+=== R17 run 2 ===
+Limit  (cost=0.29..8.30 rows=1 width=73) (actual time=0.004..0.004 rows=1 loops=1)
+  Buffers: shared hit=3
+  ->  Index Scan Backward using uq_llm_assessments_candidate_time on llm_assessments  (cost=0.29..8.30 rows=1 width=73) (actual time=0.004..0.004 rows=1 loops=1)
+        Index Cond: (candidate_id = '01d51efb-1a48-4ea7-a9dd-00785c5b1476'::uuid)
+        Buffers: shared hit=3
+Planning Time: 0.038 ms
+Execution Time: 0.010 ms
+=== R17 run 3 ===
+Limit  (cost=0.29..8.30 rows=1 width=73) (actual time=0.003..0.003 rows=1 loops=1)
+  Buffers: shared hit=3
+  ->  Index Scan Backward using uq_llm_assessments_candidate_time on llm_assessments  (cost=0.29..8.30 rows=1 width=73) (actual time=0.002..0.003 rows=1 loops=1)
+        Index Cond: (candidate_id = '01d51efb-1a48-4ea7-a9dd-00785c5b1476'::uuid)
+        Buffers: shared hit=3
+Planning Time: 0.026 ms
+Execution Time: 0.007 ms

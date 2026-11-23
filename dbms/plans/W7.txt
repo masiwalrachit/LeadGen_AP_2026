@@ -1,0 +1,35 @@
+-- W7 WRITE: New campaign (client optional, creator must be a member - enforced by FKs).
+-- parameters: 'b60f43aa-0a5d-4efc-8e59-cdcb92afcb6d', NULL, '1', 'New campaign', 'Cafe', 'South Delhi', '50', NULL, '00000000-0000-0000-0000-000000000001'
+
+=== W7 run 1 ===
+Insert on campaigns  (cost=0.00..0.01 rows=1 width=1066) (actual time=0.228..0.229 rows=1 loops=1)
+  Buffers: shared hit=55
+  ->  Result  (cost=0.00..0.01 rows=1 width=1066) (actual time=0.016..0.016 rows=1 loops=1)
+Planning:
+  Buffers: shared hit=9
+Planning Time: 0.132 ms
+Trigger for constraint campaigns_workspace_id_fkey: time=0.429 calls=1
+Trigger for constraint campaigns_playbook_id_fkey: time=0.459 calls=1
+Trigger for constraint fk_campaigns_client_workspace: time=0.039 calls=1
+Trigger for constraint fk_campaigns_creator_membership: time=0.149 calls=1
+Execution Time: 1.335 ms
+=== W7 run 2 ===
+Insert on campaigns  (cost=0.00..0.01 rows=1 width=1066) (actual time=0.078..0.078 rows=1 loops=1)
+  Buffers: shared hit=2
+  ->  Result  (cost=0.00..0.01 rows=1 width=1066) (actual time=0.010..0.011 rows=1 loops=1)
+Planning Time: 0.036 ms
+Trigger for constraint campaigns_workspace_id_fkey: time=0.074 calls=1
+Trigger for constraint campaigns_playbook_id_fkey: time=0.029 calls=1
+Trigger for constraint fk_campaigns_client_workspace: time=0.002 calls=1
+Trigger for constraint fk_campaigns_creator_membership: time=0.023 calls=1
+Execution Time: 0.219 ms
+=== W7 run 3 ===
+Insert on campaigns  (cost=0.00..0.01 rows=1 width=1066) (actual time=0.065..0.065 rows=1 loops=1)
+  Buffers: shared hit=2
+  ->  Result  (cost=0.00..0.01 rows=1 width=1066) (actual time=0.007..0.007 rows=1 loops=1)
+Planning Time: 0.029 ms
+Trigger for constraint campaigns_workspace_id_fkey: time=0.025 calls=1
+Trigger for constraint campaigns_playbook_id_fkey: time=0.015 calls=1
+Trigger for constraint fk_campaigns_client_workspace: time=0.001 calls=1
+Trigger for constraint fk_campaigns_creator_membership: time=0.019 calls=1
+Execution Time: 0.132 ms
